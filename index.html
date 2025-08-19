@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            padding: 20px 30px;
+            background: #f8f9fa;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .question-container {
+            padding: 40px 30px;
+            min-height: 400px;
+        }
+
+        .question {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .translation {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+        }
+
+        .option.selected {
+            background: #4facfe;
+            border-color: #4facfe;
+            color: white;
+            font-weight: 600;
+        }
+
+        .option.correct {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: white;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            border-color: #f44336;
+            color: white;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .results h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 30px 0;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-message {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #495057;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            margin-top: 20px;
+        }
+
+        .download-btn:hover {
+            box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .start-screen h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .start-screen p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .quiz-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .question {
+                font-size: 1.2em;
+            }
+            
+            .option {
+                padding: 15px;
+                font-size: 1em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .quiz-stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h1>🎓 English Learning Quiz</h1>
+            <p>Test your English skills with interactive questions</p>
+        </div>
+
+        <div id="startScreen" class="start-screen">
+            <h2>Welcome to the English Quiz!</h2>
+            <p>Challenge yourself with 25 carefully selected questions covering grammar, vocabulary, and conversation skills. Each question includes helpful translations and explanations.</p>
+            
+            <div class="quiz-stats">
+                <div class="stat">
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">5-10</div>
+                    <div class="stat-label">Minutes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Options Each</div>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="startQuiz()">Start Quiz 🚀</button>
+        </div>
+
+        <div id="quizScreen" style="display: none;">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">Question 1 of 25</div>
+            </div>
+
+            <div class="question-container">
+                <div class="question" id="questionText"></div>
+                <div class="translation" id="translationText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+            </div>
+        </div>
+
+        <div id="resultsScreen" class="results" style="display: none;">
+            <h2>🎉 Quiz Complete!</h2>
+            <div class="score" id="finalScore"></div>
+            <div class="score-message" id="scoreMessage"></div>
+            <button class="btn download-btn" onclick="downloadResults()">📥 Download Results</button>
+            <button class="btn" onclick="restartQuiz()" style="margin-left: 15px;">🔄 Try Again</button>
+        </div>
+    </div>
+
+    <canvas id="downloadCanvas" style="display: none;"></canvas>
+
+    <script>
+        const questions = [
+            {
+                question: "Where is your appointment?",
+                translation: "¿Dónde es tu cita?",
+                options: ["At the hospital", "At the bank", "At the doctor's office", "At home"],
+                correct: 2
+            },
+            {
+                question: "Does Joe guarantee the work?",
+                translation: "¿Garantiza Joe el trabajo?",
+                options: ["Yes, he does", "No, he doesn't", "Maybe", "I don't know"],
+                correct: 0
+            },
+            {
+                question: "Bob, you're coughing a lot. What's wrong?",
+                translation: "Bob, estás tosiendo mucho. ¿Qué pasa?",
+                options: ["I'm fine", "I know, I have a sore throat", "Nothing wrong", "I'm happy"],
+                correct: 1
+            },
+            {
+                question: "Which intersection is it?",
+                translation: "¿Cuál es la intersección?",
+                options: ["It's 1st and Oak", "It's 4th Street and Main Street", "It's downtown", "It's far away"],
+                correct: 1
+            },
+            {
+                question: "It's very noisy here. What do you think?",
+                translation: "Aquí hay mucho ruido. ¿Qué piensas?",
+                options: ["It's quiet", "I know. I can't hear the waiter", "It's perfect", "I love it"],
+                correct: 1
+            },
+            {
+                question: "Was it frightening?",
+                translation: "¿Fue aterrador?",
+                options: ["No, it was fun", "Yes, the children were afraid", "It was boring", "I don't remember"],
+                correct: 1
+            },
+            {
+                question: "What kind of work does an instructor do?",
+                translation: "¿Qué tipo de trabajo hace un instructor?",
+                options: ["He fixes cars", "He teaches classes", "He sells food", "He cleans buildings"],
+                correct: 1
+            },
+            {
+                question: "Did Tim eat lamb for dinner?",
+                translation: "¿Tim comió cordero en la cena?",
+                options: ["No, he hated it", "Yes, he loved it", "He ate chicken", "He didn't eat"],
+                correct: 1
+            },
+            {
+                question: "Should I make a turn?",
+                translation: "¿Debo dar una vuelta?",
+                options: ["Yes, turn left", "No, you must go straight", "Turn around", "Stop the car"],
+                correct: 1
+            },
+            {
+                question: "Was the food greasy?",
+                translation: "¿Estaba grasosa la comida?",
+                options: ["No, it was healthy", "Yes, the french fries were", "It was delicious", "I didn't try it"],
+                correct: 1
+            },
+            {
+                question: "_____ in the US before?",
+                translation: "¿_____ en los Estados Unidos antes?",
+                options: ["Did you go", "Have you been", "Are you going", "Will you go"],
+                correct: 1
+            },
+            {
+                question: "We _____ two weeks of our vacation in Spain.",
+                translation: "Nosotros _____ dos semanas de nuestras vacaciones en España.",
+                options: ["go", "went", "going", "spent"],
+                correct: 3
+            },
+            {
+                question: "Bill: _____ do we have to wait for the bus? Tim: Just a few minutes.",
+                translation: "Bill: ¿_____ tenemos que esperar el autobús? Tim: Solo unos minutos.",
+                options: ["How long", "How far", "How much", "How many"],
+                correct: 0
+            },
+            {
+                question: "It's noon, but Tom is asleep. He ______ all morning.",
+                translation: "Es mediodía, pero Tom está dormido. Él ______ toda la mañana.",
+                options: ["has been sleeping", "is sleeping", "sleeps", "will sleep"],
+                correct: 0
+            },
+            {
+                question: "We ______ finish any of our homework because we got home late.",
+                translation: "No ______ terminar nuestra tarea porque llegamos tarde a casa.",
+                options: ["mustn't", "wouldn't", "shouldn't", "couldn't"],
+                correct: 3
+            },
+            {
+                question: "Don't ________ when you see a police car.",
+                translation: "No ________ cuando veas un auto de policía.",
+                options: ["tune up", "call back", "speed up", "give back"],
+                correct: 2
+            },
+            {
+                question: "John ________ a vacation for three years.",
+                translation: "John no ________ vacaciones por tres años.",
+                options: ["doesn't have", "hasn't", "hasn't had", "doesn't have to have"],
+                correct: 2
+            },
+            {
+                question: "Bill: How fast were you driving? Tim: ________.",
+                translation: "Bill: ¿Qué tan rápido estabas manejando? Tim: ________.",
+                options: ["45 minutes", "45 inches long", "45 miles per hour", "A speed limit of 45"],
+                correct: 2
+            },
+            {
+                question: "This is the school ________ has small classes.",
+                translation: "Esta es la escuela ________ tiene clases pequeñas.",
+                options: ["there", "who", "what", "which"],
+                correct: 3
+            },
+            {
+                question: "The new house was ______ expensive.",
+                translation: "La casa nueva era ______ cara.",
+                options: ["loudly", "rudely", "promptly", "terribly"],
+                correct: 3
+            },
+            {
+                question: "I need to lose weight ______ on the team.",
+                translation: "Necesito perder peso ______ en el equipo.",
+                options: ["be", "been", "will be", "to be"],
+                correct: 3
+            },
+            {
+                question: "Drivers should keep both hands on the ______.",
+                translation: "Los conductores deben mantener ambas manos en el ______.",
+                options: ["motor", "lane", "steering wheel", "lug nut"],
+                correct: 2
+            },
+            {
+                question: "This glass is ______ small. I need a bigger one.",
+                translation: "Este vaso está ______ pequeño. Necesito uno más grande.",
+                options: ["anymore", "more", "then", "too"],
+                correct: 3
+            },
+            {
+                question: "Ocean water is very ______.",
+                translation: "El agua del océano es muy ______.",
+                options: ["salty", "sweet", "bitter", "sour"],
+                correct: 0
+            },
+            {
+                question: "There isn't ______ to answer the phone right now.",
+                translation: "No hay ______ para contestar el teléfono ahora mismo.",
+                options: ["someone", "anyone", "everyone", "no one"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let selectedAnswers = [];
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('translationText').textContent = question.translation;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionElement.dataset.index = index;
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Restore previous selection if any
+            if (selectedAnswers[currentQuestion] !== undefined) {
+                const selectedIndex = selectedAnswers[currentQuestion];
+                const options = optionsContainer.children;
+                options[selectedIndex].classList.add('selected');
+            }
+            
+            updateProgress();
+            updateButtons();
+        }
+
+        function selectOption(index) {
+            // Remove previous selection
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Add selection to clicked option
+            options[index].classList.add('selected');
+            selectedAnswers[currentQuestion] = index;
+            
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').disabled = selectedAnswers[currentQuestion] === undefined;
+            document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? 'Finish 🎯' : 'Next →';
+        }
+
+        function showResults() {
+            score = 0;
+            selectedAnswers.forEach((answer, index) => {
+                if (answer === questions[index].correct) {
+                    score++;
+                }
+            });
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            document.getElementById('finalScore').textContent = `${score}/${questions.length} (${percentage}%)`;
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = '🌟 Excellent! You have mastered English skills!';
+            } else if (percentage >= 80) {
+                message = '🎉 Great job! You have strong English knowledge!';
+            } else if (percentage >= 70) {
+                message = '👍 Good work! Keep practicing to improve!';
+            } else if (percentage >= 60) {
+                message = '📚 Not bad! Focus on areas that need improvement!';
+            } else {
+                message = '💪 Keep studying! Practice makes perfect!';
+            }
+            
+            document.getElementById('scoreMessage').textContent = message;
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+        }
+
+        function downloadResults() {
+            const canvas = document.getElementById('downloadCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 800;
+            canvas.height = 600;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 800, 600);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 800, 600);
+            
+            // Title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('English Learning Quiz', 400, 100);
+            
+            // Certificate style border
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(40, 40, 720, 520);
+            
+            // Results
+            ctx.font = 'bold 36px Arial';
+            ctx.fillText('RESULTS', 400, 200);
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            ctx.font = 'bold 64px Arial';
+            ctx.fillStyle = '#FFD700';
+            ctx.fillText(`${score}/${questions.length}`, 400, 300);
+            
+            ctx.font = 'bold 48px Arial';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(`${percentage}%`, 400, 360);
+            
+            // Performance message
+            ctx.font = '24px Arial';
+            let message = '';
+            if (percentage >= 90) {
+                message = '⭐ EXCELLENT PERFORMANCE! ⭐';
+            } else if (percentage >= 80) {
+                message = '🎉 GREAT JOB! 🎉';
+            } else if (percentage >= 70) {
+                message = '👍 GOOD WORK! 👍';
+            } else if (percentage >= 60) {
+                message = '📚 KEEP PRACTICING! 📚';
+            } else {
+                message = '💪 STUDY MORE! 💪';
+            }
+            ctx.fillText(message, 400, 430);
+            
+            // Date
+            ctx.font = '18px Arial';
+            const date = new Date().toLocaleDateString();
+            ctx.fillText(`Completed on: ${date}`, 400, 500);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = `English_Quiz_Results_${percentage}%.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            selectedAnswers = [];
+            score = 0;
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
