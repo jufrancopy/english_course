@@ -510,38 +510,25 @@
                 </div>
 
                 <!-- Vocabulary Quiz Option -->
-                <div class="quiz-option" onclick="startQuiz('vocabulary')" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
+                <div class="quiz-option" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
                     <div class="difficulty-badge" style="background: #d1ecf1; color: #0c5460;">Practice</div>
                     <div class="quiz-icon">🧠</div>
                     <h2 class="quiz-title">Vocabulary Quiz</h2>
-                    <p class="quiz-description">Test your knowledge of English vocabulary with this quiz. Match the English words to their Spanish meanings.</p>
+                    <p class="quiz-description">Test your knowledge of English vocabulary. Choose the number of questions you want to answer.</p>
                     
-                    <div class="quiz-stats">
-                        <div class="stat">
-                            <div class="stat-number">25</div>
-                            <div class="stat-label">Questions</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">5-10</div>
-                            <div class="stat-label">Minutes</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">All</div>
-                            <div class="stat-label">Levels</div>
-                        </div>
-                    </div>
-
                     <div class="quiz-features">
                         <ul>
                             <li>Randomized questions</li>
                             <li>Multiple choice format</li>
-                            <li>Instant feedback</li>
-                            <li>Based on the full vocabulary list</li>
-                            <li>Great for practice!</li>
+                            <li>Based on the full 150+ word vocabulary list</li>
                         </ul>
                     </div>
 
-                    <button class="start-btn" style="background: linear-gradient(135deg, #66a6ff 0%, #89f7fe 100%);">Start Vocabulary Quiz 🧠</button>
+                    <div class="quiz-length-options" style="margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                        <button class="start-btn" onclick="startQuiz('vocabulary', 25)">25 Questions</button>
+                        <button class="start-btn" onclick="startQuiz('vocabulary', 50)">50 Questions</button>
+                        <button class="start-btn" onclick="startQuiz('vocabulary', 100)">100 Questions</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -853,7 +840,7 @@
         let selectedAnswers = [];
         let score = 0;
 
-        function startQuiz(type) {
+        function startQuiz(type, questionCount = 25) {
             // Show loading screen
             document.getElementById('selectionScreen').style.display = 'none';
             document.getElementById('loadingScreen').style.display = 'block';
@@ -870,7 +857,7 @@
                 } else if (type === 'grammar') {
                     loadGrammarStudy();
                 } else if (type === 'vocabulary') {
-                    loadVocabularyQuiz();
+                    loadVocabularyQuiz(questionCount);
                 }
             }, 1500);
         }
@@ -972,7 +959,7 @@
             `;
         }
 
-        function loadVocabularyQuiz() {
+        function loadVocabularyQuiz(questionCount) {
             const quizContainer = document.getElementById('quizContainer');
             quizContainer.innerHTML = `
                 <div style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); padding: 30px; text-align: center; color: white;">
@@ -982,8 +969,8 @@
                 
                 <div id="startScreen" style="text-align: center; padding: 60px 30px;">
                     <h2 style="font-size: 2.2em; margin-bottom: 20px; color: #2c3e50;">Vocabulary Meaning Challenge</h2>
-                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">A 25-question quiz to test your understanding of English vocabulary by matching words to their Spanish translations.</p>
-                    <button class="start-btn" onclick="startVocabularyQuiz()">Start Quiz 🧠</button>
+                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">A ${questionCount}-question quiz to test your understanding of English vocabulary by matching words to their Spanish translations.</p>
+                    <button class="start-btn" onclick="startVocabularyQuiz(${questionCount})">Start Quiz 🧠</button>
                 </div>
 
                 <div id="quizScreen" style="display: none;">
@@ -991,7 +978,7 @@
                         <div style="width: 100%; height: 10px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
                             <div style="height: 100%; background: linear-gradient(90deg, #89f7fe, #66a6ff); width: 0%; transition: width 0.3s ease; border-radius: 10px;" id="progressFill"></div>
                         </div>
-                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 25</div>
+                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of ${questionCount}</div>
                     </div>
                     
                     <div style="padding: 40px 30px; min-height: 400px;">
@@ -1051,8 +1038,8 @@
             startQuizGame();
         }
 
-        function startVocabularyQuiz() {
-            currentQuestions = generateVocabularyQuestions(25);
+        function startVocabularyQuiz(questionCount) {
+            currentQuestions = generateVocabularyQuestions(questionCount);
             currentQuestion = 0;
             selectedAnswers = [];
             score = 0;
