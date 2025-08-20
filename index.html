@@ -508,6 +508,41 @@
 
                     <button class="start-btn" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">View Vocabulary 📝</button>
                 </div>
+
+                <!-- Vocabulary Quiz Option -->
+                <div class="quiz-option" onclick="startQuiz('vocabulary')" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
+                    <div class="difficulty-badge" style="background: #d1ecf1; color: #0c5460;">Practice</div>
+                    <div class="quiz-icon">🧠</div>
+                    <h2 class="quiz-title">Vocabulary Quiz</h2>
+                    <p class="quiz-description">Test your knowledge of English vocabulary with this quiz. Match the English words to their Spanish meanings.</p>
+                    
+                    <div class="quiz-stats">
+                        <div class="stat">
+                            <div class="stat-number">25</div>
+                            <div class="stat-label">Questions</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">5-10</div>
+                            <div class="stat-label">Minutes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">All</div>
+                            <div class="stat-label">Levels</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-features">
+                        <ul>
+                            <li>Randomized questions</li>
+                            <li>Multiple choice format</li>
+                            <li>Instant feedback</li>
+                            <li>Based on the full vocabulary list</li>
+                            <li>Great for practice!</li>
+                        </ul>
+                    </div>
+
+                    <button class="start-btn" style="background: linear-gradient(135deg, #66a6ff 0%, #89f7fe 100%);">Start Vocabulary Quiz 🧠</button>
+                </div>
             </div>
         </div>
 
@@ -549,6 +584,172 @@
     </div>
 
     <script>
+        const vocabulary = [
+            { english: "ache", spanish: "dolor" },
+            { english: "fever", spanish: "fiebre" },
+            { english: "cough", spanish: "tos" },
+            { english: "sneeze", spanish: "estornudar" },
+            { english: "cold", spanish: "resfriado" },
+            { english: "symptom", spanish: "síntoma" },
+            { english: "patient", spanish: "paciente" },
+            { english: "checkup", spanish: "chequeo médico" },
+            { english: "exam", spanish: "examen" },
+            { english: "appointment", spanish: "cita" },
+            { english: "emergency", spanish: "emergencia" },
+            { english: "headache", spanish: "dolor de cabeza" },
+            { english: "stomachache", spanish: "dolor de estómago" },
+            { english: "earache", spanish: "dolor de oído" },
+            { english: "backache", spanish: "dolor de espalda" },
+            { english: "chest pain", spanish: "dolor de pecho" },
+            { english: "sore throat", spanish: "dolor de garganta" },
+            { english: "runny nose", spanish: "nariz que moquea" },
+            { english: "sick", spanish: "enfermo/a" },
+            { english: "ahead", spanish: "adelante" },
+            { english: "in advance", spanish: "por adelantado" },
+            { english: "cautious", spanish: "cauteloso/a" },
+            { english: "confuse", spanish: "confundir" },
+            { english: "fail", spanish: "fallar" },
+            { english: "follow", spanish: "seguir" },
+            { english: "get/got lost", spanish: "perderse" },
+            { english: "mean", spanish: "significar" },
+            { english: "pass", spanish: "pasar" },
+            { english: "pull over", spanish: "orillarse" },
+            { english: "sign", spanish: "señal" },
+            { english: "signal", spanish: "señalizar" },
+            { english: "slow down/up", spanish: "reducir la velocidad" },
+            { english: "speed/sped (up)", spanish: "acelerar" },
+            { english: "yield", spanish: "ceder el paso" },
+            { english: "pedestrian", spanish: "peatón" },
+            { english: "sidewalk", spanish: "acera" },
+            { english: "steer", spanish: "dirigir" },
+            { english: "stop sign", spanish: "señal de pare" },
+            { english: "turn", spanish: "girar" },
+            { english: "two-way", spanish: "de doble sentido" },
+            { english: "which way", spanish: "por dónde" },
+            { english: "right-of-way", spanish: "derecho de paso" },
+            { english: "lane", spanish: "carril" },
+            { english: "intersection", spanish: "intersección" },
+            { english: "miles per hour (m.p.h.)", spanish: "millas por hora" },
+            { english: "nervous", spanish: "nervioso/a" },
+            { english: "relaxed", spanish: "relajado/a" },
+            { english: "anybody/anyone", spanish: "cualquiera" },
+            { english: "nobody/no one", spanish: "nadie" },
+            { english: "somebody/someone", spanish: "alguien" },
+            { english: "that", spanish: "que, eso, esa" },
+            { english: "who", spanish: "quien" },
+            { english: "brake", spanish: "freno" },
+            { english: "charge", spanish: "cargo, cobrar" },
+            { english: "credit", spanish: "crédito" },
+            { english: "exchange", spanish: "cambiar, cambio" },
+            { english: "give/gave back", spanish: "devolver" },
+            { english: "guarantee", spanish: "garantía" },
+            { english: "leak", spanish: "fuga, gotera" },
+            { english: "oil", spanish: "aceite" },
+            { english: "refund", spanish: "reembolso" },
+            { english: "satisfy", spanish: "satisfacer" },
+            { english: "stall", spanish: "calarse, detenerse" },
+            { english: "tune up", spanish: "puesta a punto" },
+            { english: "warm (up)", spanish: "calentar" },
+            { english: "dissatisfied", spanish: "insatisfecho/a" },
+            { english: "greasy", spanish: "grasiento/a" },
+            { english: "leaky", spanish: "con fugas" },
+            { english: "noisy", spanish: "ruidoso/a" },
+            { english: "oily", spanish: "aceitoso/a" },
+            { english: "on sale", spanish: "en venta, en oferta" },
+            { english: "bug", spanish: "error, falla" },
+            { english: "hose", spanish: "manguera" },
+            { english: "motor", spanish: "motor" },
+            { english: "noise", spanish: "ruido" },
+            { english: "part", spanish: "pieza" },
+            { english: "sales slip", spanish: "recibo de venta" },
+            { english: "satisfaction", spanish: "satisfacción" },
+            { english: "service", spanish: "servicio" },
+            { english: "bore", spanish: "aburrir" },
+            { english: "entertain", spanish: "entretener" },
+            { english: "frighten", spanish: "asustar" },
+            { english: "intend (to)", spanish: "tener la intención de" },
+            { english: "laugh (at)", spanish: "reírse de" },
+            { english: "plan (to)", spanish: "planear" },
+            { english: "recommend", spanish: "recomendar" },
+            { english: "serve", spanish: "servir" },
+            { english: "spend", spanish: "gastar" },
+            { english: "boring", spanish: "aburrido/a" },
+            { english: "busy", spanish: "ocupado/a" },
+            { english: "dull", spanish: "aburrido/a, soso/a" },
+            { english: "entertaining", spanish: "entretenido/a" },
+            { english: "frequently", spanish: "frecuentemente" },
+            { english: "frightening", spanish: "aterrador/a" },
+            { english: "funny", spanish: "gracioso/a" },
+            { english: "great", spanish: "genial, grandioso/a" },
+            { english: "impolite/impolitely", spanish: "descortés/mente" },
+            { english: "loud/loudly", spanish: "ruidoso/a/mente" },
+            { english: "prompt/promptly", spanish: "puntual/mente" },
+            { english: "reasonable/reasonably", spanish: "razonable/mente" },
+            { english: "rude/rudely", spanish: "grosero/a/mente" },
+            { english: "sharp", spanish: "agudo/a, afilado/a" },
+            { english: "since", spanish: "desde" },
+            { english: "terrible", spanish: "terrible" },
+            { english: "terribly", spanish: "terriblemente" },
+            { english: "wonderful", spanish: "maravilloso/a" },
+            { english: "as a matter of fact", spanish: "de hecho" },
+            { english: "if you ask me", spanish: "si me preguntas a mí" },
+            { english: "in fact", spanish: "de hecho" },
+            { english: "cards", spanish: "naipes, cartas" },
+            { english: "channel", spanish: "canal" },
+            { english: "commercial", spanish: "anuncio" },
+            { english: "dish", spanish: "plato, platillo" },
+            { english: "entertainment", spanish: "entretenimiento" },
+            { english: "program", spanish: "programa" },
+            { english: "variety", spanish: "variedad" }
+        ];
+
+        function generateVocabularyQuestions(count) {
+            const questions = [];
+            const vocabularyCopy = [...vocabulary]; // Avoid modifying the original array
+
+            // Shuffle the vocabulary to get random words
+            for (let i = vocabularyCopy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [vocabularyCopy[i], vocabularyCopy[j]] = [vocabularyCopy[j], vocabularyCopy[i]];
+            }
+
+            for (let i = 0; i < count && i < vocabularyCopy.length; i++) {
+                const correctEntry = vocabularyCopy[i];
+                const question = {
+                    question: `What is the meaning of '${correctEntry.english}'?`,
+                    translation: `¿Cuál es el significado de '${correctEntry.english}'?`,
+                    options: [],
+                    correct: 0 // We'll place the correct answer at a random position
+                };
+
+                // Add the correct option
+                question.options.push(correctEntry.spanish);
+
+                // Add 3 incorrect options
+                const incorrectOptions = [];
+                while (incorrectOptions.length < 3) {
+                    const randomIndex = Math.floor(Math.random() * vocabulary.length);
+                    const randomEntry = vocabulary[randomIndex];
+                    if (randomEntry.spanish !== correctEntry.spanish && !incorrectOptions.includes(randomEntry.spanish)) {
+                        incorrectOptions.push(randomEntry.spanish);
+                    }
+                }
+                question.options.push(...incorrectOptions);
+
+                // Shuffle the options
+                for (let j = question.options.length - 1; j > 0; j--) {
+                    const k = Math.floor(Math.random() * (j + 1));
+                    [question.options[j], question.options[k]] = [question.options[k], question.options[j]];
+                }
+
+                // Find the new index of the correct answer
+                question.correct = question.options.findIndex(option => option === correctEntry.spanish);
+
+                questions.push(question);
+            }
+
+            return questions;
+        }
         // Quiz data
         const quickQuestions = [
             { question: "Where is your appointment?", translation: "¿Dónde es tu cita?", options: ["At the hospital", "At the bank", "At the doctor's office", "At home"], correct: 2 },
@@ -668,6 +869,8 @@
                     loadComprehensiveQuiz();
                 } else if (type === 'grammar') {
                     loadGrammarStudy();
+                } else if (type === 'vocabulary') {
+                    loadVocabularyQuiz();
                 }
             }, 1500);
         }
@@ -769,6 +972,52 @@
             `;
         }
 
+        function loadVocabularyQuiz() {
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = `
+                <div style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); padding: 30px; text-align: center; color: white;">
+                    <h1 style="font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">🧠 Vocabulary Quiz</h1>
+                    <p style="font-size: 1.2em; opacity: 0.9;">Test your vocabulary knowledge</p>
+                </div>
+                
+                <div id="startScreen" style="text-align: center; padding: 60px 30px;">
+                    <h2 style="font-size: 2.2em; margin-bottom: 20px; color: #2c3e50;">Vocabulary Meaning Challenge</h2>
+                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">A 25-question quiz to test your understanding of English vocabulary by matching words to their Spanish translations.</p>
+                    <button class="start-btn" onclick="startVocabularyQuiz()">Start Quiz 🧠</button>
+                </div>
+
+                <div id="quizScreen" style="display: none;">
+                    <div style="padding: 20px 30px; background: #f8f9fa;">
+                        <div style="width: 100%; height: 10px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
+                            <div style="height: 100%; background: linear-gradient(90deg, #89f7fe, #66a6ff); width: 0%; transition: width 0.3s ease; border-radius: 10px;" id="progressFill"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 25</div>
+                    </div>
+                    
+                    <div style="padding: 40px 30px; min-height: 400px;">
+                        <div style="font-size: 1.4em; margin-bottom: 30px; color: #2c3e50; line-height: 1.4; font-weight: 600;" id="questionText"></div>
+                        <div style="font-size: 1.1em; color: #7f8c8d; margin-bottom: 30px; font-style: italic;" id="translationText"></div>
+                        <div style="display: grid; gap: 15px; margin-bottom: 30px;" id="optionsContainer"></div>
+                    </div>
+                    
+                    <div style="padding: 30px; background: #f8f9fa; display: flex; justify-content: space-between; align-items: center;">
+                        <button class="start-btn" id="prevBtn" onclick="previousQuestion()" disabled style="opacity: 0.5;">← Previous</button>
+                        <button class="start-btn" id="nextBtn" onclick="nextQuestion()" disabled style="opacity: 0.5;">Next →</button>
+                    </div>
+                </div>
+
+                <div id="resultsScreen" style="display: none; text-align: center; padding: 40px 30px;">
+                    <h2 style="font-size: 2.5em; margin-bottom: 20px; color: #2c3e50;">🎉 Quiz Complete!</h2>
+                    <div style="font-size: 3em; font-weight: bold; margin: 30px 0; background: linear-gradient(135deg, #89f7fe, #66a6ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="finalScore"></div>
+                    <div style="font-size: 1.3em; margin-bottom: 30px; color: #495057;" id="scoreMessage"></div>
+                    <button class="start-btn" onclick="downloadResults()" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-top: 20px;">📥 Download Results</button>
+                    <button class="start-btn" onclick="restartQuiz()" style="margin-left: 15px;">🔄 Try Again</button>
+                </div>
+
+                <canvas id="downloadCanvas" style="display: none;"></canvas>
+            `;
+        }
+
         function loadGrammarStudy() {
             const quizContainer = document.getElementById('quizContainer');
             quizContainer.innerHTML = `
@@ -796,6 +1045,14 @@
 
         function startComprehensiveQuiz() {
             currentQuestions = comprehensiveQuestions;
+            currentQuestion = 0;
+            selectedAnswers = [];
+            score = 0;
+            startQuizGame();
+        }
+
+        function startVocabularyQuiz() {
+            currentQuestions = generateVocabularyQuestions(25);
             currentQuestion = 0;
             selectedAnswers = [];
             score = 0;
