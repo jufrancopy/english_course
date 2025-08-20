@@ -84,6 +84,10 @@
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
         }
 
+        .quiz-option.grammar {
+            background: linear-gradient(135deg, #c2e9fb 0%, #a1c4fd 100%);
+        }
+
         .quiz-option::before {
             content: '';
             position: absolute;
@@ -217,6 +221,11 @@
         .difficulty-badge.advanced {
             background: #f8d7da;
             color: #721c24;
+        }
+
+        .difficulty-badge.educational {
+            background: #cce5ff;
+            color: #004085;
         }
 
         .footer {
@@ -428,6 +437,42 @@
 
                     <button class="start-btn">Start Comprehensive Quiz 📚</button>
                 </div>
+
+                <!-- Grammar Playground Option -->
+                <div class="quiz-option grammar" onclick="window.location.href='grammar.html'">
+                    <div class="difficulty-badge educational">Interactive</div>
+                    <div class="quiz-icon">📚</div>
+                    <h2 class="quiz-title">Grammar Playground</h2>
+                    <p class="quiz-description">Learn English grammar interactively with visual explanations, examples, and practice exercises. Perfect for understanding the "why" behind the rules!</p>
+                    
+                    <div class="quiz-stats">
+                        <div class="stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Topics</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Practice</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">Visual</div>
+                            <div class="stat-label">Learning</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-features">
+                        <ul>
+                            <li>Interactive grammar rules</li>
+                            <li>Visual explanations with diagrams</li>
+                            <li>Real-time practice exercises</li>
+                            <li>Progress tracking</li>
+                            <li>Spanish explanations included</li>
+                            <li>Gamified learning experience</li>
+                        </ul>
+                    </div>
+
+                    <button class="start-btn">Explore Grammar 🎨</button>
+                </div>
             </div>
         </div>
 
@@ -469,6 +514,109 @@
     </div>
 
     <script>
+        // Quiz data
+        const quickQuestions = [
+            { question: "Where is your appointment?", translation: "¿Dónde es tu cita?", options: ["At the hospital", "At the bank", "At the doctor's office", "At home"], correct: 2 },
+            { question: "Does Joe guarantee the work?", translation: "¿Garantiza Joe el trabajo?", options: ["Yes, he promises quality", "No, he doesn't care", "Maybe sometimes", "I don't know Joe"], correct: 0 },
+            { question: "Bob, you're coughing a lot. What's wrong?", translation: "Bob, estás tosiendo mucho. ¿Qué pasa?", options: ["I'm fine", "I know, I have a sore throat", "Nothing wrong", "I'm happy"], correct: 1 },
+            { question: "Which intersection is it?", translation: "¿Cuál es la intersección?", options: ["It's 1st and Oak", "It's 4th Street and Main Street", "It's downtown", "It's far away"], correct: 1 },
+            { question: "It's very noisy here. What do you think?", translation: "Aquí hay mucho ruido. ¿Qué piensas?", options: ["It's quiet", "I know. I can't hear the waiter", "It's perfect", "I love it"], correct: 1 },
+            { question: "_____ in the US before?", translation: "¿_____ en los Estados Unidos antes?", options: ["Did you go", "Have you been", "Are you going", "Will you go"], correct: 1 },
+            { question: "We _____ two weeks of our vacation in Spain.", translation: "Nosotros _____ dos semanas de nuestras vacaciones en España.", options: ["go", "went", "going", "spent"], correct: 3 },
+            { question: "Bill: _____ do we have to wait for the bus? Tim: Just a few minutes.", translation: "Bill: ¿_____ tenemos que esperar el autobús? Tim: Solo unos minutos.", options: ["How long", "How far", "How much", "How many"], correct: 0 },
+            { question: "It's noon, but Tom is asleep. He ______ all morning.", translation: "Es mediodía, pero Tom está dormido. Él ______ toda la mañana.", options: ["has been sleeping", "is sleeping", "sleeps", "will sleep"], correct: 0 },
+            { question: "We ______ finish our homework because we got home late.", translation: "No ______ terminar nuestra tarea porque llegamos tarde.", options: ["mustn't", "wouldn't", "shouldn't", "couldn't"], correct: 3 },
+            { question: "Don't ________ when you see a police car.", translation: "No ________ cuando veas un auto de policía.", options: ["tune up", "call back", "speed up", "give back"], correct: 2 },
+            { question: "This is the school ________ has small classes.", translation: "Esta es la escuela ________ tiene clases pequeñas.", options: ["there", "who", "what", "which"], correct: 3 },
+            { question: "The new house was ______ expensive.", translation: "La casa nueva era ______ cara.", options: ["loudly", "rudely", "promptly", "terribly"], correct: 3 },
+            { question: "I need to lose weight ______ on the team.", translation: "Necesito perder peso ______ en el equipo.", options: ["be", "been", "will be", "to be"], correct: 3 },
+            { question: "Drivers should keep both hands on the ______.", translation: "Los conductores deben mantener ambas manos en el ______.", options: ["motor", "lane", "steering wheel", "lug nut"], correct: 2 },
+            { question: "This glass is ______ small. I need a bigger one.", translation: "Este vaso está ______ pequeño. Necesito uno más grande.", options: ["anymore", "more", "then", "too"], correct: 3 },
+            { question: "Ocean water is very ______.", translation: "El agua del océano es muy ______.", options: ["salty", "sweet", "bitter", "sour"], correct: 0 },
+            { question: "There isn't ______ to answer the phone right now.", translation: "No hay ______ para contestar el teléfono ahora.", options: ["someone", "anyone", "everyone", "no one"], correct: 1 },
+            { question: "What kind of work does an instructor do?", translation: "¿Qué tipo de trabajo hace un instructor?", options: ["He fixes cars", "He teaches classes", "He sells food", "He cleans buildings"], correct: 1 },
+            { question: "Did Tim eat lamb for dinner?", translation: "¿Tim comió cordero en la cena?", options: ["No, he hated it", "Yes, he loved it", "He ate chicken", "He didn't eat"], correct: 1 },
+            { question: "Should I make a turn?", translation: "¿Debo dar una vuelta?", options: ["Yes, turn left", "No, you must go straight", "Turn around", "Stop the car"], correct: 1 },
+            { question: "Was the food greasy?", translation: "¿Estaba grasosa la comida?", options: ["No, it was healthy", "Yes, the french fries were", "It was delicious", "I didn't try it"], correct: 1 },
+            { question: "My family likes to watch TV for ______.", translation: "A mi familia le gusta ver TV para ______.", options: ["intersection", "entertainment", "examination", "emergency"], correct: 1 },
+            { question: "Bill: How fast were you driving? Tim: ________.", translation: "Bill: ¿Qué tan rápido manejabas? Tim: ________.", options: ["45 minutes", "45 inches long", "45 miles per hour", "A speed limit of 45"], correct: 2 },
+            { question: "Ted always drives cautiously. He drives ______.", translation: "Ted siempre maneja cautelosamente. Él maneja ______.", options: ["fast", "slowly", "carefully", "quickly"], correct: 2 }
+        ];
+
+        const comprehensiveQuestions = [
+            { question: "Where is your appointment?", translation: "¿Dónde es tu cita?", options: ["At the hospital", "At the bank", "At the doctor's office", "At home"], correct: 2 },
+            { question: "Use caution when you walk on snow.", translation: "Ten cuidado cuando camines en la nieve.", options: ["I will run fast", "I will be careful", "I don't like snow", "I never walk outside"], correct: 1 },
+            { question: "Does Joe guarantee the work?", translation: "¿Garantiza Joe el trabajo?", options: ["Yes, he promises quality", "No, he doesn't care", "Maybe sometimes", "I don't know Joe"], correct: 0 },
+            { question: "Did you like the new show?", translation: "¿Te gustó el nuevo programa?", options: ["It was boring", "Yes, it was entertaining", "I didn't watch it", "What show?"], correct: 1 },
+            { question: "Bob, you're coughing a lot. What's wrong?", translation: "Bob, estás tosiendo mucho. ¿Qué pasa?", options: ["I'm fine", "I know, I have a sore throat", "Nothing wrong", "I'm happy"], correct: 1 },
+            { question: "Which intersection is it?", translation: "¿Cuál es la intersección?", options: ["It's 1st and Oak", "It's 4th Street and Main Street", "It's downtown", "It's far away"], correct: 1 },
+            { question: "It's very noisy here. What do you think?", translation: "Aquí hay mucho ruido. ¿Qué piensas?", options: ["It's quiet", "I know. I can't hear the waiter", "It's perfect", "I love it"], correct: 1 },
+            { question: "Was it frightening?", translation: "¿Fue aterrador?", options: ["No, it was fun", "Yes, the children were afraid", "It was boring", "I don't remember"], correct: 1 },
+            { question: "Who gave you the exam?", translation: "¿Quién te hizo el examen?", options: ["My teacher did", "It was the doctor", "Nobody did", "I gave it to myself"], correct: 1 },
+            { question: "What kind of work does an instructor do?", translation: "¿Qué tipo de trabajo hace un instructor?", options: ["He fixes cars", "He teaches classes", "He sells food", "He cleans buildings"], correct: 1 },
+            { question: "What's the oil for?", translation: "¿Para qué es el aceite?", options: ["It's for cooking", "It's for my car", "It's for cleaning", "It's for painting"], correct: 1 },
+            { question: "Did Tim eat lamb for dinner?", translation: "¿Tim comió cordero en la cena?", options: ["No, he hated it", "Yes, he loved it", "He ate chicken", "He didn't eat"], correct: 1 },
+            { question: "Do you take an annual trip?", translation: "¿Haces un viaje anual?", options: ["No, never", "Yes, we take one every year", "Sometimes", "I don't like traveling"], correct: 1 },
+            { question: "Should I make a turn?", translation: "¿Debo dar una vuelta?", options: ["Yes, turn left", "No, you must go straight", "Turn around", "Stop the car"], correct: 1 },
+            { question: "Was the food greasy?", translation: "¿Estaba grasosa la comida?", options: ["No, it was healthy", "Yes, the french fries were", "It was delicious", "I didn't try it"], correct: 1 },
+            { question: "Were the sales people rude?", translation: "¿Eran groseros los vendedores?", options: ["Yes, very rude", "No, they were very nice", "They ignored me", "I didn't talk to them"], correct: 1 },
+            { question: "Does Johnny have a runny nose?", translation: "¿Tiene Johnny moqueo nasal?", options: ["No, he's fine", "Yes, he is very sick", "He has a fever", "I don't know Johnny"], correct: 1 },
+            { question: "The driver saw children in the street. What did he do?", translation: "El conductor vio a unos niños en la calle. ¿Qué hizo?", options: ["He honked the horn", "He had to slow down", "He stopped immediately", "He called the police"], correct: 1 },
+            { question: "I need a tune-up. What should I do?", translation: "Necesito una puesta a punto. ¿Qué debo hacer?", options: ["Go to the hospital", "You should talk to a mechanic", "Call your friend", "Do it yourself"], correct: 1 },
+            { question: "I have an ache in my side. Can you help?", translation: "Tengo un dolor en mi costado. ¿Puedes ayudar?", options: ["Take some medicine", "Can you show me where it hurts?", "It's not serious", "Go to sleep"], correct: 1 },
+            { question: "_____ in the US before?", translation: "¿_____ en los Estados Unidos antes?", options: ["Did you go", "Have you been", "Are you going", "Will you go"], correct: 1 },
+            { question: "We _____ two weeks of our vacation in Spain.", translation: "Nosotros _____ dos semanas de nuestras vacaciones en España.", options: ["go", "went", "going", "spent"], correct: 3 },
+            { question: "John ________ a vacation for three years.", translation: "John no ________ vacaciones por tres años.", options: ["doesn't have", "hasn't", "hasn't had", "doesn't have to have"], correct: 2 },
+            { question: "Let's go to the mall. We ______ there for three weeks.", translation: "Vamos al centro comercial. No ______ allí por tres semanas.", options: ["didn't go", "don't go", "haven't been", "won't go"], correct: 2 },
+            { question: "The mechanic ______ since 8 a.m.", translation: "El mecánico ______ desde las 8 a.m.", options: ["has been working", "is working", "works", "worked"], correct: 0 },
+            { question: "Tim ______ any money since he bought that car.", translation: "Tim no ______ dinero desde que compró ese auto.", options: ["doesn't have", "didn't have", "won't have", "hasn't had"], correct: 3 },
+            { question: "It's noon, but Tom is asleep. He ______ all morning.", translation: "Es mediodía, pero Tom está dormido. Él ______ toda la mañana.", options: ["has been sleeping", "is sleeping", "sleeps", "will sleep"], correct: 0 },
+            { question: "We ______ finish any of our homework because we got home late.", translation: "No ______ terminar nuestra tarea porque llegamos tarde a casa.", options: ["mustn't", "wouldn't", "shouldn't", "couldn't"], correct: 3 },
+            { question: "Jim ______ read the letter yesterday because it was in Spanish.", translation: "Jim no ______ leer la carta ayer porque estaba en español.", options: ["couldn't", "wouldn't", "shouldn't", "mustn't"], correct: 0 },
+            { question: "You worked on my car, but the engine is still noisy. What can you do?", translation: "Trabajaste en mi auto, pero el motor todavía hace ruido. ¿Qué puedes hacer?", options: ["Sorry, can't help", "Bring it in this afternoon and I will try to fix it", "Buy a new car", "It's not my problem"], correct: 1 },
+            { question: "Bill: _____ do we have to wait for the bus? Tim: Just a few minutes.", translation: "Bill: ¿_____ tenemos que esperar el autobús? Tim: Solo unos minutos.", options: ["How long", "How far", "How much", "How many"], correct: 0 },
+            { question: "Bill: _____ will you be in France? Tim: Two weeks.", translation: "Bill: ¿_____ estarás en Francia? Tim: Dos semanas.", options: ["How long", "How far", "How much", "How often"], correct: 0 },
+            { question: "Bill: How fast were you driving? Tim: ________.", translation: "Bill: ¿Qué tan rápido estabas manejando? Tim: ________.", options: ["45 minutes", "45 inches long", "45 miles per hour", "A speed limit of 45"], correct: 2 },
+            { question: "Don't ________ when you see a police car.", translation: "No ________ cuando veas un auto de policía.", options: ["tune up", "call back", "speed up", "give back"], correct: 2 },
+            { question: "Jim always warms up his car ______.", translation: "Jim siempre calienta su auto ______.", options: ["when he turns", "after he parks", "when he washes it", "before he drives it"], correct: 3 },
+            { question: "Why should we use a pedestrian crossing?", translation: "¿Por qué deberíamos usar un paso de peatones?", options: ["It's faster", "We can safely get to the other side of the road", "It's required by law", "Cars like it"], correct: 1 },
+            { question: "This is the school ________ has small classes.", translation: "Esta es la escuela ________ tiene clases pequeñas.", options: ["there", "who", "what", "which"], correct: 3 },
+            { question: "That man is the secretary ______ helped me.", translation: "Ese hombre es el secretario ______ me ayudó.", options: ["which", "who", "what", "where"], correct: 1 },
+            { question: "The new house was ______ expensive.", translation: "La casa nueva era ______ cara.", options: ["loudly", "rudely", "promptly", "terribly"], correct: 3 },
+            { question: "Mr. Collins is ______ old to be in the military.", translation: "El Sr. Collins es ______ viejo para estar en el ejército.", options: ["very", "much", "more", "too"], correct: 3 },
+            { question: "This glass is ______ small. I need a bigger one.", translation: "Este vaso está ______ pequeño. Necesito uno más grande.", options: ["anymore", "more", "then", "too"], correct: 3 },
+            { question: "Ted always drives cautiously. He always drives ______.", translation: "Ted siempre maneja cautelosamente. Él siempre maneja ______.", options: ["fast", "slowly", "carefully", "quickly"], correct: 2 },
+            { question: "I need to lose weight ______ on the team.", translation: "Necesito perder peso ______ en el equipo.", options: ["be", "been", "will be", "to be"], correct: 3 },
+            { question: "What do you ______ to do after you graduate?", translation: "¿Qué ______ hacer después de graduarte?", options: ["want", "like", "intend", "need"], correct: 2 },
+            { question: "I'm going to New York ______ my grandparents.", translation: "Voy a Nueva York ______ a mis abuelos.", options: ["see", "seeing", "to visit", "visit"], correct: 2 },
+            { question: "The doctor isn't in. He's ______.", translation: "El doctor no está. Él está ______.", options: ["sleeping", "at lunch", "sick", "busy"], correct: 1 },
+            { question: "Bob will have a physical at the ______.", translation: "Bob tendrá un examen físico en ______.", options: ["doctor's office", "garage", "restaurant", "post office"], correct: 0 },
+            { question: "My ______ is full. I can't eat any more.", translation: "Mi ______ está lleno. No puedo comer más.", options: ["stomach", "back", "chest", "tongue"], correct: 0 },
+            { question: "I need to make an appointment with Dr. Jones. Can you help?", translation: "Necesito agendar una cita con el Doctor Jones. ¿Puedes ayudar?", options: ["He's not available", "Certainly, what day can you come in?", "Call tomorrow", "I don't know"], correct: 1 },
+            { question: "Drivers should keep both hands on the ______.", translation: "Los conductores deben mantener ambas manos en el ______.", options: ["motor", "lane", "steering wheel", "lug nut"], correct: 2 },
+            { question: "The ______ is working on the motor.", translation: "El ______ está trabajando en el motor.", options: ["doctor", "mechanic", "teacher", "waiter"], correct: 1 },
+            { question: "Mary didn't ______ a pilot because her eyes were bad.", translation: "Mary no ______ piloto porque sus ojos estaban mal.", options: ["become", "serve", "connect", "get"], correct: 0 },
+            { question: "Jane ______ a mechanic because she likes to work on cars.", translation: "Jane ______ mecánica porque le gusta trabajar en autos.", options: ["wants", "likes", "became", "studies"], correct: 2 },
+            { question: "Ocean water is very ______.", translation: "El agua del océano es muy ______.", options: ["salty", "sweet", "bitter", "sour"], correct: 0 },
+            { question: "I put a lot of water in the soup, and now it is ______.", translation: "Puse mucha agua en la sopa, y ahora está ______.", options: ["water", "very water", "much water", "watery"], correct: 3 },
+            { question: "What do you think of the restaurant?", translation: "¿Qué te pareció el restaurante?", options: ["It was expensive", "I liked it. The food and service were great", "I didn't go", "It was closed"], correct: 1 },
+            { question: "My family likes to watch TV for ______.", translation: "A mi familia le gusta ver TV para ______.", options: ["intersection", "entertainment", "examination", "emergency"], correct: 1 },
+            { question: "Our lunch break is ______ 11:45 to 12:30.", translation: "Nuestro descanso de almuerzo es ______ 11:45 a 12:30.", options: ["before", "from", "after", "until"], correct: 1 },
+            { question: "The number 3 comes ______ the number 2.", translation: "El número 3 viene ______ el número 2.", options: ["before", "after", "with", "without"], correct: 1 },
+            { question: "There isn't ______ to answer the phone right now.", translation: "No hay ______ para contestar el teléfono ahora mismo.", options: ["someone", "anyone", "everyone", "no one"], correct: 1 },
+            { question: "Martha doesn't like ______ to touch her things.", translation: "A Martha no le gusta que ______ toque sus cosas.", options: ["anyone", "someone", "no one", "nobody"], correct: 0 },
+            { question: "There are a lot of pedestrians downtown. People like to ______ there.", translation: "Hay muchos peatones en el centro. A la gente le gusta ______ allí.", options: ["drive", "run", "shop", "walk"], correct: 3 },
+            { question: "Bill: Do you frequently go to restaurants? Tim: Yes, we ______ go.", translation: "Bill: ¿Van frecuentemente a restaurantes? Tim: Sí, ______ vamos.", options: ["never", "rarely", "sometimes", "often"], correct: 3 },
+            { question: "Carol had a backache because she ______.", translation: "Carol tenía dolor de espalda porque ella ______.", options: ["worked all day", "slept well", "exercised lightly", "rested enough"], correct: 0 },
+            { question: "Bob wasn't relaxed because he was ______.", translation: "Bob no estaba relajado porque estaba ______.", options: ["sleeping", "eating", "taking a test", "watching TV"], correct: 2 }
+        ];
+
+        // Global variables
+        let currentQuestions = [];
+        let currentQuestion = 0;
+        let selectedAnswers = [];
+        let score = 0;
+
         function startQuiz(type) {
             // Show loading screen
             document.getElementById('selectionScreen').style.display = 'none';
@@ -481,8 +629,10 @@
                 
                 if (type === 'quick') {
                     loadQuickQuiz();
-                } else {
+                } else if (type === 'comprehensive') {
                     loadComprehensiveQuiz();
+                } else if (type === 'grammar') {
+                    loadGrammarStudy();
                 }
             }, 1500);
         }
@@ -584,109 +734,22 @@
             `;
         }
 
-        // Quick Quiz Data and Functions
-        const quickQuestions = [
-            { question: "Where is your appointment?", translation: "¿Dónde es tu cita?", options: ["At the hospital", "At the bank", "At the doctor's office", "At home"], correct: 2 },
-            { question: "Does Joe guarantee the work?", translation: "¿Garantiza Joe el trabajo?", options: ["Yes, he promises quality", "No, he doesn't care", "Maybe sometimes", "I don't know Joe"], correct: 0 },
-            { question: "Bob, you're coughing a lot. What's wrong?", translation: "Bob, estás tosiendo mucho. ¿Qué pasa?", options: ["I'm fine", "I know, I have a sore throat", "Nothing wrong", "I'm happy"], correct: 1 },
-            { question: "Which intersection is it?", translation: "¿Cuál es la intersección?", options: ["It's 1st and Oak", "It's 4th Street and Main Street", "It's downtown", "It's far away"], correct: 1 },
-            { question: "It's very noisy here. What do you think?", translation: "Aquí hay mucho ruido. ¿Qué piensas?", options: ["It's quiet", "I know. I can't hear the waiter", "It's perfect", "I love it"], correct: 1 },
-            { question: "_____ in the US before?", translation: "¿_____ en los Estados Unidos antes?", options: ["Did you go", "Have you been", "Are you going", "Will you go"], correct: 1 },
-            { question: "We _____ two weeks of our vacation in Spain.", translation: "Nosotros _____ dos semanas de nuestras vacaciones en España.", options: ["go", "went", "going", "spent"], correct: 3 },
-            { question: "Bill: _____ do we have to wait for the bus? Tim: Just a few minutes.", translation: "Bill: ¿_____ tenemos que esperar el autobús? Tim: Solo unos minutos.", options: ["How long", "How far", "How much", "How many"], correct: 0 },
-            { question: "It's noon, but Tom is asleep. He ______ all morning.", translation: "Es mediodía, pero Tom está dormido. Él ______ toda la mañana.", options: ["has been sleeping", "is sleeping", "sleeps", "will sleep"], correct: 0 },
-            { question: "We ______ finish our homework because we got home late.", translation: "No ______ terminar nuestra tarea porque llegamos tarde.", options: ["mustn't", "wouldn't", "shouldn't", "couldn't"], correct: 3 },
-            { question: "Don't ________ when you see a police car.", translation: "No ________ cuando veas un auto de policía.", options: ["tune up", "call back", "speed up", "give back"], correct: 2 },
-            { question: "This is the school ________ has small classes.", translation: "Esta es la escuela ________ tiene clases pequeñas.", options: ["there", "who", "what", "which"], correct: 3 },
-            { question: "The new house was ______ expensive.", translation: "La casa nueva era ______ cara.", options: ["loudly", "rudely", "promptly", "terribly"], correct: 3 },
-            { question: "I need to lose weight ______ on the team.", translation: "Necesito perder peso ______ en el equipo.", options: ["be", "been", "will be", "to be"], correct: 3 },
-            { question: "Drivers should keep both hands on the ______.", translation: "Los conductores deben mantener ambas manos en el ______.", options: ["motor", "lane", "steering wheel", "lug nut"], correct: 2 },
-            { question: "This glass is ______ small. I need a bigger one.", translation: "Este vaso está ______ pequeño. Necesito uno más grande.", options: ["anymore", "more", "then", "too"], correct: 3 },
-            { question: "Ocean water is very ______.", translation: "El agua del océano es muy ______.", options: ["salty", "sweet", "bitter", "sour"], correct: 0 },
-            { question: "There isn't ______ to answer the phone right now.", translation: "No hay ______ para contestar el teléfono ahora.", options: ["someone", "anyone", "everyone", "no one"], correct: 1 },
-            { question: "What kind of work does an instructor do?", translation: "¿Qué tipo de trabajo hace un instructor?", options: ["He fixes cars", "He teaches classes", "He sells food", "He cleans buildings"], correct: 1 },
-            { question: "Did Tim eat lamb for dinner?", translation: "¿Tim comió cordero en la cena?", options: ["No, he hated it", "Yes, he loved it", "He ate chicken", "He didn't eat"], correct: 1 },
-            { question: "Should I make a turn?", translation: "¿Debo dar una vuelta?", options: ["Yes, turn left", "No, you must go straight", "Turn around", "Stop the car"], correct: 1 },
-            { question: "Was the food greasy?", translation: "¿Estaba grasosa la comida?", options: ["No, it was healthy", "Yes, the french fries were", "It was delicious", "I didn't try it"], correct: 1 },
-            { question: "My family likes to watch TV for ______.", translation: "A mi familia le gusta ver TV para ______.", options: ["intersection", "entertainment", "examination", "emergency"], correct: 1 },
-            { question: "Bill: How fast were you driving? Tim: ________.", translation: "Bill: ¿Qué tan rápido manejabas? Tim: ________.", options: ["45 minutes", "45 inches long", "45 miles per hour", "A speed limit of 45"], correct: 2 },
-            { question: "Ted always drives cautiously. He drives ______.", translation: "Ted siempre maneja cautelosamente. Él maneja ______.", options: ["fast", "slowly", "carefully", "quickly"], correct: 2 }
-        ];
-
-        // Comprehensive Quiz Data
-        const comprehensiveQuestions = [
-            { question: "Where is your appointment?", translation: "¿Dónde es tu cita?", options: ["At the hospital", "At the bank", "At the doctor's office", "At home"], correct: 2 },
-            { question: "Use caution when you walk on snow.", translation: "Ten cuidado cuando camines en la nieve.", options: ["I will run fast", "I will be careful", "I don't like snow", "I never walk outside"], correct: 1 },
-            { question: "Does Joe guarantee the work?", translation: "¿Garantiza Joe el trabajo?", options: ["Yes, he promises quality", "No, he doesn't care", "Maybe sometimes", "I don't know Joe"], correct: 0 },
-            { question: "Did you like the new show?", translation: "¿Te gustó el nuevo programa?", options: ["It was boring", "Yes, it was entertaining", "I didn't watch it", "What show?"], correct: 1 },
-            { question: "Bob, you're coughing a lot. What's wrong?", translation: "Bob, estás tosiendo mucho. ¿Qué pasa?", options: ["I'm fine", "I know, I have a sore throat", "Nothing wrong", "I'm happy"], correct: 1 },
-            { question: "Which intersection is it?", translation: "¿Cuál es la intersección?", options: ["It's 1st and Oak", "It's 4th Street and Main Street", "It's downtown", "It's far away"], correct: 1 },
-            { question: "It's very noisy here. What do you think?", translation: "Aquí hay mucho ruido. ¿Qué piensas?", options: ["It's quiet", "I know. I can't hear the waiter", "It's perfect", "I love it"], correct: 1 },
-            { question: "Was it frightening?", translation: "¿Fue aterrador?", options: ["No, it was fun", "Yes, the children were afraid", "It was boring", "I don't remember"], correct: 1 },
-            { question: "Who gave you the exam?", translation: "¿Quién te hizo el examen?", options: ["My teacher did", "It was the doctor", "Nobody did", "I gave it to myself"], correct: 1 },
-            { question: "What kind of work does an instructor do?", translation: "¿Qué tipo de trabajo hace un instructor?", options: ["He fixes cars", "He teaches classes", "He sells food", "He cleans buildings"], correct: 1 },
-            { question: "What's the oil for?", translation: "¿Para qué es el aceite?", options: ["It's for cooking", "It's for my car", "It's for cleaning", "It's for painting"], correct: 1 },
-            { question: "Did Tim eat lamb for dinner?", translation: "¿Tim comió cordero en la cena?", options: ["No, he hated it", "Yes, he loved it", "He ate chicken", "He didn't eat"], correct: 1 },
-            { question: "Do you take an annual trip?", translation: "¿Haces un viaje anual?", options: ["No, never", "Yes, we take one every year", "Sometimes", "I don't like traveling"], correct: 1 },
-            { question: "Should I make a turn?", translation: "¿Debo dar una vuelta?", options: ["Yes, turn left", "No, you must go straight", "Turn around", "Stop the car"], correct: 1 },
-            { question: "Was the food greasy?", translation: "¿Estaba grasosa la comida?", options: ["No, it was healthy", "Yes, the french fries were", "It was delicious", "I didn't try it"], correct: 1 },
-            { question: "Were the sales people rude?", translation: "¿Eran groseros los vendedores?", options: ["Yes, very rude", "No, they were very nice", "They ignored me", "I didn't talk to them"], correct: 1 },
-            { question: "Does Johnny have a runny nose?", translation: "¿Tiene Johnny moqueo nasal?", options: ["No, he's fine", "Yes, he is very sick", "He has a fever", "I don't know Johnny"], correct: 1 },
-            { question: "The driver saw children in the street. What did he do?", translation: "El conductor vio a unos niños en la calle. ¿Qué hizo?", options: ["He honked the horn", "He had to slow down", "He stopped immediately", "He called the police"], correct: 1 },
-            { question: "I need a tune-up. What should I do?", translation: "Necesito una puesta a punto. ¿Qué debo hacer?", options: ["Go to the hospital", "You should talk to a mechanic", "Call your friend", "Do it yourself"], correct: 1 },
-            { question: "I have an ache in my side. Can you help?", translation: "Tengo un dolor en mi costado. ¿Puedes ayudar?", options: ["Take some medicine", "Can you show me where it hurts?", "It's not serious", "Go to sleep"], correct: 1 },
-            { question: "_____ in the US before?", translation: "¿_____ en los Estados Unidos antes?", options: ["Did you go", "Have you been", "Are you going", "Will you go"], correct: 1 },
-            { question: "We _____ two weeks of our vacation in Spain.", translation: "Nosotros _____ dos semanas de nuestras vacaciones en España.", options: ["go", "went", "going", "spent"], correct: 3 },
-            { question: "John ________ a vacation for three years.", translation: "John no ________ vacaciones por tres años.", options: ["doesn't have", "hasn't", "hasn't had", "doesn't have to have"], correct: 2 },
-            { question: "Let's go to the mall. We ______ there for three weeks.", translation: "Vamos al centro comercial. No ______ allí por tres semanas.", options: ["didn't go", "don't go", "haven't been", "won't go"], correct: 2 },
-            { question: "The mechanic ______ since 8 a.m.", translation: "El mecánico ______ desde las 8 a.m.", options: ["has been working", "is working", "works", "worked"], correct: 0 },
-            { question: "Tim ______ any money since he bought that car.", translation: "Tim no ______ dinero desde que compró ese auto.", options: ["doesn't have", "didn't have", "won't have", "hasn't had"], correct: 3 },
-            { question: "It's noon, but Tom is asleep. He ______ all morning.", translation: "Es mediodía, pero Tom está dormido. Él ______ toda la mañana.", options: ["has been sleeping", "is sleeping", "sleeps", "will sleep"], correct: 0 },
-            { question: "We ______ finish any of our homework because we got home late.", translation: "No ______ terminar nuestra tarea porque llegamos tarde a casa.", options: ["mustn't", "wouldn't", "shouldn't", "couldn't"], correct: 3 },
-            { question: "Jim ______ read the letter yesterday because it was in Spanish.", translation: "Jim no ______ leer la carta ayer porque estaba en español.", options: ["couldn't", "wouldn't", "shouldn't", "mustn't"], correct: 0 },
-            { question: "You worked on my car, but the engine is still noisy. What can you do?", translation: "Trabajaste en mi auto, pero el motor todavía hace ruido. ¿Qué puedes hacer?", options: ["Sorry, can't help", "Bring it in this afternoon and I will try to fix it", "Buy a new car", "It's not my problem"], correct: 1 },
-            { question: "Bill: _____ do we have to wait for the bus? Tim: Just a few minutes.", translation: "Bill: ¿_____ tenemos que esperar el autobús? Tim: Solo unos minutos.", options: ["How long", "How far", "How much", "How many"], correct: 0 },
-            { question: "Bill: _____ will you be in France? Tim: Two weeks.", translation: "Bill: ¿_____ estarás en Francia? Tim: Dos semanas.", options: ["How long", "How far", "How much", "How often"], correct: 0 },
-            { question: "Bill: How fast were you driving? Tim: ________.", translation: "Bill: ¿Qué tan rápido estabas manejando? Tim: ________.", options: ["45 minutes", "45 inches long", "45 miles per hour", "A speed limit of 45"], correct: 2 },
-            { question: "Don't ________ when you see a police car.", translation: "No ________ cuando veas un auto de policía.", options: ["tune up", "call back", "speed up", "give back"], correct: 2 },
-            { question: "Jim always warms up his car ______.", translation: "Jim siempre calienta su auto ______.", options: ["when he turns", "after he parks", "when he washes it", "before he drives it"], correct: 3 },
-            { question: "Why should we use a pedestrian crossing?", translation: "¿Por qué deberíamos usar un paso de peatones?", options: ["It's faster", "We can safely get to the other side of the road", "It's required by law", "Cars like it"], correct: 1 },
-            { question: "This is the school ________ has small classes.", translation: "Esta es la escuela ________ tiene clases pequeñas.", options: ["there", "who", "what", "which"], correct: 3 },
-            { question: "That man is the secretary ______ helped me.", translation: "Ese hombre es el secretario ______ me ayudó.", options: ["which", "who", "what", "where"], correct: 1 },
-            { question: "The new house was ______ expensive.", translation: "La casa nueva era ______ cara.", options: ["loudly", "rudely", "promptly", "terribly"], correct: 3 },
-            { question: "Mr. Collins is ______ old to be in the military.", translation: "El Sr. Collins es ______ viejo para estar en el ejército.", options: ["very", "much", "more", "too"], correct: 3 },
-            { question: "This glass is ______ small. I need a bigger one.", translation: "Este vaso está ______ pequeño. Necesito uno más grande.", options: ["anymore", "more", "then", "too"], correct: 3 },
-            { question: "Ted always drives cautiously. He always drives ______.", translation: "Ted siempre maneja cautelosamente. Él siempre maneja ______.", options: ["fast", "slowly", "carefully", "quickly"], correct: 2 },
-            { question: "I need to lose weight ______ on the team.", translation: "Necesito perder peso ______ en el equipo.", options: ["be", "been", "will be", "to be"], correct: 3 },
-            { question: "What do you ______ to do after you graduate?", translation: "¿Qué ______ hacer después de graduarte?", options: ["want", "like", "intend", "need"], correct: 2 },
-            { question: "I'm going to New York ______ my grandparents.", translation: "Voy a Nueva York ______ a mis abuelos.", options: ["see", "seeing", "to visit", "visit"], correct: 2 },
-            { question: "The doctor isn't in. He's ______.", translation: "El doctor no está. Él está ______.", options: ["sleeping", "at lunch", "sick", "busy"], correct: 1 },
-            { question: "Bob will have a physical at the ______.", translation: "Bob tendrá un examen físico en ______.", options: ["doctor's office", "garage", "restaurant", "post office"], correct: 0 },
-            { question: "My ______ is full. I can't eat any more.", translation: "Mi ______ está lleno. No puedo comer más.", options: ["stomach", "back", "chest", "tongue"], correct: 0 },
-            { question: "I need to make an appointment with Dr. Jones. Can you help?", translation: "Necesito agendar una cita con el Doctor Jones. ¿Puedes ayudar?", options: ["He's not available", "Certainly, what day can you come in?", "Call tomorrow", "I don't know"], correct: 1 },
-            { question: "Drivers should keep both hands on the ______.", translation: "Los conductores deben mantener ambas manos en el ______.", options: ["motor", "lane", "steering wheel", "lug nut"], correct: 2 },
-            { question: "The ______ is working on the motor.", translation: "El ______ está trabajando en el motor.", options: ["doctor", "mechanic", "teacher", "waiter"], correct: 1 },
-            { question: "Mary didn't ______ a pilot because her eyes were bad.", translation: "Mary no ______ piloto porque sus ojos estaban mal.", options: ["become", "serve", "connect", "get"], correct: 0 },
-            { question: "Jane ______ a mechanic because she likes to work on cars.", translation: "Jane ______ mecánica porque le gusta trabajar en autos.", options: ["wants", "likes", "became", "studies"], correct: 2 },
-            { question: "Ocean water is very ______.", translation: "El agua del océano es muy ______.", options: ["salty", "sweet", "bitter", "sour"], correct: 0 },
-            { question: "I put a lot of water in the soup, and now it is ______.", translation: "Puse mucha agua en la sopa, y ahora está ______.", options: ["water", "very water", "much water", "watery"], correct: 3 },
-            { question: "What do you think of the restaurant?", translation: "¿Qué te pareció el restaurante?", options: ["It was expensive", "I liked it. The food and service were great", "I didn't go", "It was closed"], correct: 1 },
-            { question: "My family likes to watch TV for ______.", translation: "A mi familia le gusta ver TV para ______.", options: ["intersection", "entertainment", "examination", "emergency"], correct: 1 },
-            { question: "Our lunch break is ______ 11:45 to 12:30.", translation: "Nuestro descanso de almuerzo es ______ 11:45 a 12:30.", options: ["before", "from", "after", "until"], correct: 1 },
-            { question: "The number 3 comes ______ the number 2.", translation: "El número 3 viene ______ el número 2.", options: ["before", "after", "with", "without"], correct: 1 },
-            { question: "There isn't ______ to answer the phone right now.", translation: "No hay ______ para contestar el teléfono ahora mismo.", options: ["someone", "anyone", "everyone", "no one"], correct: 1 },
-            { question: "Martha doesn't like ______ to touch her things.", translation: "A Martha no le gusta que ______ toque sus cosas.", options: ["anyone", "someone", "no one", "nobody"], correct: 0 },
-            { question: "There are a lot of pedestrians downtown. People like to ______ there.", translation: "Hay muchos peatones en el centro. A la gente le gusta ______ allí.", options: ["drive", "run", "shop", "walk"], correct: 3 },
-            { question: "Bill: Do you frequently go to restaurants? Tim: Yes, we ______ go.", translation: "Bill: ¿Van frecuentemente a restaurantes? Tim: Sí, ______ vamos.", options: ["never", "rarely", "sometimes", "often"], correct: 3 },
-            { question: "Carol had a backache because she ______.", translation: "Carol tenía dolor de espalda porque ella ______.", options: ["worked all day", "slept well", "exercised lightly", "rested enough"], correct: 0 },
-            { question: "Bob wasn't relaxed because he was ______.", translation: "Bob no estaba relajado porque estaba ______.", options: ["sleeping", "eating", "taking a test", "watching TV"], correct: 2 }
-        ];
-
-        // Quiz variables
-        let currentQuestions = [];
-        let currentQuestion = 0;
-        let selectedAnswers = [];
-        let score = 0;
+        function loadGrammarStudy() {
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = `
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px; text-align: center; color: white;">
+                    <h1 style="font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">📚 Grammar Playground</h1>
+                    <p style="font-size: 1.2em; opacity: 0.9;">Interactive English grammar learning</p>
+                </div>
+                
+                <div style="text-align: center; padding: 60px 30px;">
+                    <h2 style="font-size: 2.2em; margin-bottom: 20px; color: #2c3e50;">Grammar Learning Center</h2>
+                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">Explore English grammar interactively with visual explanations, examples, and practice exercises. Perfect for understanding the "why" behind the rules!</p>
+                    <p style="font-size: 1.1em; color: #495057; margin-bottom: 20px; font-style: italic;">This feature is coming soon! For now, try our Quick or Comprehensive quizzes.</p>
+                    <button class="start-btn" onclick="closeQuiz()">Return to Selection</button>
+                </div>
+            `;
+        }
 
         function startQuickQuiz() {
             currentQuestions = quickQuestions;
