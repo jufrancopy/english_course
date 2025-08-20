@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Playground - Interactive Learning</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            color: #333; 
+        }
+        .container { 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.95); 
+            min-height: 100vh; 
+            box-shadow: 0 0 40px rgba(0,0,0,0.1); 
+        }
+        .header { 
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+            color: white; 
+            padding: 30px; 
+            text-align: center; 
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .sidebar { 
+            position: fixed; 
+            left: 0; 
+            top: 120px; 
+            width: 300px; 
+            height: calc(100vh - 120px); 
+            background: #f8f9fa; 
+            border-right: 2px solid #e9ecef; 
+            overflow-y: auto; 
+            padding: 20px; 
+            z-index: 100; 
+        }
+        .main-content { 
+            margin-left: 320px; 
+            padding: 40px; 
+            min-height: calc(100vh - 160px); 
+        }
+        .topic-item { 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: white; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            border-left: 4px solid #4facfe; 
+        }
+        .topic-item:hover { background: #e3f2fd; transform: translateX(5px); }
+        .topic-item.active { background: #4facfe; color: white; }
+        .topic-title { font-weight: 600; margin-bottom: 5px; }
+        .topic-desc { font-size: 0.9em; color: #666; }
+        .topic-item.active .topic-desc { color: rgba(255,255,255,0.8); }
+        .lesson-content { display: none; }
+        .lesson-content.active { display: block; }
+        .lesson-header { 
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+        }
+        .lesson-title { font-size: 2.2em; color: #2c3e50; margin-bottom: 10px; }
+        .lesson-subtitle { font-size: 1.2em; color: #7f8c8d; }
+        .explanation-box { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin: 20px 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            border-left: 5px solid #4facfe; 
+        }
+        .example-box { 
+            background: #e8f5e8; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border-left: 4px solid #28a745; 
+        }
+        .practice-area { 
+            background: #fff3cd; 
+            padding: 25px; 
+            border-radius: 15px; 
+            margin: 20px 0; 
+            border-left: 5px solid #ffc107; 
+        }
+        .practice-question { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border: 2px solid #e9ecef; 
+        }
+        .practice-input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e9ecef; 
+            border-radius: 8px; 
+            font-size: 1.1em; 
+            margin: 10px 0; 
+        }
+        .practice-input:focus { border-color: #4facfe; outline: none; }
+        .check-btn { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            margin: 10px 5px; 
+        }
+        .check-btn:hover { background: #218838; }
+        .feedback { 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            font-weight: 600; 
+        }
+        .feedback.correct { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
+        .grammar-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: white; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        .grammar-table th { 
+            background: #4facfe; 
+            color: white; 
+            padding: 15px; 
+            text-align: left; 
+        }
+        .grammar-table td { 
+            padding: 15px; 
+            border-bottom: 1px solid #e9ecef; 
+        }
+        .grammar-table tr:hover { background: #f8f9fa; }
+        .visual-diagram { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            text-align: center; 
+            margin: 20px 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        .sentence-part { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            border-radius: 20px; 
+            color: white; 
+            font-weight: 600; 
+        }
+        .subject { background: #ff6b6b; }
+        .verb { background: #4ecdc4; }
+        .object { background: #45b7d1; }
+        .complement { background: #f7b731; }
+        .progress-indicator { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            background: #4facfe; 
+            color: white; 
+            padding: 15px 25px; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            z-index: 200; 
+        }
+        .mobile-toggle { display: none; }
+
+        .back-btn-flotante {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #ff6a88 0%, #ff99ac 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn-flotante:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar { 
+                transform: translateX(-100%); 
+                transition: transform 0.3s ease;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px; }
+            .mobile-toggle { 
+                display: block; 
+                position: fixed; 
+                top: 20px; 
+                left: 20px; 
+                background: #4facfe; 
+                color: white; 
+                border: none; 
+                padding: 10px 15px; 
+                border-radius: 5px; 
+                cursor: pointer; 
+                z-index: 300; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="test.html" class="back-btn-flotante">← Volver a los Quizzes</a>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Grammar Playground</h1>
+            <p>Learn English grammar interactively with visual explanations and practice!</p>
+        </div>
+
+        <button class="mobile-toggle" onclick="toggleSidebar()">☰ Topics</button>
+
+        <div class="sidebar" id="sidebar">
+            <div class="topic-item active" onclick="showLesson('present-simple')">
+                <div class="topic-title">Present Simple</div>
+                <div class="topic-desc">Basic present tense forms</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('present-continuous')">
+                <div class="topic-title">Present Continuous</div>
+                <div class="topic-desc">Actions happening now</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('past-simple')">
+                <div class="topic-title">Past Simple</div>
+                <div class="topic-desc">Completed actions</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('present-perfect')">
+                <div class="topic-title">Present Perfect</div>
+                <div class="topic-desc">Past actions with present relevance</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('future-tenses')">
+                <div class="topic-title">Future Tenses</div>
+                <div class="topic-desc">Plans and predictions</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('modal-verbs')">
+                <div class="topic-title">Modal Verbs</div>
+                <div class="topic-desc">Can, should, must, etc.</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('conditionals')">
+                <div class="topic-title">Conditionals</div>
+                <div class="topic-desc">If clauses and possibilities</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('passive-voice')">
+                <div class="topic-title">Passive Voice</div>
+                <div class="topic-desc">Focus on action, not doer</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('reported-speech')">
+                <div class="topic-title">Reported Speech</div>
+                <div class="topic-desc">Telling what others said</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('relative-clauses')">
+                <div class="topic-title">Relative Clauses</div>
+                <div class="topic-desc">Who, which, that, where</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('phrasal-verbs')">
+                <div class="topic-title">Phrasal Verbs</div>
+                <div class="topic-desc">Verbs with prepositions</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('articles')">
+                <div class="topic-title">Articles</div>
+                <div class="topic-desc">A, an, the usage</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('prepositions')">
+                <div class="topic-title">Prepositions</div>
+                <div class="topic-desc">In, on, at, by, etc.</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('question-formation')">
+                <div class="topic-title">Question Formation</div>
+                <div class="topic-desc">How to ask questions</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('comparative-superlative')">
+                <div class="topic-title">Comparatives & Superlatives</div>
+                <div class="topic-desc">Better, best, more, most</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Present Simple Lesson -->
+            <div id="present-simple" class="lesson-content active">
+                <div class="lesson-header">
+                    <div class="lesson-title">Present Simple</div>
+                    <div class="lesson-subtitle">Actions that happen regularly or are always true</div>
+                </div>
+
+                <div class="explanation-box">
+                    <h3>¿Qué es el Present Simple? / What is Present Simple?</h3>
+                    <p>El Present Simple se usa para hablar de acciones habituales, hechos generales y verdades universales.</p>
+                    <p><strong>We use Present Simple for:</strong></p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li>Habits and routines (hábitos y rutinas)</li>
+                        <li>General facts (hechos generales)</li>
+                        <li>Permanent situations (situaciones permanentes)</li>
+                        <li>Scheduled events (eventos programados)</li>
+                    </ul>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>Structure / Estructura</h3>
+                    <div style="margin: 20px 0;">
+                        <div class="sentence-part subject">Subject</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part verb">Verb</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part complement">Rest</div>
+                    </div>
+                    <p><strong>I/You/We/They + verb</strong> | <strong>He/She/It + verb + s</strong></p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples / Ejemplos:</h4>
+                    <table class="grammar-table">
+                        <tr>
+                            <th>English</th>
+                            <th>Spanish</th>
+                            <th>Note</th>
+                        </tr>
+                        <tr>
+                            <td>I <strong>work</strong> every day</td>
+                            <td>Yo trabajo todos los días</td>
+                            <td>Habit (hábito)</td>
+                        </tr>
+                        <tr>
+                            <td>She <strong>lives</strong> in Madrid</td>
+                            <td>Ella vive en Madrid</td>
+                            <td>Permanent situation (+ s)</td>
+                        </tr>
+                        <tr>
+                            <td>The sun <strong>rises</strong> in the east</td>
+                            <td>El sol sale por el este</td>
+                            <td>General fact (+ s)</td>
+                        </tr>
+                        <tr>
+                            <td>We <strong>don't</strong> smoke</td>
+                            <td>No fumamos</td>
+                            <td>Negative form</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Do</strong> you speak English?</td>
+                            <td>¿Hablas inglés?</td>
+                            <td>Question form</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <div class="practice-question">
+                        <p><strong>Fill in the blanks with the correct form:</strong></p>
+                        <p>1. She _______ (work) in a hospital.</p>
+                        <input type="text" class="practice-input" id="q1" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('q1', 'works', '¡Correcto! She works (Tercera persona singular lleva -s)')">Check</button>
+                        <div id="feedback-q1" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="practice-question">
+                        <p>2. _______ they _______ (like) pizza?</p>
+                        <input type="text" class="practice-input" id="q2" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('q2', 'do like', '¡Correcto! Do they like (Pregunta con DO para they)')">Check</button>
+                        <div id="feedback-q2" class="feedback" style="display: none;"></div>
+                    </div>
+
+                    <div class="practice-question">
+                        <p>3. I _______ (not/understand) Spanish.</p>
+                        <input type="text" class="practice-input" id="q3" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('q3', 'don\'t understand', '¡Correcto! I don\'t understand (Negativo con DON\'T)')">Check</button>
+                        <div id="feedback-q3" class="feedback" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Present Continuous Lesson -->
+            <div id="present-continuous" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Present Continuous</div>
+                    <div class="lesson-subtitle">Actions happening right now or around this time</div>
+                </div>
+
+                <div class="explanation-box">
+                    <h3>¿Cuándo usamos Present Continuous?</h3>
+                    <p><strong>Usamos Present Continuous para:</strong></p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li>Actions happening <strong>now</strong> (acciones ocurriendo ahora)</li>
+                        <li>Temporary situations (situaciones temporales)</li>
+                        <li>Future arrangements (planes futuros confirmados)</li>
+                        <li>Changing situations (situaciones cambiantes)</li>
+                    </ul>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>Structure / Estructura</h3>
+                    <div style="margin: 20px 0;">
+                        <div class="sentence-part subject">Subject</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part verb">BE</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part object">Verb + ING</div>
+                    </div>
+                    <p><strong>am/is/are + verb-ing</strong></p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples / Ejemplos:</h4>
+                    <table class="grammar-table">
+                        <tr>
+                            <th>English</th>
+                            <th>Spanish</th>
+                            <th>Usage</th>
+                        </tr>
+                        <tr>
+                            <td>I <strong>am working</strong> now</td>
+                            <td>Estoy trabajando ahora</td>
+                            <td>Action happening now</td>
+                        </tr>
+                        <tr>
+                            <td>She <strong>is studying</strong> medicine</td>
+                            <td>Está estudiando medicina</td>
+                            <td>Temporary situation</td>
+                        </tr>
+                        <tr>
+                            <td>We <strong>are meeting</strong> tomorrow</td>
+                            <td>Nos reunimos mañana</td>
+                            <td>Future arrangement</td>
+                        </tr>
+                        <tr>
+                            <td>The weather <strong>is getting</strong> colder</td>
+                            <td>El tiempo se está volviendo más frío</td>
+                            <td>Changing situation</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <div class="practice-question">
+                        <p><strong>Complete with the Present Continuous:</strong></p>
+                        <p>1. Look! It _______ (rain) outside.</p>
+                        <input type="text" class="practice-input" id="pc1" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('pc1', 'is raining', '¡Correcto! It is raining (Acción ocurriendo ahora)')">Check</button>
+                        <div id="feedback-pc1" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="practice-question">
+                        <p>2. We _______ (not/watch) TV right now.</p>
+                        <input type="text" class="practice-input" id="pc2" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('pc2', 'are not watching', '¡Correcto! We are not watching (Negativo con not)')">Check</button>
+                        <div id="feedback-pc2" class="feedback" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Past Simple Lesson -->
+            <div id="past-simple" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Past Simple</div>
+                    <div class="lesson-subtitle">Completed actions in the past</div>
+                </div>
+                
+                <div class="explanation-box">
+                    <h3>¿Cuándo usamos Past Simple?</h3>
+                    <p>El Past Simple se usa para hablar de acciones que ocurrieron y terminaron en un momento específico del pasado.</p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li>Completed actions (acciones completadas)</li>
+                        <li>Past habits (hábitos pasados)</li>
+                        <li>Sequence of past events (secuencia de eventos pasados)</li>
+                    </ul>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>Structure / Estructura</h3>
+                    <div style="margin: 20px 0;">
+                        <div class="sentence-part subject">Subject</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part verb">Verb + ED</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part complement">Rest</div>
+                    </div>
+                    <p><strong>Regular verbs + ED | Irregular verbs (special forms)</strong></p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples / Ejemplos:</h4>
+                    <table class="grammar-table">
+                        <tr>
+                            <th>English</th>
+                            <th>Spanish</th>
+                            <th>Type</th>
+                        </tr>
+                        <tr>
+                            <td>I <strong>worked</strong> yesterday</td>
+                            <td>Trabajé ayer</td>
+                            <td>Regular verb + ed</td>
+                        </tr>
+                        <tr>
+                            <td>She <strong>went</strong> to Paris</td>
+                            <td>Ella fue a París</td>
+                            <td>Irregular verb (go→went)</td>
+                        </tr>
+                        <tr>
+                            <td>We <strong>didn't</strong> see the movie</td>
+                            <td>No vimos la película</td>
+                            <td>Negative form</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Did</strong> you eat lunch?</td>
+                            <td>¿Almorzaste?</td>
+                            <td>Question form</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <div class="practice-question">
+                        <p><strong>Complete with Past Simple:</strong></p>
+                        <p>1. I _______ (visit) my grandmother last week.</p>
+                        <input type="text" class="practice-input" id="ps1" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('ps1', 'visited', '¡Correcto! I visited (Regular verb + ed)')">Check</button>
+                        <div id="feedback-ps1" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="practice-question">
+                        <p>2. She _______ (not/come) to the party.</p>
+                        <input type="text" class="practice-input" id="ps2" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('ps2', 'didn\'t come', '¡Correcto! She didn\'t come (Negativo + infinitivo)')">Check</button>
+                        <div id="feedback-ps2" class="feedback" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Present Perfect Lesson -->
+            <div id="present-perfect" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Present Perfect</div>
+                    <div class="lesson-subtitle">Past actions with present relevance</div>
+                </div>
+                
+                <div class="explanation-box">
+                    <h3>¿Cuándo usamos Present Perfect?</h3>
+                    <p>El Present Perfect conecta el pasado con el presente. Es como un puente temporal.</p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li>Life experiences (experiencias de vida)</li>
+                        <li>Recent actions with present results (acciones recientes con resultados presentes)</li>
+                        <li>Actions that started in the past and continue (acciones que empezaron en el pasado y continúan)</li>
+                        <li>Changes over time (cambios a lo largo del tiempo)</li>
+                    </ul>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>Structure / Estructura</h3>
+                    <div style="margin: 20px 0;">
+                        <div class="sentence-part subject">Subject</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part verb">HAVE/HAS</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part object">Past Participle</div>
+                    </div>
+                    <p><strong>have/has + past participle (3rd form)</strong></p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples / Ejemplos:</h4>
+                    <table class="grammar-table">
+                        <tr>
+                            <th>English</th>
+                            <th>Spanish</th>
+                            <th>Usage</th>
+                        </tr>
+                        <tr>
+                            <td>I <strong>have visited</strong> Japan</td>
+                            <td>He visitado Japón</td>
+                            <td>Life experience</td>
+                        </tr>
+                        <tr>
+                            <td>She <strong>has just arrived</strong></td>
+                            <td>Acaba de llegar</td>
+                            <td>Recent action</td>
+                        </tr>
+                        <tr>
+                            <td>We <strong>have lived</strong> here for 5 years</td>
+                            <td>Hemos vivido aquí por 5 años</td>
+                            <td>Duration from past to now</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Have</strong> you <strong>seen</strong> this movie?</td>
+                            <td>¿Has visto esta película?</td>
+                            <td>Question form</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <div class="practice-question">
+                        <p><strong>Complete with Present Perfect:</strong></p>
+                        <p>1. I _______ (never/see) such a beautiful sunset.</p>
+                        <input type="text" class="practice-input" id="pp1" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('pp1', 'have never seen', '¡Correcto! I have never seen (Experiencia de vida)')">Check</button>
+                        <div id="feedback-pp1" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="practice-question">
+                        <p>2. _______ she _______ (finish) her homework?</p>
+                        <input type="text" class="practice-input" id="pp2" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('pp2', 'has finished', '¡Correcto! Has she finished (Pregunta con HAS)')">Check</button>
+                        <div id="feedback-pp2" class="feedback" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Verbs Lesson -->
+            <div id="modal-verbs" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Modal Verbs</div>
+                    <div class="lesson-subtitle">Express ability, permission, obligation, possibility</div>
+                </div>
+                
+                <div class="explanation-box">
+                    <h3>¿Qué son los Modal Verbs?</h3>
+                    <p>Los verbos modales expresan actitudes del hablante hacia la acción del verbo principal.</p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li><strong>CAN/COULD</strong> - Habilidad/Posibilidad</li>
+                        <li><strong>MUST/HAVE TO</strong> - Obligación</li>
+                        <li><strong>SHOULD/OUGHT TO</strong> - Consejo/Recomendación</li>
+                        <li><strong>MAY/MIGHT</strong> - Posibilidad/Permiso</li>
+                        <li><strong>WILL/WOULD</strong> - Futuro/Voluntad</li>
+                    </ul>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>Structure / Estructura</h3>
+                    <div style="margin: 20px 0;">
+                        <div class="sentence-part subject">Subject</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part verb">Modal</div>
+                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
+                        <div class="sentence-part object">Base Verb</div>
+                    </div>
+                    <p><strong>Modal + infinitive (without TO)</strong></p>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples / Ejemplos:</h4>
+                    <table class="grammar-table">
+                        <tr>
+                            <th>Modal</th>
+                            <th>Example</th>
+                            <th>Spanish</th>
+                            <th>Use</th>
+                        </tr>
+                        <tr>
+                            <td><strong>CAN</strong></td>
+                            <td>I can swim</td>
+                            <td>Puedo nadar</td>
+                            <td>Ability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MUST</strong></td>
+                            <td>You must study</td>
+                            <td>Debes estudiar</td>
+                            <td>Obligation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SHOULD</strong></td>
+                            <td>You should rest</td>
+                            <td>Deberías descansar</td>
+                            <td>Advice</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MIGHT</strong></td>
+                            <td>It might rain</td>
+                            <td>Puede que llueva</td>
+                            <td>Possibility</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <div class="practice-question">
+                        <p><strong>Choose the correct modal:</strong></p>
+                        <p>1. You _______ (obligation) wear a seatbelt in the car.</p>
+                        <input type="text" class="practice-input" id="mv1" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('mv1', 'must', '¡Correcto! You must (Obligación legal)')">Check</button>
+                        <div id="feedback-mv1" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="practice-question">
+                        <p>2. _______ you help me? (polite request)</p>
+                        <input type="text" class="practice-input" id="mv2" placeholder="Type your answer...">
+                        <button class="check-btn" onclick="checkAnswer('mv2', 'could', '¡Correcto! Could you (Petición cortés)')">Check</button>
+                        <div id="feedback-mv2" class="feedback" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick reference for other topics -->
+            <div id="future-tenses" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Future Tenses</div>
+                    <div class="lesson-subtitle">Plans, predictions, and spontaneous decisions</div>
+                </div>
+                
+                <div class="explanation-box">
+                    <h3>Formas del Futuro en Inglés</h3>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li><strong>WILL + infinitive</strong> - Decisiones espontáneas, predicciones</li>
+                        <li><strong>BE GOING TO + infinitive</strong> - Planes, intenciones, predicciones con evidencia</li>
+                        <li><strong>Present Continuous</strong> - Planes confirmados</li>
+                        <li><strong>Present Simple</strong> - Horarios, programas</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p><strong>Will:</strong> "I'll help you!" (Decisión espontánea)</p>
+                    <p><strong>Going to:</strong> "I'm going to visit my parents" (Plan)</p>
+                    <p><strong>Present Continuous:</strong> "I'm meeting John tomorrow" (Plan confirmado)</p>
+                    <p><strong>Present Simple:</strong> "The train leaves at 8pm" (Horario)</p>
+                </div>
+            </div>
+
+            <div id="conditionals" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Conditionals</div>
+                    <div class="lesson-subtitle">If clauses and hypothetical situations</div>
+                </div>
+                
+                <div class="explanation-box">
+                    <h3>Tipos de Condicionales</h3>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li><strong>Zero Conditional:</strong> If + present, present (Hechos generales)</li>
+                        <li><strong>First Conditional:</strong> If + present, will (Posibilidades reales)</li>
+                        <li><strong>Second Conditional:</strong> If + past, would (Situaciones hipotéticas)</li>
+                        <li><strong>Third Conditional:</strong> If + past perfect, would have (Pasado hipotético)</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p><strong>Zero:</strong> If you heat water, it boils.</p>
+                    <p><strong>First:</strong> If it rains, I will stay home.</p>
+                    <p><strong>Second:</strong> If I were rich, I would travel the world.</p>
+                    <p><strong>Third:</strong> If I had studied, I would have passed.</p>
+                </div>
+            </div>
+
+            <!-- Add placeholder content for remaining topics -->
+            <div id="passive-voice" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Passive Voice</div>
+                    <div class="lesson-subtitle">Focus on action, not the doer</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>Structure:</strong> Object + BE + Past Participle + (by + agent)</p>
+                    <p><strong>Example:</strong> The book was written by Shakespeare.</p>
+                </div>
+            </div>
+
+            <div id="reported-speech" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Reported Speech</div>
+                    <div class="lesson-subtitle">Telling what others said</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>Direct:</strong> "I am happy," she said.</p>
+                    <p><strong>Reported:</strong> She said (that) she was happy.</p>
+                </div>
+            </div>
+
+            <div id="relative-clauses" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Relative Clauses</div>
+                    <div class="lesson-subtitle">Who, which, that, where</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>Who:</strong> People | <strong>Which:</strong> Things | <strong>That:</strong> People/Things</p>
+                    <p><strong>Example:</strong> The man who lives next door is a doctor.</p>
+                </div>
+            </div>
+
+            <div id="phrasal-verbs" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Phrasal Verbs</div>
+                    <div class="lesson-subtitle">Verbs with prepositions</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Verbos + preposiciones que cambian el significado.</p>
+                    <p><strong>Examples:</strong> give up (rendirse), look after (cuidar), turn on (encender)</p>
+                </div>
+            </div>
+
+            <div id="articles" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Articles</div>
+                    <div class="lesson-subtitle">A, an, the usage</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>A/AN:</strong> Indefinite (uno/una) | <strong>THE:</strong> Definite (el/la/los/las)</p>
+                    <p><strong>Example:</strong> A dog, an apple, the sun</p>
+                </div>
+            </div>
+
+            <div id="prepositions" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Prepositions</div>
+                    <div class="lesson-subtitle">In, on, at, by, etc.</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>Time:</strong> at (hora), on (día), in (mes/año)</p>
+                    <p><strong>Place:</strong> at (punto), on (superficie), in (interior)</p>
+                </div>
+            </div>
+
+            <div id="question-formation" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Question Formation</div>
+                    <div class="lesson-subtitle">How to ask questions</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>Yes/No Questions:</strong> Do/Does/Did + subject + verb?</p>
+                    <p><strong>Wh- Questions:</strong> What/Where/When/Why/Who/How + auxiliary + subject + verb?</p>
+                </div>
+            </div>
+
+            <div id="comparative-superlative" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Comparatives & Superlatives</div>
+                    <div class="lesson-subtitle">Better, best, more, most</div>
+                </div>
+                <div class="explanation-box">
+                    <p><strong>Short adjectives:</strong> tall → taller → tallest</p>
+                    <p><strong>Long adjectives:</strong> beautiful → more beautiful → most beautiful</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-indicator" id="progressIndicator">
+            Topic 1 of 15
+        </div>
+    </div>
+
+    <script>
+        let currentTopicIndex = 0;
+        const topics = [
+            'present-simple', 'present-continuous', 'past-simple', 'present-perfect', 
+            'future-tenses', 'modal-verbs', 'conditionals', 'passive-voice', 
+            'reported-speech', 'relative-clauses', 'phrasal-verbs', 'articles', 
+            'prepositions', 'question-formation', 'comparative-superlative'
+        ];
+
+        function showLesson(topicId) {
+            // Hide all lessons
+            document.querySelectorAll('.lesson-content').forEach(lesson => {
+                lesson.classList.remove('active');
+            });
+            
+            // Remove active class from all topic items
+            document.querySelectorAll('.topic-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected lesson
+            document.getElementById(topicId).classList.add('active');
+            
+            // Add active class to clicked topic item
+            event.target.closest('.topic-item').classList.add('active');
+            
+            // Update progress indicator
+            currentTopicIndex = topics.indexOf(topicId);
+            document.getElementById('progressIndicator').textContent = 
+                `Topic ${currentTopicIndex + 1} of ${topics.length}`;
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        function checkAnswer(inputId, correctAnswer, feedback) {
+            const userAnswer = document.getElementById(inputId).value.trim().toLowerCase();
+            const feedbackElement = document.getElementById('feedback-' + inputId);
+            
+            // Multiple possible correct answers
+            const possibleAnswers = correctAnswer.toLowerCase().split('|').map(ans => ans.trim());
+            
+            if (possibleAnswers.some(answer => userAnswer === answer || userAnswer.includes(answer))) {
+                feedbackElement.className = 'feedback correct';
+                feedbackElement.textContent = feedback;
+                feedbackElement.style.display = 'block';
+            } else {
+                feedbackElement.className = 'feedback incorrect';
+                feedbackElement.textContent = `❌ Try again! Correct answer: ${correctAnswer.split('|')[0]}`;
+                feedbackElement.style.display = 'block';
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Auto-close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const toggleButton = document.querySelector('.mobile-toggle');
+                
+                if (!sidebar.contains(event.target) && !toggleButton.contains(event.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft' && currentTopicIndex > 0) {
+                showLesson(topics[currentTopicIndex - 1]);
+            } else if (event.key === 'ArrowRight' && currentTopicIndex < topics.length - 1) {
+                showLesson(topics[currentTopicIndex + 1]);
+            }
+        });
+    </script>
+</body>
+</html>
