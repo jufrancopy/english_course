@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Playground - Book 12</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            color: #333; 
+        }
+        .container { 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.95); 
+            min-height: 100vh; 
+            box-shadow: 0 0 40px rgba(0,0,0,0.1); 
+        }
+        .header { 
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+            color: white; 
+            padding: 30px; 
+            text-align: center; 
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .sidebar { 
+            position: fixed; 
+            left: 0; 
+            top: 120px; 
+            width: 300px; 
+            height: calc(100vh - 120px); 
+            background: #f8f9fa; 
+            border-right: 2px solid #e9ecef; 
+            overflow-y: auto; 
+            padding: 20px; 
+            z-index: 100; 
+        }
+        .main-content { 
+            margin-left: 320px; 
+            padding: 40px; 
+            min-height: calc(100vh - 160px); 
+        }
+        .topic-item { 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: white; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            border-left: 4px solid #4facfe; 
+        }
+        .topic-item:hover { background: #e3f2fd; transform: translateX(5px); }
+        .topic-item.active { background: #4facfe; color: white; }
+        .topic-title { font-weight: 600; margin-bottom: 5px; }
+        .topic-desc { font-size: 0.9em; color: #666; }
+        .topic-item.active .topic-desc { color: rgba(255,255,255,0.8); }
+        .lesson-content { display: none; }
+        .lesson-content.active { display: block; }
+        .lesson-header { 
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+        }
+        .lesson-title { font-size: 2.2em; color: #2c3e50; margin-bottom: 10px; }
+        .lesson-subtitle { font-size: 1.2em; color: #7f8c8d; }
+        .explanation-box { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin: 20px 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            border-left: 5px solid #4facfe; 
+        }
+        .example-box { 
+            background: #e8f5e8; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border-left: 4px solid #28a745; 
+        }
+        .practice-area { 
+            background: #fff3cd; 
+            padding: 25px; 
+            border-radius: 15px; 
+            margin: 20px 0; 
+            border-left: 5px solid #ffc107; 
+        }
+        .practice-question { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border: 2px solid #e9ecef; 
+        }
+        .practice-input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e9ecef; 
+            border-radius: 8px; 
+            font-size: 1.1em; 
+            margin: 10px 0; 
+        }
+        .practice-input:focus { border-color: #4facfe; outline: none; }
+        .check-btn { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            margin: 10px 5px; 
+        }
+        .check-btn:hover { background: #218838; }
+        .feedback { 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            font-weight: 600; 
+        }
+        .feedback.correct { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
+        .grammar-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: white; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        .grammar-table th { 
+            background: #4facfe; 
+            color: white; 
+            padding: 15px; 
+            text-align: left; 
+        }
+        .grammar-table td { 
+            padding: 15px; 
+            border-bottom: 1px solid #e9ecef; 
+        }
+        .grammar-table tr:hover { background: #f8f9fa; }
+        .back-btn-flotante {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #ff6a88 0%, #ff99ac 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .back-btn-flotante:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-btn-flotante">← Volver a los Quizzes</a>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Grammar Playground - Book 12</h1>
+            <p>Interactive grammar based on the contents of Book 12.</p>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <!-- Topics will be dynamically generated based on Book 12 content -->
+            <div class="topic-item active" onclick="showLesson('conditionals')">
+                <div class="topic-title">Conditionals (If-Clauses)</div>
+                <div class="topic-desc">Lesson 1: Future probability</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('present-perfect')">
+                <div class="topic-title">Present Perfect</div>
+                <div class="topic-desc">Lesson 1 & 2: Reviews and indefinite past</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('adverbs')">
+                <div class="topic-title">Adverbs</div>
+                <div class="topic-desc">Lesson 2: still, yet, already...</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('conjunctions')">
+                <div class="topic-title">Conjunctions</div>
+                <div class="topic-desc">Lesson 2: so, or</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('modals')">
+                <div class="topic-title">Modals (Could)</div>
+                <div class="topic-desc">Lesson 3: Expressing possibility</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('adjectives')">
+                <div class="topic-title">Adjectives (-ing vs -ed)</div>
+                <div class="topic-desc">Lesson 3: Describing things and feelings</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('reported-speech')">
+                <div class="topic-title">Reported Speech</div>
+                <div class="topic-desc">Lesson 3: "He said..."</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('past-habits')">
+                <div class="topic-title">Past Habits (used to/would)</div>
+                <div class="topic-desc">Lesson 4: Past routines</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('comparatives')">
+                <div class="topic-title">Comparative Adverbs</div>
+                <div class="topic-desc">Lesson 4: faster, slower...</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Conditionals Lesson -->
+            <div id="conditionals" class="lesson-content active">
+                <div class="lesson-header">
+                    <div class="lesson-title">Conditionals (If-Clauses)</div>
+                    <div class="lesson-subtitle">Lesson 1: Expressing future probability.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>First Conditional</h3>
+                    <p>We use the First Conditional to talk about a realistic situation in the present or future and its likely result.</p>
+                    <p><strong>Structure:</strong> If + Present Simple, ... will + base verb.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <table class="grammar-table">
+                        <tr><th>If-Clause (Condition)</th><th>Main Clause (Result)</th></tr>
+                        <tr><td>If it rains today,</td><td>we won't go to the park.</td></tr>
+                        <tr><td>If he works tonight,</td><td>John won't be able to meet us.</td></tr>
+                        <tr><td>If I have time,</td><td>I'll go to the store.</td></tr>
+                    </table>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. If I _____ (see) John, I _____ (tell) him you called.</p>
+                    <input type="text" class="practice-input" id="q-cond1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkAnswer('q-cond1', 'see, will tell', 'Correct! If I see, I will tell...')">Check</button>
+                    <div id="feedback-q-cond1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Present Perfect Lesson -->
+            <div id="present-perfect" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Present Perfect</div>
+                    <div class="lesson-subtitle">Lesson 1 & 2: For experiences and the indefinite past.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Present Perfect Tense</h3>
+                    <p>We use the Present Perfect (have/has + past participle) to talk about past actions when the time is not specified (indefinite past) or for life experiences.</p>
+                </div>
+                <div class="example-box">
+                     <h4>Examples:</h4>
+                    <p><strong>Indefinite Past:</strong> Ann has made up her mind. (We don't know exactly when).</p>
+                    <p><strong>Experience:</strong> Have you ever gone to South America?</p>
+                    <p><strong>With "since":</strong> Bill has known Mary since they were children.</p>
+                </div>
+                 <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. I _____ (not see) that movie yet.</p>
+                    <input type="text" class="practice-input" id="q-pp1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkAnswer('q-pp1', 'haven't seen', 'Correct! I haven't seen...')">Check</button>
+                    <div id="feedback-q-pp1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Adverbs Lesson -->
+            <div id="adverbs" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Adverbs</div>
+                    <div class="lesson-subtitle">Lesson 2: still, yet, already, no longer...</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Common Adverbs of Time</h3>
+                    <p>These adverbs help specify the time of an action, especially with the present perfect.</p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li><strong>Still:</strong> An action or situation continues to the present. (e.g., "She still works there.")</li>
+                        <li><strong>Yet:</strong> In questions and negatives, about something that hasn't happened. (e.g., "He hasn't seen the doctor yet.")</li>
+                        <li><strong>Already:</strong> Something happened sooner than expected. (e.g., "He has already left.")</li>
+                        <li><strong>No longer:</strong> Something that was true in the past is not true now. (e.g., "He no longer lives here.")</li>
+                    </ul>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. It's late, but she _____ hasn't called.</p>
+                    <input type="text" class="practice-input" id="q-adv1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkAnswer('q-adv1', 'still', 'Correct! Use "still" for a continuing situation.')">Check</button>
+                    <div id="feedback-q-adv1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+            
+                        <!-- Conjunctions Lesson -->
+            <div id="conjunctions" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Conjunctions</div>
+                    <div class="lesson-subtitle">Lesson 2: Connecting ideas with 'so' and 'or'.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Coordinate Conjunctions: SO and OR</h3>
+                    <p>We use conjunctions to connect words, phrases, and clauses.</p>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li><strong>SO:</strong> Shows a result or consequence. (Cause -> <strong>so</strong> -> Result)</li>
+                        <li><strong>OR:</strong> Shows a choice or alternative. (Option 1 <strong>or</strong> Option 2)</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p><strong>SO:</strong> John was sick, <strong>so</strong> he went to a doctor.</p>
+                    <p><strong>OR:</strong> Ron can drive to work, <strong>or</strong> he could ride the bus.</p>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. I want to get good grades, _____ I study every day.</p>
+                    <input type="text" class="practice-input" id="q-conj1" placeholder="Type 'so' or 'or'...">
+                    <button class="check-btn" onclick="checkAnswer('q-conj1', 'so', 'Correct! Studying is the result of wanting good grades.')">Check</button>
+                    <div id="feedback-q-conj1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Modals Lesson -->
+            <div id="modals" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Modals (Could)</div>
+                    <div class="lesson-subtitle">Lesson 3: Expressing possibility.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Using 'Could' for Possibility</h3>
+                    <p>We use <strong>could</strong> to suggest a possibility in the present or future. It's similar to 'might' or 'may'.</p>
+                    <p><strong>Structure:</strong> Subject + could + base verb.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p>Where is Tom? -> He <strong>could</strong> be at work.</p>
+                    <p>She <strong>could</strong> have a doctor's appointment this afternoon.</p>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. I can't find my keys. Where _____ they be?</p>
+                    <input type="text" class="practice-input" id="q-modal1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkAnswer('q-modal1', 'could', 'Correct! We use could to ask about a possibility.')">Check</button>
+                    <div id="feedback-q-modal1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Adjectives Lesson -->
+            <div id="adjectives" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Adjectives (-ing vs. -ed)</div>
+                    <div class="lesson-subtitle">Lesson 3: Describing things and feelings.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>-ing vs. -ed Adjectives</h3>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li>Adjectives ending in <strong>-ing</strong> describe the thing, person, or situation that CAUSES a feeling. (e.g., a boring movie)</li>
+                        <li>Adjectives ending in <strong>-ed</strong> describe the FEELING itself. (e.g., a bored person)</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p>The commercials are not <strong>interesting</strong>. I am not <strong>interested</strong>.</p>
+                    <p>Tom's new job is <strong>exciting</strong>. Tom is <strong>excited</strong> about his new job.</p>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. The movie was so _____. I was _____. (bore)</p>
+                    <input type="text" class="practice-input" id="q-adj1" placeholder="Type 'boring, bored' or 'bored, boring'...">
+                    <button class="check-btn" onclick="checkAnswer('q-adj1', 'boring, bored', 'Correct! The movie causes the feeling (boring), and you have the feeling (bored).')">Check</button>
+                    <div id="feedback-q-adj1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Reported Speech Lesson -->
+            <div id="reported-speech" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Reported Speech</div>
+                    <div class="lesson-subtitle">Lesson 3: Reporting what someone said.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Indirect Speech with 'said'</h3>
+                    <p>When we report what someone said, we often move the verb tense one step into the past. This is called "backshift".</p>
+                    <p><strong>Structure:</strong> Subject + said + (that) + subject + past tense verb.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <table class="grammar-table">
+                        <tr><th>Direct Speech</th><th>Reported (Indirect) Speech</th></tr>
+                        <tr><td>She says, "I <strong>am</strong> going."</td><td>She said (that) she <strong>was</strong> going.</td></tr>
+                        <tr><td>They say, "We <strong>are</strong> going."</td><td>They said (that) they <strong>were</strong> going.</td></tr>
+                    </table>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. Direct: "He is happy." -> Reported: He said that he _____ happy.</p>
+                    <input type="text" class="practice-input" id="q-rep1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkAnswer('q-rep1', 'was', 'Correct! Present tense '''is''' becomes past tense '''was'''.')">Check</button>
+                    <div id="feedback-q-rep1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Past Habits Lesson -->
+            <div id="past-habits" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Past Habits (used to / would)</div>
+                    <div class="lesson-subtitle">Lesson 4: Talking about past routines.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>'Used to' and 'Would'</h3>
+                    <ul style="margin: 15px 0 0 20px;">
+                        <li><strong>Used to:</strong> Describes a past habit or state that is now finished. It works for actions and states.</li>
+                        <li><strong>Would:</strong> Describes a repeated past action. It is often used for nostalgic memories and does not work for states (like 'live' or 'be').</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p>I <strong>used to</strong> spend hours doing homework. (Now I don't).</p>
+                    <p>When I was a child, I <strong>would</strong> go to the beach every summer.</p>
+                    <p>I <strong>used to</strong> live in the city. (Cannot use 'would' here, because 'live' is a state).</p>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. When I was young, I _____ play outside all day.</p>
+                    <input type="text" class="practice-input" id="q-past1" placeholder="Type 'used to' or 'would'...">
+                    <button class="check-btn" onclick="checkAnswer('q-past1', 'used to|would', 'Correct! Both '''used to''' and '''would''' work here for a past action.')">Check</button>
+                    <div id="feedback-q-past1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Comparative Adverbs Lesson -->
+            <div id="comparatives" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Comparative Adverbs</div>
+                    <div class="lesson-subtitle">Lesson 4: Comparing actions.</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Comparing Adverbs with -er</h3>
+                    <p>To compare how two people do an action, we can add <strong>-er</strong> to short adverbs. This is often followed by <strong>than</strong>.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p>Pam drives <strong>faster</strong> than Tim does.</p>
+                    <p>He runs <strong>slower</strong> than his brother.</p>
+                </div>
+                <div class="practice-area">
+                    <h3>🎯 Practice Time!</h3>
+                    <p>1. She speaks English _____ (fluent) than I do.</p>
+                    <input type="text" class="practice-input" id="q-comp1" placeholder="Type your answer...">
+                    <button class="check-btn" onclick="checkAnswer('q-comp1', 'more fluently', 'Careful! '''Fluently''' is a long adverb, so we use '''more'''. A good example for -er is '''harder'''.')">Check</button>
+                    <div id="feedback-q-comp1" class="feedback" style="display: none;"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showLesson(topicId) {
+            document.querySelectorAll('.lesson-content').forEach(lesson => lesson.classList.remove('active'));
+            document.querySelectorAll('.topic-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(topicId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function checkAnswer(inputId, correctAnswer, feedback) {
+            const userAnswer = document.getElementById(inputId).value.trim().toLowerCase();
+            const feedbackElement = document.getElementById('feedback-' + inputId);
+            const possibleAnswers = correctAnswer.toLowerCase().split('|').map(ans => ans.trim());
+            
+            if (possibleAnswers.includes(userAnswer)) {
+                feedbackElement.className = 'feedback correct';
+                feedbackElement.textContent = '✅ ' + feedback;
+            } else {
+                feedbackElement.className = 'feedback incorrect';
+                feedbackElement.textContent = `❌ Incorrect. The correct answer is: ${possibleAnswers[0]}`;
+            }
+            feedbackElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
