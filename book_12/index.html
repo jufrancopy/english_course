@@ -376,11 +376,11 @@
                     
                     <div class="quiz-stats">
                         <div class="stat">
-                            <div class="stat-number">25</div>
+                            <div class="stat-number">75</div>
                             <div class="stat-label">Questions</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-number">8-12</div>
+                            <div class="stat-number">15-20</div>
                             <div class="stat-label">Minutes</div>
                         </div>
                         <div class="stat">
@@ -407,15 +407,15 @@
                     <div class="difficulty-badge advanced">Advanced Level</div>
                     <div class="quiz-icon">🧠</div>
                     <h2 class="quiz-title">Comprehensive Quiz</h2>
-                    <p class="quiz-description">Complete assessment covering all aspects of English. Perfect for serious learners and skill evaluation.</p>
+                    <p class="quiz-description">Challenge yourself with 150 comprehensive questions covering all aspects of English. Perfect for serious learners and skill evaluation.</p>
                     
                     <div class="quiz-stats">
                         <div class="stat">
-                            <div class="stat-number">62</div>
+                            <div class="stat-number">150</div>
                             <div class="stat-label">Questions</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-number">20-30</div>
+                            <div class="stat-number">30-45</div>
                             <div class="stat-label">Minutes</div>
                         </div>
                         <div class="stat">
@@ -447,7 +447,7 @@
                     
                     <div class="quiz-stats">
                         <div class="stat">
-                            <div class="stat-number">15+</div>
+                            <div class="stat-number">9</div>
                             <div class="stat-label">Topics</div>
                         </div>
                         <div class="stat">
@@ -779,60 +779,84 @@
         
         // TODO: Add Book 12 quick questions
         const quickQuestions = [
-            { question: "How did Tom fall down?", translation: "¿Cómo se cayó Tom?", options: ["stayed", "retired", "prepared", "slipped"], correct: 3 },
-    { question: "Did Mr. Miller take the job?", translation: "¿Aceptó el señor Miller el trabajo?", options: ["refused", "heated", "offered", "accepted"], correct: 0 },
-    { question: "The house has more than one floor.", translation: "La casa tiene más de un piso.", options: ["patios", "stories", "sheds", "plans"], correct: 1 },
-    { question: "Did Tom eat a whole cake?", translation: "¿Se comió Tom un pastel entero?", options: ["half", "none", "all", "a slice"], correct: 2 },
-    { question: "Can you take me in your car?", translation: "¿Me puedes llevar en tu coche?", options: ["any news", "a degree", "an offer", "any room"], correct: 3 },
-    { question: "How long was the TV program?", translation: "¿Cuánto duró el programa de televisión?", options: ["blew", "lasted", "remained", "worked"], correct: 1 },
-    { question: "Do you want me to pick you up after school?", translation: "¿Quieres que te recoja después de la escuela?", options: ["offered", "refused", "used", "forgot"], correct: 0 },
-    { question: "Where is your daughter’s school?", translation: "¿Dónde está la escuela de tu hija?", options: ["on the beach", "in the garden", "in the suburbs", "on the patio"], correct: 2 },
-    { question: "Did you finish school last year?", translation: "¿Terminaste la escuela el año pasado?", options: ["apologized", "guessed", "coughed", "graduated"], correct: 3 },
-    { question: "Is the boss calm today?", translation: "¿Está el jefe tranquilo hoy?", options: ["depart", "obey", "subtract", "relax"], correct: 3 },
-    { question: "Did you study hard for the test?", translation: "¿Estudiaste mucho para el examen?", options: ["pretty", "tall", "cold", "ready"], correct: 3 },
-    { question: "What do you expect to do when you graduate?", translation: "¿Qué esperas hacer cuando te gradúes?", options: ["obey all the rules", "exercise often", "hope to get a job", "told the truth"], correct: 2 },
-    { question: "I think the children should come indoors now.", translation: "Creo que los niños deberían entrar ahora.", options: ["dark", "clear", "expensive", "busy"], correct: 0 },
-    { question: "Tom only goes to the movies a few times a year.", translation: "Tom solo va al cine unas cuantas veces al año.", options: ["no longer goes", "goes occasionally", "goes frequently", "went already"], correct: 1 },
-    { question: "Did Sue prepare dinner?", translation: "¿Preparó Sue la cena?", options: ["ate", "saw", "cooked", "cleaned"], correct: 2 },
-    { question: "Do you think you might want this suit?", translation: "¿Crees que te gustaría este traje?", options: ["frightened by", "confused by", "interested in", "worried about"], correct: 2 },
-    { question: "Has Ann made up her mind?", translation: "¿Ann ya se ha decidido?", options: ["filled up her tank", "played basketball", "mailed the package", "decided what to do"], correct: 3 },
-    { question: "Are you adding on to your house?", translation: "¿Están ampliando su casa?", options: ["table", "room", "sign", "lamp"], correct: 1 },
-    { question: "Have you found an answer to the problem?", translation: "¿Has encontrado una respuesta al problema?", options: ["think", "retire", "add on", "give back"], correct: 0 },
+    { question: "How did Tom fall down? He ________.", translation: "¿Cómo se cayó Tom? Él ________.", options: ["stayed", "retired", "prepared", "slipped"], correct: 3 },
+    { question: "Did Mr. Miller take the job? No, he ________ it.", translation: "¿Aceptó el señor Miller el trabajo? No, él lo ________.", options: ["refused", "heated", "offered", "accepted"], correct: 0 },
+    { question: "The house has more than one floor. Yes, it has two ________.", translation: "La casa tiene más de un piso. Sí, tiene dos ________.", options: ["patios", "stories", "sheds", "plans"], correct: 1 },
+    { question: "Did Tom eat a whole cake? Yes, he ate ________ of it.", translation: "¿Se comió Tom un pastel entero? Sí, se comió ________.", options: ["half", "none", "all", "a slice"], correct: 2 },
+    { question: "Can you take me in your car? No, I don’t have ________.", translation: "¿Me puedes llevar en tu coche? No, no tengo ________.", options: ["any news", "a degree", "an offer", "any room"], correct: 3 },
+    { question: "How long was the TV program? It ________ about an hour.", translation: "¿Cuánto duró el programa de televisión? ________ alrededor de una hora.", options: ["blew", "lasted", "remained", "worked"], correct: 1 },
+    { question: "Do you want me to pick you up after school? No, thanks. Tom ________ to pick me up.", translation: "¿Quieres que te recoja después de la escuela? No, gracias. Tom ________ a recogerme.", options: ["offered", "refused", "used", "forgot"], correct: 0 },
+    { question: "Where is your daughter’s school? It's ________.", translation: "¿Dónde está la escuela de tu hija? Está ________.", options: ["on the beach", "in the garden", "in the suburbs", "on the patio"], correct: 2 },
+    { question: "Did you finish school last year? Yes, I ________.", translation: "¿Terminaste la escuela el año pasado? Sí, yo ________.", options: ["apologized", "guessed", "coughed", "graduated"], correct: 3 },
+    { question: "Is the boss calm today? No, he needs to ________.", translation: "¿Está el jefe tranquilo hoy? No, él necesita ________.", options: ["depart", "obey", "subtract", "relax"], correct: 3 },
+    { question: "Did you study hard for the test? Yes, I'm ________.", translation: "¿Estudiaste mucho para el examen? Sí, estoy ________.", options: ["pretty", "tall", "cold", "ready"], correct: 3 },
+    { question: "What do you expect to do when you graduate? I ________.", translation: "¿Qué esperas hacer cuando te gradúes? Yo ________.", options: ["obey all the rules", "exercise often", "hope to get a job", "told the truth"], correct: 2 },
+    { question: "I think the children should come indoors now. Yes, it's getting ________.", translation: "Creo que los niños deberían entrar ahora. Sí, se está poniendo ________.", options: ["dark", "clear", "expensive", "busy"], correct: 0 },
+    { question: "Tom only goes to the movies a few times a year. He ________.", translation: "Tom solo va al cine unas cuantas veces al año. Él ________.", options: ["no longer goes", "goes occasionally", "goes frequently", "went already"], correct: 1 },
+    { question: "Did Sue prepare dinner? Yes, she ________ it.", translation: "¿Preparó Sue la cena? Sí, ella lo ________.", options: ["ate", "saw", "cooked", "cleaned"], correct: 2 },
+    { question: "Do you think you might want this suit? Yes, I'm ________ it.", translation: "¿Crees que te gustaría este traje? Sí, estoy ________.", options: ["frightened by", "confused by", "interested in", "worried about"], correct: 2 },
+    { question: "Has Ann made up her mind? No, she hasn't ________.", translation: "¿Ann ya se ha decidido? No, ella no ha ________.", options: ["filled up her tank", "played basketball", "mailed the package", "decided what to do"], correct: 3 },
+    { question: "Are you adding on to your house? Yes, I need another ________.", translation: "¿Están ampliando su casa? Sí, necesito otro ________.", options: ["table", "room", "sign", "lamp"], correct: 1 },
+    { question: "Have you found an answer to the problem? No, I want to ________.", translation: "¿Has encontrado una respuesta al problema? No, quiero ________.", options: ["think it over", "retire soon", "add on", "give it back"], correct: 0 },
     { question: "Which animal can fly?", translation: "¿Qué animal puede volar?", options: ["a deer", "a cat", "a duck", "a fish"], correct: 2 },
     { question: "Can you go to the store this afternoon?", translation: "¿Puedes ir a la tienda esta tarde?", options: ["I'll go if I have time.", "I decided on the fish.", "It could be downtown.", "He used to shop there."], correct: 0 },
     { question: "Are you going to take the course?", translation: "¿Vas a tomar el curso?", options: ["No, he might be late.", "I haven't decided yet.", "I used to study that.", "Yes, she will if she has enough money."], correct: 1 },
     { question: "It's 6:30 and Tom's still not here. Where could he be?", translation: "Son las 6:30 y Tom todavía no está aquí. ¿Dónde podría estar?", options: ["Have you decided to go?", "If I'm sick, I won't go.", "He used to work there.", "He might still be at work."], correct: 3 },
     { question: "Did you use to go fishing at that lake?", translation: "¿Solías ir a pescar a ese lago?", options: ["Yes, if we catch a fish, we'll eat it.", "No, maybe we'll catch a lot of fish.", "Yes, I would go every weekend with my uncle.", "No, he decided to go shopping instead of fishing."], correct: 2 },
-    { question: "Why are you hurrying? I have to get to a meeting.", translation: "¿Por qué te apuras? Tengo que ir a una reunión.", options: ["happy", "early", "angry", "late"], correct: 3 }
-        ];
+    { question: "Why are you hurrying? I have to get to a meeting. She's ________.", translation: "¿Por qué te apuras? Tengo que ir a una reunión. Ella está ________.", options: ["happy", "early", "angry", "late"], correct: 3 },
+    { question: "Where do fish live?", translation: "¿Dónde viven los peces?", options: ["in a river", "in a garden", "in a house", "in an apartment"], correct: 0 },
+    { question: "Where does wood come from?", translation: "¿De dónde viene la madera?", options: ["vegetables", "animals", "trees", "flowers"], correct: 2 },
+    { question: "Is the library near the bank? Yes, it's ________.", translation: "¿Está la biblioteca cerca del banco? Sí, está ________.", options: ["under", "next to", "like", "on"], correct: 1 },
+    { question: "Where do children get an education?", translation: "¿Dónde reciben educación los niños?", options: ["bank", "factory", "restaurant", "school"], correct: 3 },
+    { question: "When was the football game over? It ________ an hour ago.", translation: "¿Cuándo terminó el partido de fútbol? ________ hace una hora.", options: ["departed", "started", "arrived", "ended"], correct: 3 },
+    { question: "Did you run two times yesterday? No, I ran ________.", translation: "¿Corriste dos veces ayer? No, corrí ________.", options: ["once", "twice", "outdoors", "indoors"], correct: 0 },
+    { question: "Is your sister going to be a doctor? Yes, she's in a ________.", translation: "¿Tu hermana va a ser doctora? Sí, está en una ________.", options: ["medical school", "dangerous job", "big office", "wonderful family"], correct: 0 },
+    { question: "What's wrong with a computer? Nothing. It just works really ________.", translation: "¿Qué le pasa a la computadora? Nada. Simplemente funciona muy ________.", options: ["deep", "slow", "quiet", "humid"], correct: 1 },
+    { question: "Did you like the weather there? No, it was ________.", translation: "¿Te gustó el clima de allí? No, fue ________.", options: ["confusing", "wonderful", "unpleasant", "deep"], correct: 2 },
+    { question: "How do you heat your food? I used the ________.", translation: "¿Cómo calientas tu comida? Usé el ________.", options: ["gas station", "parking lot", "microwave oven", "vending machine"], correct: 2 },
+    { question: "Do you have your own car? No, this one's ________.", translation: "¿Tienes tu propio coche? No, este es ________.", options: ["guaranteed", "at home", "broken", "my dad's"], correct: 3 },
+    { question: "Does Tom like math? Yes, he likes that ________.", translation: "¿A Tom le gustan las matemáticas? Sí, le gusta ese ________.", options: ["suburb", "field", "weapon", "country"], correct: 1 },
+    { question: "My neighbor's stereo was too loud last night. Did you ask him to turn off his ________?", translation: "El estéreo de mi vecino estaba muy alto anoche. ¿Le pediste que apagara su ________?", options: ["music", "light", "television", "water"], correct: 0 },
+    { question: "I don't understand what you're doing to your house. Let me show you ________.", translation: "No entiendo qué le estás haciendo a tu casa. Déjame mostrarte ________.", options: ["the plans", "the college", "my diplomas", "my fishing rods"], correct: 0 },
+    { question: "Has the sky cleared up? Yes, ________.", translation: "¿Se ha despejado el cielo? Sí, ________.", options: ["It's snowing now", "there are no clouds", "it's a cloudy day", "there's a lot of rain"], correct: 1 },
+    { question: "Do the Wilsons have several children? Yes, they have ________.", translation: "¿Los Wilson tienen varios hijos? Sí, tienen ________.", options: ["one son", "one daughter", "three sons and two daughters", "a son and a daughter"], correct: 2 },
+    { question: "Did you change your mind about flying? Yes, we ________.", translation: "¿Cambiaste de opinión sobre volar? Sí, nosotros ________.", options: ["watched the movie", "asked to leave", "cleaned the room", "decided to drive"], correct: 3 },
+    { question: "Was everyone in the library quiet? Yes, no one ________.", translation: "¿Estaban todos en silencio en la biblioteca? Sí, nadie ________.", options: ["used a credit card", "followed directions", "bought a newspaper", "made a sound"], correct: 3 },
+    { question: "Is it very humid where you live? Yes, ________.", translation: "¿Es muy húmedo donde vives? Sí, ________.", options: ["the air often feels wet", "the sun usually shines", "the mountains are tall", "there are many beautiful houses"], correct: 0 },
+    { question: "Sergeant Hill, were you on a tour of duty in Germany last year? Yes, I ________ there.", translation: "Sargento Hill, ¿estuvo en un período de servicio en Alemania el año pasado? Sí, yo ________ allí.", options: ["ate", "worked", "called my friends", "had a vacation"], correct: 1 },
+    { question: "Are you going to buy their old car?", translation: "¿Vas a comprar su coche viejo?", options: ["I might try a different mechanic.", "I've decided to go home next week.", "If they lower the price, I'll buy it.", "They used to sell them in another place."], correct: 2 },
+    { question: "Have you chosen the job at the bank?", translation: "¿Has elegido el trabajo en el banco?", options: ["No, I wouldn't go there when I was a child.", "If you call now, they'll still be there.", "Yes, I've decided I want to work there.", "Yes, perhaps I'll open an account there."], correct: 2 },
+    { question: "I can't find my wallet. Where could it be?", translation: "No encuentro mi cartera. ¿Dónde podría estar?", options: ["I've decided to go to the bank.", "It might be in the bedroom.", "Tell me if you need more money.", "I used to have a different one."], correct: 1 },
+    { question: "What did you do for fun when you were a child?", translation: "¿Qué hacías para divertirte cuando eras niño?", options: ["If she calls soon, I'll meet her at the mall.", "Maybe I could go to Europe this summer.", "I've decided to visit my cousins.", "I would play games with my cousins."], correct: 3 },
+    { question: "A: Let's go to the new restaurant tonight. B: Oh, that sounds great. What time do you want to leave? She's ________.", translation: "A: Vamos al nuevo restaurante esta noche. B: Oh, suena genial. ¿A qué hora quieres que salgamos? Ella está ________.", options: ["excited", "sick", "upset", "late"], correct: 0 }
+];
 
-        // TODO: Add Book 12 comprehensive questions
         const comprehensiveQuestions = [
-    { question: "How did Tom fall down?", translation: "¿Cómo se cayó Tom?", options: ["stayed", "retired", "prepared", "slipped"], correct: 3 },
-    { question: "Did Mr. Miller take the job?", translation: "¿Aceptó el señor Miller el trabajo?", options: ["refused", "heated", "offered", "accepted"], correct: 0 },
-    { question: "The house has more than one floor.", translation: "La casa tiene más de un piso.", options: ["patios", "stories", "sheds", "plans"], correct: 1 },
-    { question: "Did Tom eat a whole cake?", translation: "¿Se comió Tom un pastel entero?", options: ["half", "none", "all", "a slice"], correct: 2 },
-    { question: "Can you take me in your car?", translation: "¿Me puedes llevar en tu coche?", options: ["any news", "a degree", "an offer", "any room"], correct: 3 },
-    { question: "How long was the TV program?", translation: "¿Cuánto duró el programa de televisión?", options: ["blew", "lasted", "remained", "worked"], correct: 1 },
-    { question: "Do you want me to pick you up after school?", translation: "¿Quieres que te recoja después de la escuela?", options: ["offered", "refused", "used", "forgot"], correct: 0 },
-    { question: "Where is your daughter’s school?", translation: "¿Dónde está la escuela de tu hija?", options: ["on the beach", "in the garden", "in the suburbs", "on the patio"], correct: 2 },
-    { question: "Did you finish school last year?", translation: "¿Terminaste la escuela el año pasado?", options: ["apologized", "guessed", "coughed", "graduated"], correct: 3 },
-    { question: "Is the boss calm today?", translation: "¿Está el jefe tranquilo hoy?", options: ["depart", "obey", "subtract", "relax"], correct: 3 },
-    { question: "Did you study hard for the test?", translation: "¿Estudiaste mucho para el examen?", options: ["pretty", "tall", "cold", "ready"], correct: 3 },
-    { question: "What do you expect to do when you graduate?", translation: "¿Qué esperas hacer cuando te gradúes?", options: ["obey all the rules", "exercise often", "hope to get a job", "told the truth"], correct: 2 },
-    { question: "I think the children should come indoors now.", translation: "Creo que los niños deberían entrar ahora.", options: ["dark", "clear", "expensive", "busy"], correct: 0 },
-    { question: "Tom only goes to the movies a few times a year.", translation: "Tom solo va al cine unas cuantas veces al año.", options: ["no longer goes", "goes occasionally", "goes frequently", "went already"], correct: 1 },
-    { question: "Did Sue prepare dinner?", translation: "¿Preparó Sue la cena?", options: ["ate", "saw", "cooked", "cleaned"], correct: 2 },
-    { question: "Do you think you might want this suit?", translation: "¿Crees que te gustaría este traje?", options: ["frightened by", "confused by", "interested in", "worried about"], correct: 2 },
-    { question: "Has Ann made up her mind?", translation: "¿Ann ya se ha decidido?", options: ["filled up her tank", "played basketball", "mailed the package", "decided what to do"], correct: 3 },
-    { question: "Are you adding on to your house?", translation: "¿Están ampliando su casa?", options: ["table", "room", "sign", "lamp"], correct: 1 },
-    { question: "Have you found an answer to the problem?", translation: "¿Has encontrado una respuesta al problema?", options: ["think", "retire", "add on", "give back"], correct: 0 },
+    { question: "How did Tom fall down? He ________.", translation: "¿Cómo se cayó Tom? Él ________.", options: ["stayed", "retired", "prepared", "slipped"], correct: 3 },
+    { question: "Did Mr. Miller take the job? No, he ________ it.", translation: "¿Aceptó el señor Miller el trabajo? No, él lo ________.", options: ["refused", "heated", "offered", "accepted"], correct: 0 },
+    { question: "The house has more than one floor. Yes, it has two ________.", translation: "La casa tiene más de un piso. Sí, tiene dos ________.", options: ["patios", "stories", "sheds", "plans"], correct: 1 },
+    { question: "Did Tom eat a whole cake? Yes, he ate ________ of it.", translation: "¿Se comió Tom un pastel entero? Sí, se comió ________.", options: ["half", "none", "all", "a slice"], correct: 2 },
+    { question: "Can you take me in your car? No, I don’t have ________.", translation: "¿Me puedes llevar en tu coche? No, no tengo ________.", options: ["any news", "a degree", "an offer", "any room"], correct: 3 },
+    { question: "How long was the TV program? It ________ about an hour.", translation: "¿Cuánto duró el programa de televisión? ________ alrededor de una hora.", options: ["blew", "lasted", "remained", "worked"], correct: 1 },
+    { question: "Do you want me to pick you up after school? No, thanks. Tom ________ to pick me up.", translation: "¿Quieres que te recoja después de la escuela? No, gracias. Tom ________ a recogerme.", options: ["offered", "refused", "used", "forgot"], correct: 0 },
+    { question: "Where is your daughter’s school? It's ________.", translation: "¿Dónde está la escuela de tu hija? Está ________.", options: ["on the beach", "in the garden", "in the suburbs", "on the patio"], correct: 2 },
+    { question: "Did you finish school last year? Yes, I ________.", translation: "¿Terminaste la escuela el año pasado? Sí, yo ________.", options: ["apologized", "guessed", "coughed", "graduated"], correct: 3 },
+    { question: "Is the boss calm today? No, he needs to ________.", translation: "¿Está el jefe tranquilo hoy? No, él necesita ________.", options: ["depart", "obey", "subtract", "relax"], correct: 3 },
+    { question: "Did you study hard for the test? Yes, I'm ________.", translation: "¿Estudiaste mucho para el examen? Sí, estoy ________.", options: ["pretty", "tall", "cold", "ready"], correct: 3 },
+    { question: "What do you expect to do when you graduate? I ________.", translation: "¿Qué esperas hacer cuando te gradúes? Yo ________.", options: ["obey all the rules", "exercise often", "hope to get a job", "told the truth"], correct: 2 },
+    { question: "I think the children should come indoors now. Yes, it's getting ________.", translation: "Creo que los niños deberían entrar ahora. Sí, se está poniendo ________.", options: ["dark", "clear", "expensive", "busy"], correct: 0 },
+    { question: "Tom only goes to the movies a few times a year. He ________.", translation: "Tom solo va al cine unas cuantas veces al año. Él ________.", options: ["no longer goes", "goes occasionally", "goes frequently", "went already"], correct: 1 },
+    { question: "Did Sue prepare dinner? Yes, she ________ it.", translation: "¿Preparó Sue la cena? Sí, ella lo ________.", options: ["ate", "saw", "cooked", "cleaned"], correct: 2 },
+    { question: "Do you think you might want this suit? Yes, I'm ________ it.", translation: "¿Crees que te gustaría este traje? Sí, estoy ________.", options: ["frightened by", "confused by", "interested in", "worried about"], correct: 2 },
+    { question: "Has Ann made up her mind? No, she hasn't ________.", translation: "¿Ann ya se ha decidido? No, ella no ha ________.", options: ["filled up her tank", "played basketball", "mailed the package", "decided what to do"], correct: 3 },
+    { question: "Are you adding on to your house? Yes, I need another ________.", translation: "¿Están ampliando su casa? Sí, necesito otro ________.", options: ["table", "room", "sign", "lamp"], correct: 1 },
+    { question: "Have you found an answer to the problem? No, I want to ________.", translation: "¿Has encontrado una respuesta al problema? No, quiero ________.", options: ["think it over", "retire soon", "add on", "give it back"], correct: 0 },
     { question: "Which animal can fly?", translation: "¿Qué animal puede volar?", options: ["a deer", "a cat", "a duck", "a fish"], correct: 2 },
     { question: "Can you go to the store this afternoon?", translation: "¿Puedes ir a la tienda esta tarde?", options: ["I'll go if I have time.", "I decided on the fish.", "It could be downtown.", "He used to shop there."], correct: 0 },
     { question: "Are you going to take the course?", translation: "¿Vas a tomar el curso?", options: ["No, he might be late.", "I haven't decided yet.", "I used to study that.", "Yes, she will if she has enough money."], correct: 1 },
     { question: "It's 6:30 and Tom's still not here. Where could he be?", translation: "Son las 6:30 y Tom todavía no está aquí. ¿Dónde podría estar?", options: ["Have you decided to go?", "If I'm sick, I won't go.", "He used to work there.", "He might still be at work."], correct: 3 },
     { question: "Did you use to go fishing at that lake?", translation: "¿Solías ir a pescar a ese lago?", options: ["Yes, if we catch a fish, we'll eat it.", "No, maybe we'll catch a lot of fish.", "Yes, I would go every weekend with my uncle.", "No, he decided to go shopping instead of fishing."], correct: 2 },
-    { question: "Why are you hurrying? I have to get to a meeting.", translation: "¿Por qué te apuras? Tengo que ir a una reunión.", options: ["happy", "early", "angry", "late"], correct: 3 },
+    { question: "Why are you hurrying? I have to get to a meeting. She's ________.", translation: "¿Por qué te apuras? Tengo que ir a una reunión. Ella está ________.", options: ["happy", "early", "angry", "late"], correct: 3 },
     { question: "Pam drives her car _____ than Tim does.", translation: "Pam conduce su coche _____ que Tim.", options: ["fastest", "faster", "fast", "the fastest"], correct: 1 },
     { question: "Ron can drive to work, _____ he could ride the bus.", translation: "Ron puede conducir al trabajo, _____ podría tomar el autobús.", options: ["or", "so", "and", "but"], correct: 0 },
     { question: "The lake is 300 feet _____.", translation: "El lago tiene 300 pies de _____.", options: ["clear", "calm", "deep", "near"], correct: 2 },
@@ -857,7 +881,57 @@
     { question: "Tina likes her job at the bank. She _____ works there.", translation: "A Tina le gusta su trabajo en el banco. Ella _____ trabaja allí.", options: ["still", "any longer", "yet", "no more"], correct: 0 },
     { question: "Sometimes I put the plates in the _____ to keep the food warm.", translation: "A veces pongo los platos en el _____ para mantener la comida caliente.", options: ["rifle", "oven", "diploma", "woods"], correct: 1 },
     { question: "Jim is sick, but he _____ seen the doctor yet.", translation: "Jim está enfermo, pero _____ ha visto al médico todavía.", options: ["isn't", "hasn't", "won't", "doesn't"], correct: 1 },
-    { question: "She said they _____ to eat dinner at home.", translation: "Ella dijo que _____ a cenar en casa.", options: ["were going", "going", "are going", "be going"], correct: 0 }
+    { question: "She said they _____ to eat dinner at home.", translation: "Ella dijo que _____ a cenar en casa.", options: ["were going", "going", "are going", "be going"], correct: 0 },
+    { question: "Where do fish live?", translation: "¿Dónde viven los peces?", options: ["in a river", "in a garden", "in a house", "in an apartment"], correct: 0 },
+    { question: "Where does wood come from?", translation: "¿De dónde viene la madera?", options: ["vegetables", "animals", "trees", "flowers"], correct: 2 },
+    { question: "Is the library near the bank? Yes, it's ________.", translation: "¿Está la biblioteca cerca del banco? Sí, está ________.", options: ["under", "next to", "like", "on"], correct: 1 },
+    { question: "Where do children get an education?", translation: "¿Dónde reciben educación los niños?", options: ["bank", "factory", "restaurant", "school"], correct: 3 },
+    { question: "When was the football game over? It ________ an hour ago.", translation: "¿Cuándo terminó el partido de fútbol? ________ hace una hora.", options: ["departed", "started", "arrived", "ended"], correct: 3 },
+    { question: "Did you run two times yesterday? No, I ran ________.", translation: "¿Corriste dos veces ayer? No, corrí ________.", options: ["once", "twice", "outdoors", "indoors"], correct: 0 },
+    { question: "Is your sister going to be a doctor? Yes, she's in a ________.", translation: "¿Tu hermana va a ser doctora? Sí, está en una ________.", options: ["medical school", "dangerous job", "big office", "wonderful family"], correct: 0 },
+    { question: "What's wrong with a computer? Nothing. It just works really ________.", translation: "¿Qué le pasa a la computadora? Nada. Simplemente funciona muy ________.", options: ["deep", "slow", "quiet", "humid"], correct: 1 },
+    { question: "Did you like the weather there? No, it was ________.", translation: "¿Te gustó el clima de allí? No, fue ________.", options: ["confusing", "wonderful", "unpleasant", "deep"], correct: 2 },
+    { question: "How do you heat your food? I used the ________.", translation: "¿Cómo calientas tu comida? Usé el ________.", options: ["gas station", "parking lot", "microwave oven", "vending machine"], correct: 2 },
+    { question: "Do you have your own car? No, this one's ________.", translation: "¿Tienes tu propio coche? No, este es ________.", options: ["guaranteed", "at home", "broken", "my dad's"], correct: 3 },
+    { question: "Does Tom like math? Yes, he likes that ________.", translation: "¿A Tom le gustan las matemáticas? Sí, le gusta ese ________.", options: ["suburb", "field", "weapon", "country"], correct: 1 },
+    { question: "My neighbor's stereo was too loud last night. Did you ask him to turn off his ________?", translation: "El estéreo de mi vecino estaba muy alto anoche. ¿Le pediste que apagara su ________?", options: ["music", "light", "television", "water"], correct: 0 },
+    { question: "I don't understand what you're doing to your house. Let me show you ________.", translation: "No entiendo qué le estás haciendo a tu casa. Déjame mostrarte ________.", options: ["the plans", "the college", "my diplomas", "my fishing rods"], correct: 0 },
+    { question: "Has the sky cleared up? Yes, ________.", translation: "¿Se ha despejado el cielo? Sí, ________.", options: ["It's snowing now", "there are no clouds", "it's a cloudy day", "there's a lot of rain"], correct: 1 },
+    { question: "Do the Wilsons have several children? Yes, they have ________.", translation: "¿Los Wilson tienen varios hijos? Sí, tienen ________.", options: ["one son", "one daughter", "three sons and two daughters", "a son and a daughter"], correct: 2 },
+    { question: "Did you change your mind about flying? Yes, we ________.", translation: "¿Cambiaste de opinión sobre volar? Sí, nosotros ________.", options: ["watched the movie", "asked to leave", "cleaned the room", "decided to drive"], correct: 3 },
+    { question: "Was everyone in the library quiet? Yes, no one ________.", translation: "¿Estaban todos en silencio en la biblioteca? Sí, nadie ________.", options: ["used a credit card", "followed directions", "bought a newspaper", "made a sound"], correct: 3 },
+    { question: "Is it very humid where you live? Yes, ________.", translation: "¿Es muy húmedo donde vives? Sí, ________.", options: ["the air often feels wet", "the sun usually shines", "the mountains are tall", "there are many beautiful houses"], correct: 0 },
+    { question: "Sergeant Hill, were you on a tour of duty in Germany last year? Yes, I ________ there.", translation: "Sargento Hill, ¿estuvo en un período de servicio en Alemania el año pasado? Sí, yo ________ allí.", options: ["ate", "worked", "called my friends", "had a vacation"], correct: 1 },
+    { question: "Are you going to buy their old car?", translation: "¿Vas a comprar su coche viejo?", options: ["I might try a different mechanic.", "I've decided to go home next week.", "If they lower the price, I'll buy it.", "They used to sell them in another place."], correct: 2 },
+    { question: "Have you chosen the job at the bank?", translation: "¿Has elegido el trabajo en el banco?", options: ["No, I wouldn't go there when I was a child.", "If you call now, they'll still be there.", "Yes, I've decided I want to work there.", "Yes, perhaps I'll open an account there."], correct: 2 },
+    { question: "I can't find my wallet. Where could it be?", translation: "No encuentro mi cartera. ¿Dónde podría estar?", options: ["I've decided to go to the bank.", "It might be in the bedroom.", "Tell me if you need more money.", "I used to have a different one."], correct: 1 },
+    { question: "What did you do for fun when you were a child?", translation: "¿Qué hacías para divertirte cuando eras niño?", options: ["If she calls soon, I'll meet her at the mall.", "Maybe I could go to Europe this summer.", "I've decided to visit my cousins.", "I would play games with my cousins."], correct: 3 },
+    { question: "A: Let's go to the new restaurant tonight. B: Oh, that sounds great. What time do you want to leave? She's ________.", translation: "A: Vamos al nuevo restaurante esta noche. B: Oh, suena genial. ¿A qué hora quieres que salgamos? Ella está ________.", options: ["excited", "sick", "upset", "late"], correct: 0 },
+    { question: "Ted can ride a bike ____ than Ron.", translation: "Ted puede andar en bicicleta ____ que Ron.", options: ["farther", "far", "farthest", "the farthest"], correct: 0 },
+    { question: "You could exchange the shirt, ____ you can get a refund.", translation: "Puedes cambiar la camisa, ____ puedes obtener un reembolso.", options: ["but", "so", "and", "or"], correct: 3 },
+    { question: "It's time for class to begin. Everyone's here ____ Tom.", translation: "Es hora de que empiece la clase. Todos están aquí ____ Tom.", options: ["instead of", "except", "like", "next to"], correct: 1 },
+    { question: "Ben has ____ been to the post office today.", translation: "Ben ____ ha estado en la oficina de correos hoy.", options: ["still", "yet", "already", "no longer"], correct: 2 },
+    { question: "I ____ visited Mexico before.", translation: "Yo ____ he visitado México antes.", options: ["will", "am", "have", "do"], correct: 2 },
+    { question: "Do you want cake ____ pie for dessert?", translation: "¿Quieres pastel ____ tarta de postre?", options: ["instead of", "except for", "like", "around"], correct: 0 },
+    { question: "Sue: Is John still living in Dallas? Ann: No, John ____ in Chicago for five years now.", translation: "Sue: ¿John sigue viviendo en Dallas? Ann: No, John ____ en Chicago desde hace cinco años.", options: ["is living", "will live", "lived", "has lived"], correct: 3 },
+    { question: "I was afraid of the bad storm. It was ____.", translation: "Tenía miedo de la tormenta. Fue ____.", options: ["to frighten", "frightening", "frightened", "frighten"], correct: 1 },
+    { question: "Don't worry about food for the party. We have ____.", translation: "No te preocupes por la comida para la fiesta. Tenemos ____.", options: ["a career", "plenty", "a decision", "none"], correct: 1 },
+    { question: "When I was a secretary, I ____ type lots of letters.", translation: "Cuando era secretaria, ____ escribía muchas cartas.", options: ["will", "used to", "was going to", "have to"], correct: 1 },
+    { question: "It's raining today, ____ I'll take an umbrella.", translation: "Hoy está lloviendo, ____ llevaré un paraguas.", options: ["so", "or", "but", "while"], correct: 0 },
+    { question: "The people in this picture are too small. you need to ____ the picture.", translation: "La gente en esta foto es demasiado pequeña. necesitas ____ la foto.", options: ["prepare", "clear", "retire", "enlarge"], correct: 3 },
+    { question: "If it's sunny tomorrow, I ____ tennis.", translation: "Si mañana hace sol, ____ al tenis.", options: ["have played", "was playing", "will play", "played"], correct: 2 },
+    { question: "Have you ever ____ to Europe?", translation: "¿Alguna vez has ____ a Europa?", options: ["flown", "flew", "flying", "fly"], correct: 0 },
+    { question: "Tom went to a ____ to study business.", translation: "Tom fue a una ____ para estudiar negocios.", options: ["university", "shed", "fireplace", "get-together"], correct: 0 },
+    { question: "I'm ____ by long meetings.", translation: "Estoy ____ por las reuniones largas.", options: ["to tire", "tiring", "tire", "tired"], correct: 3 },
+    { question: "Sue: Joe's not at his desk. Where is he? Ann: I don't know. He ____ be in a meeting.", translation: "Sue: Joe no está en su escritorio. ¿Dónde está? Ann: No lo sé. ____ estar en una reunión.", options: ["will", "can", "could", "would"], correct: 2 },
+    { question: "A lot of rain fell ____ the storm.", translation: "Cayó mucha lluvia ____ la tormenta.", options: ["except", "during", "like", "without"], correct: 1 },
+    { question: "Sue: What are you doing this afternoon? Ann: I'm going to the new store at the mall. Pat: What did Ann say? Sue: She said ____ to the new store at the mall.", translation: "Sue: ¿Qué haces esta tarde? Ann: Voy a la nueva tienda en el centro comercial. Pat: ¿Qué dijo Ann? Sue: Dijo que ____ a la nueva tienda en el centro comercial.", options: ["she was going", "is going", "she going", "was going"], correct: 0 },
+    { question: "If the sun ____ today, I'll wash the windows.", translation: "Si el sol ____ hoy, lavaré las ventanas.", options: ["will shine", "shined", "shines", "was shining"], correct: 2 },
+    { question: "I've planned my ____. I'm going to teach math for the next 10 years.", translation: "He planeado mi ____. Voy a enseñar matemáticas durante los próximos 10 años.", options: ["refusal", "wind", "future", "answer"], correct: 2 },
+    { question: "Tina ____ 15 letters since 10 o'clock this morning.", translation: "Tina ____ 15 cartas desde las 10 de la mañana.", options: ["typed", "is typing", "will type", "has typed"], correct: 3 },
+    { question: "When I was a child, my parents ____ read to me every night.", translation: "Cuando era niño, mis padres me ____ todas las noches.", options: ["will", "would", "may", "can"], correct: 1 },
+    { question: "I want to live in the ____ because there are few people and lots of animals.", translation: "Quiero vivir en el ____ porque hay poca gente y muchos animales.", options: ["building", "sea", "city", "country"], correct: 3 },
+    { question: "Sue: What are you learning in math class? Ann: We're learning how to do division. Ted: What did Ann say? Sue: She said ____ how to do division.", translation: "Sue: ¿Qué estás aprendiendo en clase de matemáticas? Ann: Estamos aprendiendo a dividir. Ted: ¿Qué dijo Ann? Sue: Dijo que ____ a dividir.", options: ["we were learning", "were learning", "they were learning", "we learn"], correct: 2 }
 ];
 
         // Global variables
@@ -949,7 +1023,7 @@
                 
                 <div id="startScreen" style="text-align: center; padding: 60px 30px;">
                     <h2 style="font-size: 2.2em; margin-bottom: 20px; color: #2c3e50;">Comprehensive English Assessment</h2>
-                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">Challenge yourself with 50 comprehensive questions covering advanced grammar, vocabulary, conversation skills, and more. This detailed assessment will thoroughly evaluate your English proficiency.</p>
+                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">Challenge yourself with 150 comprehensive questions covering all aspects of English. Perfect for serious learners and skill evaluation.</p>
                     <button class="start-btn" onclick="startComprehensiveQuiz()">Start Comprehensive Quiz 📚</button>
                 </div>
 
@@ -958,7 +1032,7 @@
                         <div style="width: 100%; height: 10px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
                             <div style="height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); width: 0%; transition: width 0.3s ease; border-radius: 10px;" id="progressFill"></div>
                         </div>
-                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 62</div>
+                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 150</div>
                     </div>
                     
                     <div style="padding: 40px 30px; min-height: 400px;">
