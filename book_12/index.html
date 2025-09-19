@@ -368,7 +368,7 @@
         <div id="selectionScreen">
             <div class="quiz-selection">
                 <!-- Quick Quiz Option -->
-                <div class="quiz-option quick" onclick="startQuiz('quick')">
+                <div id="quickQuizBtn" class="quiz-option quick">
                     <div class="difficulty-badge easy">Beginner Friendly</div>
                     <div class="quiz-icon">⚡</div>
                     <h2 class="quiz-title">Quick Quiz</h2>
@@ -403,7 +403,7 @@
                 </div>
 
                 <!-- Comprehensive Quiz Option -->
-                <div class="quiz-option comprehensive" onclick="startQuiz('comprehensive')">
+                <div id="comprehensiveQuizBtn" class="quiz-option comprehensive">
                     <div class="difficulty-badge advanced">Advanced Level</div>
                     <div class="quiz-icon">🧠</div>
                     <h2 class="quiz-title">Comprehensive Quiz</h2>
@@ -525,9 +525,9 @@
                     </div>
 
                     <div class="quiz-length-options" style="margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                        <button class="start-btn" onclick="startQuiz('vocabulary', 25)">25 Questions</button>
-                        <button class="start-btn" onclick="startQuiz('vocabulary', 50)">50 Questions</button>
-                        <button class="start-btn" onclick="startQuiz('vocabulary', 100)">100 Questions</button>
+                        <button id="vocabQuiz25" class="start-btn">25 Questions</button>
+                        <button id="vocabQuiz50" class="start-btn">50 Questions</button>
+                        <button id="vocabQuiz100" class="start-btn">100 Questions</button>
                     </div>
                 </div>
             </div>
@@ -777,7 +777,6 @@
             return questions;
         }
         
-        // TODO: Add Book 12 quick questions
         const quickQuestions = [
     { question: "How did Tom fall down? He ________.", translation: "¿Cómo se cayó Tom? Él ________.", options: ["stayed", "retired", "prepared", "slipped"], correct: 3 },
     { question: "Did Mr. Miller take the job? No, he ________ it.", translation: "¿Aceptó el señor Miller el trabajo? No, él lo ________.", options: ["refused", "heated", "offered", "accepted"], correct: 0 },
@@ -828,7 +827,32 @@
     { question: "Have you chosen the job at the bank?", translation: "¿Has elegido el trabajo en el banco?", options: ["No, I wouldn't go there when I was a child.", "If you call now, they'll still be there.", "Yes, I've decided I want to work there.", "Yes, perhaps I'll open an account there."], correct: 2 },
     { question: "I can't find my wallet. Where could it be?", translation: "No encuentro mi cartera. ¿Dónde podría estar?", options: ["I've decided to go to the bank.", "It might be in the bedroom.", "Tell me if you need more money.", "I used to have a different one."], correct: 1 },
     { question: "What did you do for fun when you were a child?", translation: "¿Qué hacías para divertirte cuando eras niño?", options: ["If she calls soon, I'll meet her at the mall.", "Maybe I could go to Europe this summer.", "I've decided to visit my cousins.", "I would play games with my cousins."], correct: 3 },
-    { question: "A: Let's go to the new restaurant tonight. B: Oh, that sounds great. What time do you want to leave? She's ________.", translation: "A: Vamos al nuevo restaurante esta noche. B: Oh, suena genial. ¿A qué hora quieres que salgamos? Ella está ________.", options: ["excited", "sick", "upset", "late"], correct: 0 }
+    { question: "A: Let's go to the new restaurant tonight. B: Oh, that sounds great. What time do you want to leave? She's ________.", translation: "A: Vamos al nuevo restaurante esta noche. B: Oh, suena genial. ¿A qué hora quieres que salgamos? Ella está ________.", options: ["excited", "sick", "upset", "late"], correct: 0 },
+    { question: "Yes, it was in the ______.", translation: "¿Tuvieron la fiesta al aire libre?", options: ["park", "house", "gym", "barracks"], correct: 0 },
+    { question: "He is ______ a driver.", translation: "Tom siempre conduce demasiado rápido", options: ["dangerous", "calm", "technical", "polite"], correct: 0 },
+    { question: "No, I ______ last week.", translation: "¿Sigues trabajando?", options: ["practiced", "retired", "hunted", "fished"], correct: 1 },
+    { question: "Yes, it's ______ outside.", translation: "¿Está fría el agua del río?", options: ["dark", "humid", "quiet", "freezing"], correct: 3 },
+    { question: "We bought them for our ______.", translation: "¿Por qué compraste una mesa y sillas nuevas?", options: ["bathroom", "garage", "shed", "dining room"], correct: 3 },
+    { question: "No, I can't ______ anything.", translation: "¿Tienes alguna idea?", options: ["replace", "work on", "think of", "deposit"], correct: 2 },
+    { question: "Yes, he had a ______.", translation: "¿Tenía el hombre un arma?", options: ["knife", "checkbook", "schedule", "job"], correct: 0 },
+    { question: "Yes, I ______ last year.", translation: "¿Terminaste tu carrera en matemáticas?", options: ["graduated", "returned", "traveled", "moved"], correct: 0 },
+    { question: "Yes, the house has a new ______.", translation: "¿Tienes suficientes habitaciones en tu casa para todos tus hijos?", options: ["addition", "fireplace", "offer", "gauge"], correct: 0 },
+    { question: "Yes, she ______ there.", translation: "¿Sigue Mary en Italia?", options: ["plans to go", "left", "refused to go", "is staying"], correct: 3 },
+    { question: "Yes, he ______ every day.", translation: "¿Está tu hijo aprendiendo a nadar?", options: ["runs", "hunts", "fishes", "practices"], correct: 3 },
+    { question: "No, I have a different ______ now.", translation: "¿Sigues siendo profesor?", options: ["stereo", "career", "builder", "neighbor"], correct: 1 },
+    { question: "The ______ is terrible.", translation: "¿Qué tal el clima en Texas?", options: ["education", "heat", "course", "decision"], correct: 1 },
+    { question: "No, he doesn't like to ______ animals.", translation: "¿A tu padre le gusta cazar?", options: ["hurt", "shake", "draw", "care for"], correct: 0 },
+    { question: "He hasn't ______ it with me.", translation: "¿Te dijo Tom que se va de vacaciones pronto?", options: ["played", "left", "discussed", "practiced"], correct: 2 },
+    { question: "Okay, I'll ______.", translation: "Vas a quemar la comida", options: ["pass out the candy", "buy some milk", "cut the potatoes", "turn off the stove"], correct: 3 },
+    { question: "Yes, we need to ______ more.", translation: "¿Necesitamos tener otra reunión sobre este problema?", options: ["eat", "buy", "relax", "talk"], correct: 3 },
+    { question: "Yes, it ______.", translation: "¿Rechazaste el trabajo?", options: ["was boring", "was interesting", "had a good schedule", "paid well"], correct: 0 },
+    { question: "It's usually ______.", translation: "¿Cómo es el clima en tu país?", options: ["cold and wet", "flat and boring", "entertaining", "salty and greasy"], correct: 0 },
+    { question: "______", translation: "¿Cuántas veces llamó tu jefe hoy?", options: ["Perhaps", "Again", "Twice", "Really"], correct: 2 },
+    { question: "Yes, we can go if I don't have to work.", translation: "¿Podremos ir al nuevo restaurante este fin de semana?", options: ["I've decided to get the apartment.", "Yes, we can go if I don't have to work.", "Maybe it's open on Mondays.", "Yes, I used to cook every weekend."], correct: 1 },
+    { question: "No, I've decided to buy a new one.", translation: "¿Vas a arreglar tu coche?", options: ["I used to go to that mechanic.", "No, I've decided to buy a new one.", "Yes, the car might be for sale.", "If it rains, I'm going to drive."], correct: 1 },
+    { question: "He might be at home with a cold.", translation: "No veo a Mark aquí.", options: ["If we're sick, we won't go.", "He might be at home with a cold.", "I've decided to bake a cake.", "He used to work at a mall."], correct: 1 },
+    { question: "Yes, I used to work out at the gym.", translation: "¿Hiciste mucho ejercicio cuando estabas en la universidad?", options: ["No, I might run next weekend.", "Yes, I've decided to run every day.", "Yes, I used to work out at the gym.", "If I have time, I'll go to the gym."], correct: 2 },
+    { question: "She's ______.", translation: "Sue, ¿por qué lloras?", options: ["hungry", "angry", "unhappy", "careful"], correct: 2 }
 ];
 
         const comprehensiveQuestions = [
@@ -910,7 +934,7 @@
     { question: "Ted can ride a bike ____ than Ron.", translation: "Ted puede andar en bicicleta ____ que Ron.", options: ["farther", "far", "farthest", "the farthest"], correct: 0 },
     { question: "You could exchange the shirt, ____ you can get a refund.", translation: "Puedes cambiar la camisa, ____ puedes obtener un reembolso.", options: ["but", "so", "and", "or"], correct: 3 },
     { question: "It's time for class to begin. Everyone's here ____ Tom.", translation: "Es hora de que empiece la clase. Todos están aquí ____ Tom.", options: ["instead of", "except", "like", "next to"], correct: 1 },
-    { question: "Ben has ____ been to the post office today.", translation: "Ben ____ ha estado en la oficina de correos hoy.", options: ["still", "yet", "already", "no longer"], correct: 2 },
+    { question: "Ben has ____ been to the post office today.", translation: "Ben ____ ha estado en la oficina de correos hoy.", options: ["still", "yet", "already", "no more"], correct: 2 },
     { question: "I ____ visited Mexico before.", translation: "Yo ____ he visitado México antes.", options: ["will", "am", "have", "do"], correct: 2 },
     { question: "Do you want cake ____ pie for dessert?", translation: "¿Quieres pastel ____ tarta de postre?", options: ["instead of", "except for", "like", "around"], correct: 0 },
     { question: "Sue: Is John still living in Dallas? Ann: No, John ____ in Chicago for five years now.", translation: "Sue: ¿John sigue viviendo en Dallas? Ann: No, John ____ en Chicago desde hace cinco años.", options: ["is living", "will live", "lived", "has lived"], correct: 3 },
@@ -931,7 +955,56 @@
     { question: "Tina ____ 15 letters since 10 o'clock this morning.", translation: "Tina ____ 15 cartas desde las 10 de la mañana.", options: ["typed", "is typing", "will type", "has typed"], correct: 3 },
     { question: "When I was a child, my parents ____ read to me every night.", translation: "Cuando era niño, mis padres me ____ todas las noches.", options: ["will", "would", "may", "can"], correct: 1 },
     { question: "I want to live in the ____ because there are few people and lots of animals.", translation: "Quiero vivir en el ____ porque hay poca gente y muchos animales.", options: ["building", "sea", "city", "country"], correct: 3 },
-    { question: "Sue: What are you learning in math class? Ann: We're learning how to do division. Ted: What did Ann say? Sue: She said ____ how to do division.", translation: "Sue: ¿Qué estás aprendiendo en clase de matemáticas? Ann: Estamos aprendiendo a dividir. Ted: ¿Qué dijo Ann? Sue: Dijo que ____ a dividir.", options: ["we were learning", "were learning", "they were learning", "we learn"], correct: 2 }
+    { question: "Yes, it was in the ______.", translation: "¿Tuvieron la fiesta al aire libre?", options: ["park", "house", "gym", "barracks"], correct: 0 },
+    { question: "He is ______ a driver.", translation: "Tom siempre conduce demasiado rápido", options: ["dangerous", "calm", "technical", "polite"], correct: 0 },
+    { question: "No, I ______ last week.", translation: "¿Sigues trabajando?", options: ["practiced", "retired", "hunted", "fished"], correct: 1 },
+    { question: "Yes, it's ______ outside.", translation: "¿Está fría el agua del río?", options: ["dark", "humid", "quiet", "freezing"], correct: 3 },
+    { question: "We bought them for our ______.", translation: "¿Por qué compraste una mesa y sillas nuevas?", options: ["bathroom", "garage", "shed", "dining room"], correct: 3 },
+    { question: "No, I can't ______ anything.", translation: "¿Tienes alguna idea?", options: ["replace", "work on", "think of", "deposit"], correct: 2 },
+    { question: "Yes, he had a ______.", translation: "¿Tenía el hombre un arma?", options: ["knife", "checkbook", "schedule", "job"], correct: 0 },
+    { question: "Yes, I ______ last year.", translation: "¿Terminaste tu carrera en matemáticas?", options: ["graduated", "returned", "traveled", "moved"], correct: 0 },
+    { question: "Yes, the house has a new ______.", translation: "¿Tienes suficientes habitaciones en tu casa para todos tus hijos?", options: ["addition", "fireplace", "offer", "gauge"], correct: 0 },
+    { question: "Yes, she ______ there.", translation: "¿Sigue Mary en Italia?", options: ["plans to go", "left", "refused to go", "is staying"], correct: 3 },
+    { question: "Yes, he ______ every day.", translation: "¿Está tu hijo aprendiendo a nadar?", options: ["runs", "hunts", "fishes", "practices"], correct: 3 },
+    { question: "No, I have a different ______ now.", translation: "¿Sigues siendo profesor?", options: ["stereo", "career", "builder", "neighbor"], correct: 1 },
+    { question: "The ______ is terrible.", translation: "¿Qué tal el clima en Texas?", options: ["education", "heat", "course", "decision"], correct: 1 },
+    { question: "No, he doesn't like to ______ animals.", translation: "¿A tu padre le gusta cazar?", options: ["hurt", "shake", "draw", "care for"], correct: 0 },
+    { question: "He hasn't ______ it with me.", translation: "¿Te dijo Tom que se va de vacaciones pronto?", options: ["played", "left", "discussed", "practiced"], correct: 2 },
+    { question: "Okay, I'll ______.", translation: "Vas a quemar la comida", options: ["pass out the candy", "buy some milk", "cut the potatoes", "turn off the stove"], correct: 3 },
+    { question: "Yes, we need to ______ more.", translation: "¿Necesitamos tener otra reunión sobre este problema?", options: ["eat", "buy", "relax", "talk"], correct: 3 },
+    { question: "Yes, it ______.", translation: "¿Rechazaste el trabajo?", options: ["was boring", "was interesting", "had a good schedule", "paid well"], correct: 0 },
+    { question: "It's usually ______.", translation: "¿Cómo es el clima en tu país?", options: ["cold and wet", "flat and boring", "entertaining", "salty and greasy"], correct: 0 },
+    { question: "______", translation: "¿Cuántas veces llamó tu jefe hoy?", options: ["Perhaps", "Again", "Twice", "Really"], correct: 2 },
+    { question: "Yes, we can go if I don't have to work.", translation: "¿Podremos ir al nuevo restaurante este fin de semana?", options: ["I've decided to get the apartment.", "Yes, we can go if I don't have to work.", "Maybe it's open on Mondays.", "Yes, I used to cook every weekend."], correct: 1 },
+    { question: "No, I've decided to buy a new one.", translation: "¿Vas a arreglar tu coche?", options: ["I used to go to that mechanic.", "No, I've decided to buy a new one.", "Yes, the car might be for sale.", "If it rains, I'm going to drive."], correct: 1 },
+    { question: "He might be at home with a cold.", translation: "No veo a Mark aquí.", options: ["If we're sick, we won't go.", "He might be at home with a cold.", "I've decided to bake a cake.", "He used to work at a mall."], correct: 1 },
+    { question: "Yes, I used to work out at the gym.", translation: "¿Hiciste mucho ejercicio cuando estabas en la universidad?", options: ["No, I might run next weekend.", "Yes, I've decided to run every day.", "Yes, I used to work out at the gym.", "If I have time, I'll go to the gym."], correct: 2 },
+    { question: "She's ______.", translation: "Sue, ¿por qué lloras?", options: ["hungry", "angry", "unhappy", "careful"], correct: 2 },
+    { question: "John runs ______ than Jim does.", translation: "John corre ______ que Jim.", options: ["slower", "the slowest", "slowest", "slow"], correct: 0 },
+    { question: "If Ron is home this weekend, he ______ you a call.", translation: "Si Ron está en casa este fin de semana, te ______ una llamada.", options: ["gives", "was giving", "gave", "will give"], correct: 3 },
+    { question: "Tom's dog got loose but he was able to ______ it again.", translation: "El perro de Tom se soltó pero pudo ______ de nuevo.", options: ["spend", "accept", "solve", "catch"], correct: 3 },
+    { question: "Ann didn't have enough cash, ______ she wrote a check.", translation: "Ann no tenía suficiente efectivo, ______ escribió un cheque.", options: ["since", "or", "so", "and"], correct: 2 },
+    { question: "I like soccer. It's ______.", translation: "Me gusta el fútbol. Es ______.", options: ["excite", "exciting", "excited", "to excite"], correct: 1 },
+    { question: "Sue has math ______ in school this year.", translation: "Sue tiene ______ de matemáticas en la escuela este año.", options: ["meetings", "courses", "speakers", "signals"], correct: 1 },
+    { question: "Have you ever ______ 800 miles in a day?", translation: "¿Alguna vez has ______ 800 millas en un día?", options: ["drive", "drove", "driving", "driven"], correct: 3 },
+    { question: "Ted might call his friend, ______ he may write him a letter.", translation: "Ted podría llamar a su amigo, ______ puede escribirle una carta.", options: ["while", "so", "or", "since"], correct: 2 },
+    { question: "The leaves on the trees are not moving. There is no ______ today.", translation: "Las hojas de los árboles no se mueven. No hay ______ hoy.", options: ["heat", "country", "wind", "humidity"], correct: 2 },
+    { question: "Dan's not ______ in that book.", translation: "Dan no está ______ en ese libro.", options: ["interested", "to interest", "interest", "interesting"], correct: 0 },
+    { question: "Pat: Are you living in the same apartment? Ted: No, we moved. We ______ live there.", translation: "Pat: ¿Vives en el mismo apartamento? Ted: No, nos mudamos. Ya no ______ vivimos allí.", options: ["still", "no longer", "anymore", "no more"], correct: 1 },
+    { question: "Be very careful with ______ or you could hurt someone badly.", translation: "Ten mucho cuidado con ______ o podrías herir a alguien gravemente.", options: ["diplomas", "fish", "humidity", "guns"], correct: 3 },
+    { question: "Pat: Do you know Mr. Smith? Ted: Yes, I ______ Mr. Smith for five years.", translation: "Pat: ¿Conoces al Sr. Smith? Ted: Sí, ______ al Sr. Smith desde hace cinco años.", options: ["know", "will know", "have known", "am knowing"], correct: 2 },
+    { question: "If you ______ out the window, you can see the sun.", translation: "Si ______ por la ventana, puedes ver el sol.", options: ["were looking", "looked", "look", "looking"], correct: 2 },
+    { question: "Bill started his homework 15 minutes ago, and he is ______ finished.", translation: "Bill empezó su tarea hace 15 minutos, y ______ ha terminado.", options: ["still", "yet", "already", "no longer"], correct: 2 },
+    { question: "When I worked in an office, I ______ make lots of phone calls.", translation: "Cuando trabajaba en una oficina, ______ hacer muchas llamadas telefónicas.", options: ["will", "used to", "was going to", "have to"], correct: 1 },
+    { question: "Kim ______ for John since 1 p.m.", translation: "Kim ______ a John desde la 1 p.m.", options: ["is waiting", "has waited", "waited", "will wait"], correct: 1 },
+    { question: "After my operation, I was out of shape. Everything I did was very ______.", translation: "Después de mi operación, estaba fuera de forma. Todo lo que hacía era muy ______.", options: ["tiring", "frightening", "boring", "confusing"], correct: 0 },
+    { question: "Pat: What do you want to do today? Ted: I'm going to ride my bike. Jim: What did Ted say? Pat: He said ______ to ride his bike today.", translation: "Pat: ¿Qué quieres hacer hoy? Ted: Voy a montar en mi bicicleta. Jim: ¿Qué dijo Ted? Pat: Dijo que ______ a montar en su bicicleta hoy.", options: ["was going", "he was going", "he going", "is going"], correct: 1 },
+    { question: "Bob ______ been to New York before.", translation: "Bob ______ ha estado en Nueva York antes.", options: ["is", "does", "has", "will"], correct: 2 },
+    { question: "I have been working very hard this year. I ______ a vacation.", translation: "He estado trabajando muy duro este año. ______ unas vacaciones.", options: ["could use", "think over", "take place", "talk over"], correct: 0 },
+    { question: "When I was a student, I ______ go to class every day.", translation: "Cuando era estudiante, ______ ir a clase todos los días.", options: ["would", "will", "may", "can"], correct: 0 },
+    { question: "Pat: I don't see Mary at the party. Where is she? Ted: I don't know. She ______ have other things to do.", translation: "Pat: No veo a Mary en la fiesta. ¿Dónde está? Ted: No lo sé. ______ tener otras cosas que hacer.", options: ["will", "can", "would", "could"], correct: 3 },
+    { question: "Can you help me ______ this math problem?", translation: "¿Puedes ayudarme a ______ este problema de matemáticas?", options: ["accept", "clear", "retire", "solve"], correct: 3 },
+    { question: "Pat: How was your test? Ted: I'm not happy with my test score. Jim: What did Ted say? Pat: He said ______ happy with his test score.", translation: "Pat: ¿Cómo estuvo tu examen? Ted: No estoy contento con la nota de mi examen. Jim: ¿Qué dijo Ted? Pat: Dijo que ______ contento con la nota de su examen.", options: ["he won't be", "I'm not", "he wasn't", "I was't"], correct: 2 }
 ];
 
         // Global variables
@@ -977,7 +1050,7 @@
                 
                 <div id="startScreen" style="text-align: center; padding: 60px 30px;">
                     <h2 style="font-size: 2.2em; margin-bottom: 20px; color: #2c3e50;">Quick English Assessment</h2>
-                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">A focused 25-question quiz covering essential English grammar, vocabulary, and conversation skills. Perfect for a quick practice session!</p>
+                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">A focused 75-question quiz covering essential English grammar, vocabulary, and conversation skills. Perfect for a quick practice session!</p>
                     <button class="start-btn" onclick="startQuickQuiz()">Start Quiz 🚀</button>
                 </div>
 
@@ -986,7 +1059,7 @@
                         <div style="width: 100%; height: 10px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
                             <div style="height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); width: 0%; transition: width 0.3s ease; border-radius: 10px;" id="progressFill"></div>
                         </div>
-                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 25</div>
+                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 75</div>
                     </div>
                     
                     <div style="padding: 40px 30px; min-height: 400px;">
@@ -1124,6 +1197,7 @@
 
         function startQuickQuiz() {
             currentQuestions = quickQuestions;
+            console.log('Quick Quiz loaded with:', currentQuestions.length, 'questions.');
             currentQuestion = 0;
             selectedAnswers = [];
             score = 0;
@@ -1132,6 +1206,7 @@
 
         function startComprehensiveQuiz() {
             currentQuestions = comprehensiveQuestions;
+            console.log('Comprehensive Quiz loaded with:', currentQuestions.length, 'questions.');
             currentQuestion = 0;
             selectedAnswers = [];
             score = 0;
@@ -1324,7 +1399,7 @@
             const date = new Date().toLocaleDateString();
             ctx.fillText(`Completed on: ${date}`, 400, 500);
             
-            const quizType = currentQuestions.length === 25 ? 'Quick' : 'Comprehensive';
+            const quizType = currentQuestions.length === 75 ? 'Quick' : 'Comprehensive';
             ctx.font = '20px Arial';
             ctx.fillText(`${quizType} English Quiz Results`, 400, 530);
             
@@ -1341,6 +1416,14 @@
             selectedAnswers = [];
             score = 0;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('quickQuizBtn').addEventListener('click', () => startQuiz('quick'));
+            document.getElementById('comprehensiveQuizBtn').addEventListener('click', () => startQuiz('comprehensive'));
+            document.getElementById('vocabQuiz25').addEventListener('click', () => startQuiz('vocabulary', 25));
+            document.getElementById('vocabQuiz50').addEventListener('click', () => startQuiz('vocabulary', 50));
+            document.getElementById('vocabQuiz100').addEventListener('click', () => startQuiz('vocabulary', 100));
+        });
     </script>
 </body>
 </html>
