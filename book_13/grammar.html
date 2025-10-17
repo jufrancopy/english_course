@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Playground - Book 13</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            color: #333; 
+        }
+        .container { 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.95); 
+            min-height: 100vh; 
+            box-shadow: 0 0 40px rgba(0,0,0,0.1); 
+        }
+        .header { 
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+            color: white; 
+            padding: 30px; 
+            text-align: center; 
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .sidebar { 
+            position: fixed; 
+            left: 0; 
+            top: 120px; 
+            width: 300px; 
+            height: calc(100vh - 120px); 
+            background: #f8f9fa; 
+            border-right: 2px solid #e9ecef; 
+            overflow-y: auto; 
+            padding: 20px; 
+            z-index: 100; 
+        }
+        .main-content { 
+            margin-left: 320px; 
+            padding: 40px; 
+            min-height: calc(100vh - 160px); 
+        }
+        .topic-item { 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: white; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            border-left: 4px solid #4facfe; 
+        }
+        .topic-item:hover { background: #e3f2fd; transform: translateX(5px); }
+        .topic-item.active { background: #4facfe; color: white; }
+        .topic-title { font-weight: 600; margin-bottom: 5px; }
+        .topic-desc { font-size: 0.9em; color: #666; }
+        .topic-item.active .topic-desc { color: rgba(255,255,255,0.8); }
+        .lesson-content { display: none; }
+        .lesson-content.active { display: block; }
+        .lesson-header { 
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+        }
+        .lesson-title { font-size: 2.2em; color: #2c3e50; margin-bottom: 10px; }
+        .lesson-subtitle { font-size: 1.2em; color: #7f8c8d; }
+        .explanation-box { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin: 20px 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            border-left: 5px solid #4facfe; 
+        }
+        .example-box { 
+            background: #e8f5e8; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border-left: 4px solid #28a745; 
+        }
+        .grammar-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: white; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        .grammar-table th { 
+            background: #4facfe; 
+            color: white; 
+            padding: 15px; 
+            text-align: left; 
+        }
+        .grammar-table td { 
+            padding: 15px; 
+            border-bottom: 1px solid #e9ecef; 
+        }
+        .grammar-table tr:hover { background: #f8f9fa; }
+        .back-btn-flotante {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #ff6a88 0%, #ff99ac 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .back-btn-flotante:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-btn-flotante">← Volver a los Quizzes</a>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Grammar Playground - Book 13</h1>
+            <p>Interactive grammar based on the contents of Book 13.</p>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <div class="topic-item active" onclick="showLesson('adverbios-comparativos')">
+                <div class="topic-title">Adverbios Comparativos</div>
+                <div class="topic-desc">Adverbios de una sílaba</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('sufijos-agente')">
+                <div class="topic-title">Sufijos -ER y -OR</div>
+                <div class="topic-desc">Sustantivos de Agente</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('modales-indirecto')">
+                <div class="topic-title">Modales en Discurso Indirecto</div>
+                <div class="topic-desc">Reported Speech</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('could-permiso')">
+                <div class="topic-title">Uso de Could para Permiso</div>
+                <div class="topic-desc">Solicitar permiso</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('uso-de-so')">
+                <div class="topic-title">Uso de "so"</div>
+                <div class="topic-desc">Sustituto de cláusula "that"</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('preguntas-how')">
+                <div class="topic-title">Preguntas con HOW + Adjetivo</div>
+                <div class="topic-desc">Preguntar sobre cualidades</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('clausula-that')">
+                <div class="topic-title">Cláusula "That" después de Adjetivos</div>
+                <div class="topic-desc">Expresar opinión segura</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('sustantivos-adjuntos')">
+                <div class="topic-title">Sustantivos Adjuntos</div>
+                <div class="topic-desc">Noun Adjuncts</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('repaso-modales')">
+                <div class="topic-title">Repaso de Modales</div>
+                <div class="topic-desc">Posibilidad, Habilidad, Permiso</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('phrasal-verbs')">
+                <div class="topic-title">Phrasal Verbs</div>
+                <div class="topic-desc">Verbos Frasales</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('condicional-cero')">
+                <div class="topic-title">Condicional Tipo Cero</div>
+                <div class="topic-desc">If Clauses</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('pronombres-indefinidos')">
+                <div class="topic-title">Pronombres Indefinidos</div>
+                <div class="topic-desc">De Cantidad</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Adverbios Comparativos Lesson -->
+            <div id="adverbios-comparativos" class="lesson-content active">
+                <div class="lesson-header">
+                    <div class="lesson-title">Adverbios de una sílaba</div>
+                    <div class="lesson-subtitle">Formas comparativas y superlativas</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Comparativos y Superlativos</h3>
+                    <p>Se usan las formas -er (comparativo) y -est (superlativo) con los adverbios de una sílaba.</p>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <tr><th>Adverbio Base</th><th>Forma Comparativa (+er + (than))</th><th>Forma Superlativa (the +est)</th></tr>
+                        <tr><td>early</td><td>earlier (than)</td><td>the earliest</td></tr>
+                        <tr><td>far</td><td>farther (than) / further (than)</td><td>the farthest / the furthest</td></tr>
+                        <tr><td>hard</td><td>harder (than)</td><td>the hardest</td></tr>
+                        <tr><td>high</td><td>higher (than)</td><td>the highest</td></tr>
+                        <tr><td>late</td><td>later (than)</td><td>the latest</td></tr>
+                        <tr><td>low</td><td>lower (than)</td><td>the lowest</td></tr>
+                        <tr><td>near</td><td>nearer (than)</td><td>the nearest</td></tr>
+                        <tr><td>slow</td><td>slower (than)</td><td>the slowest</td></tr>
+                        <tr><td>soon</td><td>sooner (than)</td><td>the soonest</td></tr>
+                        <tr><td>straight</td><td>straighter (than)</td><td>the straightest</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sufijos -ER y -OR Lesson -->
+            <div id="sufijos-agente" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Sufijos -ER y -OR (Sustantivos de Agente)</div>
+                    <div class="lesson-subtitle">Crear sustantivos a partir de verbos</div>
+                </div>
+                <div class="explanation-box">
+                    <p>El sufijo -er o -or se añade a algunos verbos para crear sustantivos que expresan el significado de "one who" (aquel que) o "that which" (aquello que) realiza la acción.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Ejemplos:</h4>
+                    <p>teach (enseñar) → <strong>teacher</strong> (maestro/a, uno que enseña)</p>
+                    <p>collect (coleccionar) → <strong>collector</strong> (coleccionista, uno que colecciona)</p>
+                    <p>Otros ejemplos: visitor, educator, instructor.</p>
+                </div>
+            </div>
+
+            <!-- Modales en Discurso Indirecto Lesson -->
+            <div id="modales-indirecto" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Modales en Discurso Indirecto (Reported Speech)</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Cuando se utiliza un modal en el discurso directo (presente), a menudo cambia a una forma pasada en el discurso indirecto.</p>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <tr><th>Discurso Directo (Presente)</th><th>Discurso Indirecto (Pasado)</th></tr>
+                        <tr><td>may</td><td>might</td></tr>
+                        <tr><td>might</td><td>might (no cambia)</td></tr>
+                        <tr><td>can</td><td>could</td></tr>
+                        <tr><td>could</td><td>could (no cambia)</td></tr>
+                        <tr><td>am/is/are able to</td><td>was/were able to</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Uso de Could para Permiso Lesson -->
+            <div id="could-permiso" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Uso de Could para Permiso</div>
+                </div>
+                <div class="explanation-box">
+                    <p>La palabra <strong>Could</strong> se usa frecuentemente para solicitar permiso, de manera similar a <strong>may</strong> y <strong>can</strong>.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Peticiones de permiso con Could:</h4>
+                    <p>"Could I borrow your book, please?"</p>
+                    <p>"Could I leave early today?"</p>
+                    <h4>Respuestas:</h4>
+                    <p>Las respuestas suelen ser con <strong>Can</strong> o <strong>Can't</strong>.</p>
+                    <p><strong>Afirmativa:</strong> "Yes, of course you can."</p>
+                    <p><strong>Negativa:</strong> "I'm sorry. You can't."</p>
+                </div>
+            </div>
+
+            <!-- Uso de So Lesson -->
+            <div id="uso-de-so" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Uso de "so" como Sustituto de una Cláusula "That"</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Se utiliza <strong>so</strong> después de algunos verbos como un sustituto de una cláusula que comienza con "that".</p>
+                    <p>Verbos comunes seguidos por so: <strong>think, guess, hope, imagine, suppose</strong>.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Ejemplo 1:</h4>
+                    <p><strong>Pregunta:</strong> "Will Jack come to the party?"</p>
+                    <p><strong>Respuesta:</strong> "I think so." (Equivalente a: "I think that Jack will come.")</p>
+                    <h4>Ejemplo 2:</h4>
+                    <p><strong>Pregunta:</strong> "Has Bill finished his work?"</p>
+                    <p><strong>Respuesta:</strong> "I hope so." (Equivalente a: "I hope that Bill has finished his work.")</p>
+                    <h4>Negación:</h4>
+                    <p>La negación depende del verbo (ej. I don't think so, I don't believe so). Una excepción es <strong>hope not</strong> (I hope not).</p>
+                </div>
+            </div>
+
+            <!-- Preguntas con HOW + Adjetivo Lesson -->
+            <div id="preguntas-how" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Preguntas con HOW + Adjetivo</div>
+                </div>
+                <div class="explanation-box">
+                    <p>La palabra de pregunta <strong>how</strong> se usa a menudo con adjetivos para preguntar sobre cualidades específicas.</p>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <tr><th>Pregunta con How + Adjetivo</th><th>Propósito</th></tr>
+                        <tr><td>How long</td><td>Pregunta sobre <strong>length</strong> (longitud)</td></tr>
+                        <tr><td>How high</td><td>Pregunta sobre <strong>height</strong> (altura, para algo sobre el suelo)</td></tr>
+                        <tr><td>How tall</td><td>Pregunta sobre <strong>height</strong> (altura, para alguien o algo desde el suelo)</td></tr>
+                        <tr><td>How far</td><td>Pregunta sobre <strong>distance</strong> (distancia)</td></tr>
+                        <tr><td>How wide</td><td>Pregunta sobre <strong>width</strong> (ancho)</td></tr>
+                        <tr><td>How deep</td><td>Pregunta sobre <strong>depth</strong> (profundidad)</td></tr>
+                        <tr><td>How old</td><td>Pregunta sobre <strong>age</strong> (edad)</td></tr>
+                        <tr><td>How heavy</td><td>Pregunta sobre <strong>weight</strong> (peso)</td></tr>
+                        <tr><td>How hot/cold</td><td>Pregunta sobre <strong>temperature</strong> (temperatura)</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cláusula That después de Adjetivos Lesson -->
+            <div id="clausula-that" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Cláusula "That" después de Adjetivos</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Se utiliza una cláusula <strong>that</strong> después de los adjetivos <strong>certain, sure</strong> y <strong>positive</strong> para expresar una opinión segura sobre alguien o algo.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Ejemplos:</h4>
+                    <p>"I'm <strong>certain that</strong> I can go this weekend."</p>
+                    <p>"He's <strong>sure that</strong> he'll pass the test."</p>
+                    <p>"We're <strong>positive that</strong> we'll have enough money for the car."</p>
+                    <p><strong>Nota:</strong> La conjunción "that" se omite con frecuencia en la conversación.</p>
+                </div>
+            </div>
+
+            <!-- Sustantivos Adjuntos Lesson -->
+            <div id="sustantivos-adjuntos" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Sustantivos Adjuntos (Noun Adjuncts)</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Los sustantivos también pueden modificar a otros sustantivos. En este caso, actúan como si fueran adjetivos.</p>
+                    <p><strong>Regla:</strong> El primer sustantivo (el modificador) siempre está en singular.</p>
+                </div>
+                <div class="example-box">
+                    <h4>Ejemplos:</h4>
+                    <p>Una tienda de zapatos → a <strong>shoe</strong> store (el sustantivo <i>shoe</i> -singular- modifica a <i>store</i>)</p>
+                    <p>Conductor de camión → a <strong>truck</strong> driver</p>
+                    <p>Anillo de bodas → a <strong>wedding</strong> ring</p>
+                </div>
+            </div>
+
+            <!-- Repaso de Modales Lesson -->
+            <div id="repaso-modales" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Repaso de Modales</div>
+                    <div class="lesson-subtitle">Posibilidad, Habilidad, Permiso</div>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <tr><th>Uso</th><th>Modales</th><th>Ejemplos</th></tr>
+                        <tr><td><strong>Posibilidad</strong></td><td>May, might, could</td><td>"He may be in his office." / "He could be at home."</td></tr>
+                        <tr><td><strong>Habilidad</strong></td><td>can, is/am/are able to (Presente)<br>could, was/were able to (Pasado)</td><td>"She can speak three languages."<br>"I couldn't swim when I was young."</td></tr>
+                        <tr><td><strong>Permiso</strong></td><td>May, can, could</td><td>"May I come in?" / "Could I use your phone?"</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Phrasal Verbs Lesson -->
+            <div id="phrasal-verbs" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Phrasal Verbs (Verbos Frasales)</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Un <i>phrasal verb</i> es un verbo y un adverbio que juntos tienen un significado especial.</p>
+                    <h4>Posición del objeto (sustantivo):</h4>
+                    <p>Si el objeto es un sustantivo, puede ir antes o después del adverbio.</p>
+                    <p><i>He turned the radio on.</i> / <i>He turned on the radio.</i></p>
+                    <h4>Posición del objeto (pronombre):</h4>
+                    <p>Si el objeto es un pronombre (it, her, him, etc.), <strong>debe</strong> ir entre el verbo y el adverbio.</p>
+                    <p><strong>Correcto:</strong> I'll look <strong>it</strong> up. / Don't wake <strong>her</strong> up.</p>
+                    <p><strong>Incorrecto:</strong> <del>I'll look up it.</del></p>
+                </div>
+            </div>
+
+            <!-- Condicional Tipo Cero Lesson -->
+            <div id="condicional-cero" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Cláusulas Condicionales de Tipo Cero</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Ciertas oraciones condicionales con <strong>IF</strong> (si) expresan algo que es cierto (hechos, verdades universales, hábitos).</p>
+                    <p>El presente simple se puede usar en la cláusula IF y el imperativo o presente simple en la cláusula principal (la del resultado).</p>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <tr><th>IF-CLAUSE (condición)</th><th>MAIN CLAUSE (resultado)</th></tr>
+                        <tr><td>If the TV doesn't work,</td><td><strong>push this button.</strong> (Imperativo)</td></tr>
+                        <tr><td>If I get up at 0600,</td><td><strong>I get to work on time.</strong> (Presente simple)</td></tr>
+                        <tr><td>If I don't eat lunch,</td><td><strong>I become hungry by 2:00 p.m.</strong> (Presente simple)</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pronombres Indefinidos Lesson -->
+            <div id="pronombres-indefinidos" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Pronombres Indefinidos de Cantidad</div>
+                </div>
+                <div class="explanation-box">
+                    <h4>Grandes Cantidades</h4>
+                    <p><strong>Many:</strong> se usa para sustantivos contables. ("many books")</p>
+                    <p><strong>Much:</strong> se usa para sustantivos no contables, usualmente en oraciones negativas. ("I don't have much time.")</p>
+                    <p><strong>A lot:</strong> se usa para sustantivos contables y no contables. ("a lot of people", "a lot of water")</p>
+                    <h4>Pequeñas Cantidades</h4>
+                    <p><strong>A few:</strong> se usa para sustantivos contables. ("a few questions")</p>
+                    <p><strong>A little:</strong> se usa para sustantivos no contables. ("a little sugar")</p>
+                    <h4>Cantidades Generales</h4>
+                    <p><strong>Some:</strong> en afirmaciones y preguntas (ofrecer/pedir). ("some coffee")</p>
+                    <p><strong>Any:</strong> en negaciones y preguntas. ("Do you have any questions?")</p>
+                    <p><strong>None:</strong> en afirmaciones con significado negativo. ("None of the students failed.")</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showLesson(topicId) {
+            document.querySelectorAll('.lesson-content').forEach(lesson => lesson.classList.remove('active'));
+            document.querySelectorAll('.topic-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(topicId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
