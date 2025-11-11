@@ -200,24 +200,61 @@
         }
         
         @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .header p {
+                font-size: 1em;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 80px 15px 20px 15px; /* Add padding top for mobile toggle */
+            }
+            .lesson-header {
+                padding: 20px;
+            }
+            .lesson-title {
+                font-size: 1.6em;
+            }
+            .lesson-subtitle {
+                font-size: 1em;
+            }
+            .explanation-box, .practice-area, .visual-diagram, .example-box {
+                padding: 15px;
+            }
             .sidebar { 
                 transform: translateX(-100%); 
                 transition: transform 0.3s ease;
+                width: 85%; /* Ocupar más pantalla */
+                max-width: 320px;
+                top: 0;
+                height: 100%;
+                padding-top: 60px; /* Space for toggle button */
+                z-index: 1000;
             }
             .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 20px; }
-            .mobile-toggle { 
+            .mobile-toggle { LAG
                 display: block; 
                 position: fixed; 
-                top: 20px; 
-                left: 20px; 
+                top: 15px; 
+                left: 15px; 
                 background: #4facfe; 
                 color: white; 
                 border: none; 
                 padding: 10px 15px; 
-                border-radius: 5px; 
+                border-radius: 8px; 
                 cursor: pointer; 
-                z-index: 300; 
+                z-index: 1100; /* Above sidebar */
+            }
+            .back-btn-flotante {
+                font-size: 1em;
+                padding: 12px 20px;
+                bottom: 15px;
+                left: 15px;
+                border-radius: 30px;
             }
         }
     </style>
@@ -233,624 +270,464 @@
         <button class="mobile-toggle" onclick="toggleSidebar()">☰ Topics</button>
 
         <div class="sidebar" id="sidebar">
-            <div class="topic-item active" onclick="showLesson('present-simple')">
-                <div class="topic-title">Present Simple</div>
-                <div class="topic-desc">Basic present tense forms</div>
+            <div class="topic-item active" onclick="showLesson('comparaciones-as-as')">
+                <div class="topic-title">Comparaciones con "As... As"</div>
+                <div class="topic-desc">Igualdad con adjetivos y adverbios</div>
             </div>
-            <div class="topic-item" onclick="showLesson('present-continuous')">
-                <div class="topic-title">Present Continuous</div>
-                <div class="topic-desc">Actions happening now</div>
+            <div class="topic-item" onclick="showLesson('adverbios-tiempo')">
+                <div class="topic-title">Adverbios de Tiempo: "Just" y "Soon"</div>
+                <div class="topic-desc">Acciones recientes y futuras</div>
             </div>
-            <div class="topic-item" onclick="showLesson('past-simple')">
-                <div class="topic-title">Past Simple</div>
-                <div class="topic-desc">Completed actions</div>
+            <div class="topic-item" onclick="showLesson('futuro-progresivo')">
+                <div class="topic-title">Tiempo Verbal: Futuro Progresivo</div>
+                <div class="topic-desc">Acciones en progreso en el futuro</div>
             </div>
-            <div class="topic-item" onclick="showLesson('present-perfect')">
-                <div class="topic-title">Present Perfect</div>
-                <div class="topic-desc">Past actions with present relevance</div>
+            <div class="topic-item" onclick="showLesson('sustantivos-plurales')">
+                <div class="topic-title">Sustantivos Contables Plurales</div>
+                <div class="topic-desc">Formación de plurales</div>
             </div>
-            <div class="topic-item" onclick="showLesson('future-tenses')">
-                <div class="topic-title">Future Tenses</div>
-                <div class="topic-desc">Plans and predictions</div>
+            <div class="topic-item" onclick="showLesson('pronunciacion-plural')">
+                <div class="topic-title">Pronunciación del Plural Regular (-s / -es)</div>
+                <div class="topic-desc">Sonidos /Iz/, /s/, /z/</div>
             </div>
-            <div class="topic-item" onclick="showLesson('modal-verbs')">
-                <div class="topic-title">Modal Verbs</div>
-                <div class="topic-desc">Can, should, must, etc.</div>
+            <div class="topic-item" onclick="showLesson('clausulas-adjetivas')">
+                <div class="topic-title">Cláusulas Adjetivas con "Where" y "When"</div>
+                <div class="topic-desc">Modificando sustantivos de lugar y tiempo</div>
             </div>
-            <div class="topic-item" onclick="showLesson('conditionals')">
-                <div class="topic-title">Conditionals</div>
-                <div class="topic-desc">If clauses and possibilities</div>
+            <div class="topic-item" onclick="showLesson('adverbios-grado')">
+                <div class="topic-title">Adverbios de Grado</div>
+                <div class="topic-desc">Intensificando adjetivos y adverbios</div>
             </div>
-            <div class="topic-item" onclick="showLesson('passive-voice')">
-                <div class="topic-title">Passive Voice</div>
-                <div class="topic-desc">Focus on action, not doer</div>
+            <div class="topic-item" onclick="showLesson('condicionales-if')">
+                <div class="topic-title">Oraciones Condicionales con "If"</div>
+                <div class="topic-desc">Condiciones y resultados</div>
             </div>
-            <div class="topic-item" onclick="showLesson('reported-speech')">
-                <div class="topic-title">Reported Speech</div>
-                <div class="topic-desc">Telling what others said</div>
+            <div class="topic-item" onclick="showLesson('modales-obligacion')">
+                <div class="topic-title">Modales de Obligación, Necesidad y Prohibición</div>
+                <div class="topic-desc">Must, have to, must not</div>
             </div>
-            <div class="topic-item" onclick="showLesson('relative-clauses')">
-                <div class="topic-title">Relative Clauses</div>
-                <div class="topic-desc">Who, which, that, where</div>
+            <div class="topic-item" onclick="showLesson('modales-probabilidad')">
+                <div class="topic-title">Modales de Probabilidad, Deducción y Conclusión</div>
+                <div class="topic-desc">Must, may, might, could</div>
             </div>
-            <div class="topic-item" onclick="showLesson('phrasal-verbs')">
-                <div class="topic-title">Phrasal Verbs</div>
-                <div class="topic-desc">Verbs with prepositions</div>
+            <div class="topic-item" onclick="showLesson('expresion-futuro')">
+                <div class="topic-title">Expresión del Tiempo Futuro</div>
+                <div class="topic-desc">Will, be going to, peticiones corteses</div>
             </div>
-            <div class="topic-item" onclick="showLesson('articles')">
-                <div class="topic-title">Articles</div>
-                <div class="topic-desc">A, an, the usage</div>
+            <div class="topic-item" onclick="showLesson('gerundios')">
+                <div class="topic-title">Gerundios</div>
+                <div class="topic-desc">Usos como sustantivo y combinaciones</div>
             </div>
-            <div class="topic-item" onclick="showLesson('prepositions')">
-                <div class="topic-title">Prepositions</div>
-                <div class="topic-desc">In, on, at, by, etc.</div>
+            <div class="topic-item" onclick="showLesson('adverbios-irregulares')">
+                <div class="topic-title">Adverbios Irregulares</div>
+                <div class="topic-desc">Comparativos y superlativos irregulares</div>
             </div>
-            <div class="topic-item" onclick="showLesson('question-formation')">
-                <div class="topic-title">Question Formation</div>
-                <div class="topic-desc">How to ask questions</div>
+            <div class="topic-item" onclick="showLesson('estilo-indirecto')">
+                <div class="topic-title">Estilo Indirecto (Reported Speech) y Modales</div>
+                <div class="topic-desc">Cambios de modales en Reported Speech</div>
             </div>
-            <div class="topic-item" onclick="showLesson('comparative-superlative')">
-                <div class="topic-title">Comparatives & Superlatives</div>
-                <div class="topic-desc">Better, best, more, most</div>
+            <div class="topic-item" onclick="showLesson('modales-aconsejar')">
+                <div class="topic-title">Modales para Aconsejar: Should y Ought to</div>
+                <div class="topic-desc">Consejos y recomendaciones</div>
             </div>
         </div>
 
         <div class="main-content">
-            <!-- Present Simple Lesson -->
-            <div id="present-simple" class="lesson-content active">
+            <!-- 1. Comparaciones con "As... As" -->
+            <div id="comparaciones-as-as" class="lesson-content active">
                 <div class="lesson-header">
-                    <div class="lesson-title">Present Simple</div>
-                    <div class="lesson-subtitle">Actions that happen regularly or are always true</div>
+                    <div class="lesson-title">1. Comparaciones con "As... As"</div>
+                    <div class="lesson-subtitle">Igualdad con adjetivos y adverbios</div>
                 </div>
-
                 <div class="explanation-box">
-                    <h3>¿Qué es el Present Simple? / What is Present Simple?</h3>
-                    <p>El Present Simple se usa para hablar de acciones habituales, hechos generales y verdades universales.</p>
-                    <p><strong>We use Present Simple for:</strong></p>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li>Habits and routines (hábitos y rutinas)</li>
-                        <li>General facts (hechos generales)</li>
-                        <li>Permanent situations (situaciones permanentes)</li>
-                        <li>Scheduled events (eventos programados)</li>
-                    </ul>
+                    <h3>Regla y Uso</h3>
+                    <p>Se utiliza la construcción "as... as" para hacer comparaciones de igualdad con adjetivos y adverbios. Indica que dos personas o cosas son iguales en un aspecto determinado.</p>
+                    <h3>Estructura</h3>
+                    <pre><code>Sujeto_1 + &text{Verbo} + <strong>as</strong> + &text{Adjetivo/Adverbio} + <strong>as</strong> + &text{Sujeto}_2</code></pre>
                 </div>
-
-                <div class="visual-diagram">
-                    <h3>Structure / Estructura</h3>
-                    <div style="margin: 20px 0;">
-                        <div class="sentence-part subject">Subject</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part verb">Verb</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part complement">Rest</div>
-                    </div>
-                    <p><strong>I/You/We/They + verb</strong> | <strong>He/She/It + verb + s</strong></p>
-                </div>
-
                 <div class="example-box">
-                    <h4>Examples / Ejemplos:</h4>
+                    <h4>Ejemplos Traducidos:</h4>
+                    <p>Jack is as old as Bill. (Jack tiene la misma edad que Bill.)</p>
+                    <p>Significa: They are the same age. (Tienen la misma edad.)</p>
+                    <p>John isn't as rich as his brother Fred. (John no es tan rico como su hermano Fred.)</p>
+                    <p>Significa: Fred is richer. (Fred es más rico.)</p>
+                    <p>Betty worked as fast as Linda worked. (Betty trabajó tan rápido como trabajó Linda.)</p>
+                    <p>Significa: Betty and Linda worked at the same speed. (Betty y Linda trabajaron a la misma velocidad.)</p>
+                    <p>Bob studies harder than Mary. (Bob estudia más duro que Mary.)</p>
+                    <p>Mary doesn't study as hard as Bob does. (Mary no estudia tan duro como Bob.)</p>
+                </div>
+            </div>
+
+            <!-- 2. Adverbios de Tiempo: "Just" y "Soon" -->
+            <div id="adverbios-tiempo" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">2. Adverbios de Tiempo: "Just" y "Soon"</div>
+                    <div class="lesson-subtitle">Acciones recientes y futuras</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>A. Just</h3>
+                    <p><strong>Uso:</strong> Se utiliza para indicar una acción que acaba de completarse en el pasado reciente.</p>
+                    <p><strong>Ejemplo:</strong> John just arrived from New York. (John acaba de llegar de Nueva York.)</p>
+                    <h3>B. Soon</h3>
+                    <p><strong>Uso:</strong> Se utiliza para indicar la finalización esperada de una acción en el futuro cercano.</p>
+                    <p><strong>Ejemplo:</strong> His brother will arrive from Los Angeles soon. (Su hermano llegará de Los Ángeles pronto.)</p>
+                </div>
+            </div>
+
+            <!-- 3. Tiempo Verbal: Futuro Progresivo (Future Progressive) -->
+            <div id="futuro-progresivo" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">3. Tiempo Verbal: Futuro Progresivo (Future Progressive)</div>
+                    <div class="lesson-subtitle">Acciones en progreso en el futuro</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Regla y Uso</h3>
+                    <p>El Futuro Progresivo (o Futuro Continuo) se usa para expresar una acción que estará en progreso en o hasta un momento particular en el futuro.</p>
+                    <h3>Estructura</h3>
+                    <pre><code><strong>will</strong> + <strong>be</strong> + Verbo-ing</code></pre>
+                </div>
+                <div class="example-box">
+                    <h4>Ejemplos Traducidos:</h4>
+                    <p>We'll be leaving at noon on Friday. (Estaremos saliendo al mediodía el viernes.)</p>
+                    <p>Tom won't be leaving until midnight tonight. (Tom no estará saliendo hasta la medianoche de esta noche.)</p>
+                </div>
+            </div>
+
+            <!-- 4. Sustantivos Contables Plurales (Plural Count Nouns) -->
+            <div id="sustantivos-plurales" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">4. Sustantivos Contables Plurales (Plural Count Nouns)</div>
+                    <div class="lesson-subtitle">Formación de plurales</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>Definición</h3>
+                    <p>Los Sustantivos Contables (Count Nouns) son aquellos que pueden ser precedidos por un artículo singular (a o an) y tienen una forma plural.</p>
+                    <p><strong>Ejemplos en singular:</strong> a man, an apple, a fish.</p>
+                    <h3>Formación del Plural</h3>
                     <table class="grammar-table">
-                        <tr>
-                            <th>English</th>
-                            <th>Spanish</th>
-                            <th>Note</th>
-                        </tr>
-                        <tr>
-                            <td>I <strong>work</strong> every day</td>
-                            <td>Yo trabajo todos los días</td>
-                            <td>Habit (hábito)</td>
-                        </tr>
-                        <tr>
-                            <td>She <strong>lives</strong> in Madrid</td>
-                            <td>Ella vive en Madrid</td>
-                            <td>Permanent situation (+ s)</td>
-                        </tr>
-                        <tr>
-                            <td>The sun <strong>rises</strong> in the east</td>
-                            <td>El sol sale por el este</td>
-                            <td>General fact (+ s)</td>
-                        </tr>
-                        <tr>
-                            <td>We <strong>don't</strong> smoke</td>
-                            <td>No fumamos</td>
-                            <td>Negative form</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Do</strong> you speak English?</td>
-                            <td>¿Hablas inglés?</td>
-                            <td>Question form</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Tipo de Plural</th>
+                                <th>Regla</th>
+                                <th>Ejemplos (Singular → Plural)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Regular con -es</td><td>Se añade -es a palabras que terminan en s, z, ge, sh, x, ch.</td><td>box → boxes, sandwich → sandwiches, dress → dresses, wish → wishes</td></tr>
+                            <tr><td>Regular con -es + cambio a i</td><td>Palabras que terminan en consonante + y cambian la y por i y se añade -es.</td><td>family → families, duty → duties, city → cities, library → libraries</td></tr>
+                            <tr><td>Regular con -s</td><td>Se añade -s a la mayoría de las demás palabras.</td><td>book → books, chair → chairs, table → tables, boy → boys</td></tr>
+                            <tr><td>Irregular</td><td>Tienen formas completamente diferentes y no siguen reglas.</td><td>fish → fish, deer → deer, child → children, foot → feet, tooth → teeth, man → men, woman → women, knife → knives</td></tr>
+                        </tbody>
                     </table>
                 </div>
-
-                <div class="practice-area">
-                    <h3>🎯 Practice Time!</h3>
-                    <div class="practice-question">
-                        <p><strong>Fill in the blanks with the correct form:</strong></p>
-                        <p>1. She _______ (work) in a hospital.</p>
-                        <input type="text" class="practice-input" id="q1" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('q1', 'works', '¡Correcto! She works (Tercera persona singular lleva -s)')">Check</button>
-                        <div id="feedback-q1" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="practice-question">
-                        <p>2. _______ they _______ (like) pizza?</p>
-                        <input type="text" class="practice-input" id="q2" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('q2', 'do like', '¡Correcto! Do they like (Pregunta con DO para they)')">Check</button>
-                        <div id="feedback-q2" class="feedback" style="display: none;"></div>
-                    </div>
-
-                    <div class="practice-question">
-                        <p>3. I _______ (not/understand) Spanish.</p>
-                        <input type="text" class="practice-input" id="q3" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('q3', 'don\'t understand', '¡Correcto! I don\'t understand (Negativo con DON\'T)')">Check</button>
-                        <div id="feedback-q3" class="feedback" style="display: none;"></div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Present Continuous Lesson -->
-            <div id="present-continuous" class="lesson-content">
+            <!-- 5. Pronunciación del Plural Regular (-s / -es) -->
+            <div id="pronunciacion-plural" class="lesson-content">
                 <div class="lesson-header">
-                    <div class="lesson-title">Present Continuous</div>
-                    <div class="lesson-subtitle">Actions happening right now or around this time</div>
+                    <div class="lesson-title">5. Pronunciación del Plural Regular (-s / -es)</div>
+                    <div class="lesson-subtitle">Sonidos /Iz/, /s/, /z/</div>
                 </div>
-
                 <div class="explanation-box">
-                    <h3>¿Cuándo usamos Present Continuous?</h3>
-                    <p><strong>Usamos Present Continuous para:</strong></p>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li>Actions happening <strong>now</strong> (acciones ocurriendo ahora)</li>
-                        <li>Temporary situations (situaciones temporales)</li>
-                        <li>Future arrangements (planes futuros confirmados)</li>
-                        <li>Changing situations (situaciones cambiantes)</li>
-                    </ul>
-                </div>
-
-                <div class="visual-diagram">
-                    <h3>Structure / Estructura</h3>
-                    <div style="margin: 20px 0;">
-                        <div class="sentence-part subject">Subject</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part verb">BE</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part object">Verb + ING</div>
-                    </div>
-                    <p><strong>am/is/are + verb-ing</strong></p>
-                </div>
-
-                <div class="example-box">
-                    <h4>Examples / Ejemplos:</h4>
+                    <p>La terminación -s o -es que se añade a los sustantivos contables para formar el plural tiene tres pronunciaciones diferentes, dependiendo del sonido que preceda:</p>
                     <table class="grammar-table">
-                        <tr>
-                            <th>English</th>
-                            <th>Spanish</th>
-                            <th>Usage</th>
-                        </tr>
-                        <tr>
-                            <td>I <strong>am working</strong> now</td>
-                            <td>Estoy trabajando ahora</td>
-                            <td>Action happening now</td>
-                        </tr>
-                        <tr>
-                            <td>She <strong>is studying</strong> medicine</td>
-                            <td>Está estudiando medicina</td>
-                            <td>Temporary situation</td>
-                        </tr>
-                        <tr>
-                            <td>We <strong>are meeting</strong> tomorrow</td>
-                            <td>Nos reunimos mañana</td>
-                            <td>Future arrangement</td>
-                        </tr>
-                        <tr>
-                            <td>The weather <strong>is getting</strong> colder</td>
-                            <td>El tiempo se está volviendo más frío</td>
-                            <td>Changing situation</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Pronunciación</th>
+                                <th>Sonido Previo</th>
+                                <th>Ejemplos de Palabras</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>/Iz/</td><td>Después de sonidos sibilantes (s, z, sh, ch, j, x).</td><td>boxes, sandwiches, dresses, inquiries, classes, services</td></tr>
+                            <tr><td>/s/</td><td>Después de sonidos sordos (sin vibración de cuerdas vocales).</td><td>books, suits, cups, boots, crops, recruits, ranks, basics</td></tr>
+                            <tr><td>/z/</td><td>Después de sonidos sonoros (con vibración de cuerdas vocales).</td><td>tables, sons, words, windows, boys, duties, times, caves, eggs</td></tr>
+                        </tbody>
                     </table>
                 </div>
+            </div>
 
-                <div class="practice-area">
-                    <h3>🎯 Practice Time!</h3>
-                    <div class="practice-question">
-                        <p><strong>Complete with the Present Continuous:</strong></p>
-                        <p>1. Look! It _______ (rain) outside.</p>
-                        <input type="text" class="practice-input" id="pc1" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('pc1', 'is raining', '¡Correcto! It is raining (Acción ocurriendo ahora)')">Check</button>
-                        <div id="feedback-pc1" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="practice-question">
-                        <p>2. We _______ (not/watch) TV right now.</p>
-                        <input type="text" class="practice-input" id="pc2" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('pc2', 'are not watching', '¡Correcto! We are not watching (Negativo con not)')">Check</button>
-                        <div id="feedback-pc2" class="feedback" style="display: none;"></div>
-                    </div>
+            <!-- 1. Cláusulas Adjetivas con "Where" y "When" -->
+            <div id="clausulas-adjetivas" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">1. Cláusulas Adjetivas con "Where" y "When" 🗺️/⏳</div>
+                    <div class="lesson-subtitle">Modificando sustantivos de lugar y tiempo</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Las cláusulas adjetivas (o cláusulas relativas) modifican o dan más información sobre un sustantivo. Se introducen con los relativos "where" (donde) y "when" (cuando).</p>
+                    <h3>A. Uso de "Where" (Donde)</h3>
+                    <p><strong>Uso:</strong> Se usa para modificar un sustantivo de lugar (noun of place). La cláusula siempre se coloca justo después del sustantivo que modifica.</p>
+                    <p><strong>Ejemplo Original:</strong> We found a restaurant where the food was good.</p>
+                    <p><strong>Traducción y Explicación:</strong> Encontramos un restaurante donde la comida era buena. <em>Where</em> hace referencia a <em>restaurant</em> (un lugar).</p>
+                    <h3>B. Uso de "When" (Cuando)</h3>
+                    <p><strong>Uso:</strong> Se usa para modificar un sustantivo de tiempo (noun of time). La cláusula siempre se coloca justo después del sustantivo que modifica.</p>
+                    <p><strong>Ejemplo Original:</strong> The summer when we went to San Francisco was hot.</p>
+                    <p><strong>Traducción y Explicación:</strong> El verano cuando fuimos a San Francisco fue caluroso. <em>When</em> hace referencia a <em>summer</em> (un tiempo).</p>
                 </div>
             </div>
 
-            <!-- Past Simple Lesson -->
-            <div id="past-simple" class="lesson-content">
+            <!-- 2. Adverbios de Grado (Adverbs of Degree) -->
+            <div id="adverbios-grado" class="lesson-content">
                 <div class="lesson-header">
-                    <div class="lesson-title">Past Simple</div>
-                    <div class="lesson-subtitle">Completed actions in the past</div>
+                    <div class="lesson-title">2. Adverbios de Grado (Adverbs of Degree) 📈</div>
+                    <div class="lesson-subtitle">Intensificando adjetivos y adverbios</div>
                 </div>
-                
                 <div class="explanation-box">
-                    <h3>¿Cuándo usamos Past Simple?</h3>
-                    <p>El Past Simple se usa para hablar de acciones que ocurrieron y terminaron en un momento específico del pasado.</p>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li>Completed actions (acciones completadas)</li>
-                        <li>Past habits (hábitos pasados)</li>
-                        <li>Sequence of past events (secuencia de eventos pasados)</li>
-                    </ul>
-                </div>
-
-                <div class="visual-diagram">
-                    <h3>Structure / Estructura</h3>
-                    <div style="margin: 20px 0;">
-                        <div class="sentence-part subject">Subject</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part verb">Verb + ED</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part complement">Rest</div>
-                    </div>
-                    <p><strong>Regular verbs + ED | Irregular verbs (special forms)</strong></p>
-                </div>
-
-                <div class="example-box">
-                    <h4>Examples / Ejemplos:</h4>
+                    <p>Utilizamos ciertos adverbios antes de adjetivos y otros adverbios para intensificar el significado y hacerlo más fuerte, similar al significado de "very" (muy).</p>
                     <table class="grammar-table">
-                        <tr>
-                            <th>English</th>
-                            <th>Spanish</th>
-                            <th>Type</th>
-                        </tr>
-                        <tr>
-                            <td>I <strong>worked</strong> yesterday</td>
-                            <td>Trabajé ayer</td>
-                            <td>Regular verb + ed</td>
-                        </tr>
-                        <tr>
-                            <td>She <strong>went</strong> to Paris</td>
-                            <td>Ella fue a París</td>
-                            <td>Irregular verb (go→went)</td>
-                        </tr>
-                        <tr>
-                            <td>We <strong>didn't</strong> see the movie</td>
-                            <td>No vimos la película</td>
-                            <td>Negative form</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Did</strong> you eat lunch?</td>
-                            <td>¿Almorzaste?</td>
-                            <td>Question form</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Adverbio de Grado</th>
+                                <th>Traducción</th>
+                                <th>Estructura</th>
+                                <th>Ejemplo Traducido</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>extremely</td><td>extremadamente</td><td>Adverbio + Adjetivo</td><td>extremely cheap (extremadamente barato)</td></tr>
+                            <tr><td>really</td><td>realmente</td><td>Adverbio + Adjetivo</td><td>really interesting (realmente interesante)</td></tr>
+                            <tr><td>rather</td><td>bastante</td><td>Adverbio + Adjetivo</td><td>rather good (bastante bueno)</td></tr>
+                            <tr><td>terribly</td><td>terriblemente</td><td>Adverbio + Adjetivo</td><td>terribly noisy (terriblemente ruidoso)</td></tr>
+                            <tr><td>quite</td><td>bastante</td><td>Adverbio + Adverbio</td><td>quite fast (bastante rápido)</td></tr>
+                            <tr><td>so</td><td>tan</td><td>Adverbio + Adverbio</td><td>so well (tan bien)</td></tr>
+                            <tr><td>very</td><td>muy</td><td>Adverbio + Adverbio</td><td>very quickly (muy rápidamente)</td></tr>
+                        </tbody>
                     </table>
                 </div>
+            </div>
 
-                <div class="practice-area">
-                    <h3>🎯 Practice Time!</h3>
-                    <div class="practice-question">
-                        <p><strong>Complete with Past Simple:</strong></p>
-                        <p>1. I _______ (visit) my grandmother last week.</p>
-                        <input type="text" class="practice-input" id="ps1" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('ps1', 'visited', '¡Correcto! I visited (Regular verb + ed)')">Check</button>
-                        <div id="feedback-ps1" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="practice-question">
-                        <p>2. She _______ (not/come) to the party.</p>
-                        <input type="text" class="practice-input" id="ps2" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('ps2', 'didn\'t come', '¡Correcto! She didn\'t come (Negativo + infinitivo)')">Check</button>
-                        <div id="feedback-ps2" class="feedback" style="display: none;"></div>
-                    </div>
+            <!-- 3. Oraciones Condicionales con "If" (If-Conditional) -->
+            <div id="condicionales-if" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">3. Oraciones Condicionales con "If" (If-Conditional) 🎯</div>
+                    <div class="lesson-subtitle">Condiciones y resultados</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Ciertas oraciones condicionales que expresan algo que es cierto o verdadero permiten la combinación de varios tiempos verbales para expresar la condición (cláusula if) y el resultado (cláusula principal).</p>
+                    <h3>A. Condicional con Presente Progresivo (Present Progressive)</h3>
+                    <table class="grammar-table">
+                        <thead>
+                            <tr>
+                                <th>Cláusula IF (Condición)</th>
+                                <th>Cláusula Principal (Resultado)</th>
+                                <th>Traducción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>If you're looking for Bill,</td><td>... you'll find him in the library.</td><td>(Si estás buscando a Bill,) (lo encontrarás en la biblioteca.) [Future]</td></tr>
+                            <tr><td></td><td>... you can find him in the library.</td><td>(lo puedes encontrar en la biblioteca.) [Modal]</td></tr>
+                            <tr><td></td><td>... go to the library.</td><td>(ve a la biblioteca.) [Imperative]</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Estructura:</strong> El Presente Progresivo se usa en la cláusula if para describir una condición que está ocurriendo ahora. El resultado puede estar en Futuro, Modal o Imperativo.</p>
                 </div>
             </div>
 
-            <!-- Present Perfect Lesson -->
-            <div id="present-perfect" class="lesson-content">
+            <!-- 1. Modales de Obligación, Necesidad y Prohibición (Review of Modals) -->
+            <div id="modales-obligacion" class="lesson-content">
                 <div class="lesson-header">
-                    <div class="lesson-title">Present Perfect</div>
-                    <div class="lesson-subtitle">Past actions with present relevance</div>
+                    <div class="lesson-title">1. Modales de Obligación, Necesidad y Prohibición (Review of Modals)</div>
+                    <div class="lesson-subtitle">Must, have to, must not</div>
                 </div>
-                
                 <div class="explanation-box">
-                    <h3>¿Cuándo usamos Present Perfect?</h3>
-                    <p>El Present Perfect conecta el pasado con el presente. Es como un puente temporal.</p>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li>Life experiences (experiencias de vida)</li>
-                        <li>Recent actions with present results (acciones recientes con resultados presentes)</li>
-                        <li>Actions that started in the past and continue (acciones que empezaron en el pasado y continúan)</li>
-                        <li>Changes over time (cambios a lo largo del tiempo)</li>
-                    </ul>
+                    <h3>A. Necesidad y Obligación (Must y Have/Has to)</h3>
+                    <p>Tanto <em>must</em> como <em>have/has to</em> se usan para expresar necesidad y obligación.</p>
+                    <p><strong>Ejemplo con must:</strong> You must have money to buy a car. (Debes tener dinero para comprar un coche.)</p>
+                    <p><strong>Ejemplo con have to:</strong> I can't go. I have to study for a test. (No puedo ir. Tengo que estudiar para una prueba.)</p>
+                    <h3>B. Prohibición (Must not)</h3>
+                    <p><em>Must not</em> (o <em>mustn't</em>) se usa para expresar prohibición.</p>
+                    <p><strong>Ejemplo:</strong> You must not smoke in the building. (No debes/está prohibido fumar en el edificio.)</p>
+                    <h3>C. Falta de Necesidad (Don't/Doesn't have to)</h3>
+                    <p><em>Not have/has to</em> se usa para expresar una falta de necesidad (algo que no es obligatorio).</p>
+                    <p><strong>Ejemplo:</strong> Tomorrow is Saturday. We don't have to go to class. (Mañana es sábado. No tenemos que ir a clase.)</p>
                 </div>
+            </div>
 
-                <div class="visual-diagram">
-                    <h3>Structure / Estructura</h3>
-                    <div style="margin: 20px 0;">
-                        <div class="sentence-part subject">Subject</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part verb">HAVE/HAS</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part object">Past Participle</div>
-                    </div>
-                    <p><strong>have/has + past participle (3rd form)</strong></p>
+            <!-- 2. Modales de Probabilidad, Deducción y Conclusión -->
+            <div id="modales-probabilidad" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">2. Modales de Probabilidad, Deducción y Conclusión</div>
+                    <div class="lesson-subtitle">Must, may, might, could</div>
                 </div>
-
-                <div class="example-box">
-                    <h4>Examples / Ejemplos:</h4>
+                <div class="explanation-box">
+                    <h3>A. Modales para hacer Deducciones y Conclusiones</h3>
+                    <p>Usamos los modales <em>must</em>, <em>may</em>, <em>might</em> y <em>could</em> para hacer deducciones y conclusiones a partir de la información que recibimos.</p>
                     <table class="grammar-table">
-                        <tr>
-                            <th>English</th>
-                            <th>Spanish</th>
-                            <th>Usage</th>
-                        </tr>
-                        <tr>
-                            <td>I <strong>have visited</strong> Japan</td>
-                            <td>He visitado Japón</td>
-                            <td>Life experience</td>
-                        </tr>
-                        <tr>
-                            <td>She <strong>has just arrived</strong></td>
-                            <td>Acaba de llegar</td>
-                            <td>Recent action</td>
-                        </tr>
-                        <tr>
-                            <td>We <strong>have lived</strong> here for 5 years</td>
-                            <td>Hemos vivido aquí por 5 años</td>
-                            <td>Duration from past to now</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Have</strong> you <strong>seen</strong> this movie?</td>
-                            <td>¿Has visto esta película?</td>
-                            <td>Question form</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Modal</th>
+                                <th>Grado de Seguridad</th>
+                                <th>Uso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Must</td><td>Muy seguro (Very Sure)</td><td>Se usa cuando estamos muy seguros o ciertos de algo.</td></tr>
+                            <tr><td>May, Might, Could</td><td>Menos seguro (Less Sure)</td><td>Se usan cuando estamos menos seguros o ciertos de algo.</td></tr>
+                        </tbody>
+                    </table>
+                    <h3>B. Must como Probabilidad</h3>
+                    <p><strong>Uso:</strong> <em>Must</em> se usa con el presente simple o el presente progresivo para expresar una alta probabilidad o una deducción lógica.</p>
+                    <p><strong>Ejemplo (Presente Simple):</strong> Steve is smiling. He must be happy. (Steve está sonriendo. Debe estar feliz.)</p>
+                    <p><strong>Ejemplo (Presente Progresivo):</strong> I smell smoke. Something must be burning. (Huelo a humo. Algo debe estar ardiendo.)</p>
+                    <p><strong>El Negativo de la Probabilidad:</strong> Para la negación en probabilidad, no se usa <em>must not</em>. En su lugar, se usa <em>can't</em> (no puede ser) o <em>must not</em> solo para prohibición.</p>
+                    <p><strong>Ejemplo:</strong> Betty isn't eating. She must not be hungry. (Betty no está comiendo. No debe tener hambre.)</p>
+                    <p><strong>Otro ejemplo (con can't):</strong> John's lights are off. He can't be at home. (Las luces de John están apagadas. No puede ser que esté en casa.)</p>
+                </div>
+            </div>
+
+            <!-- 3. Expresión del Tiempo Futuro -->
+            <div id="expresion-futuro" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">3. Expresión del Tiempo Futuro</div>
+                    <div class="lesson-subtitle">Will, be going to, peticiones corteses</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>A. Will y Be Going To</h3>
+                    <p><em>Will</em> y <em>be going to</em> se usan indistintamente para expresar tiempo futuro (aunque a menudo tienen matices de uso: <em>will</em> para decisiones espontáneas/predicciones; <em>be going to</em> para planes/intenciones).</p>
+                    <p><strong>Ejemplo con will:</strong> Frank will finish packing tonight. (Frank terminará de empacar esta noche.)</p>
+                    <p><strong>Ejemplo con be going to:</strong> He is going to finish packing tonight. (Él va a terminar de empacar esta noche.)</p>
+                    <h3>B. Modales para Peticiones (Could y Would)</h3>
+                    <p><em>Could</em> y <em>would</em> se usan para hacer peticiones de manera cortés.</p>
+                    <p><strong>Ejemplo con Would:</strong> Would you close the window, please? (¿Podrías cerrar la ventana, por favor?)</p>
+                    <p><strong>Ejemplo con Could:</strong> Could you please hand me the sugar? (¿Podrías por favor pasarme el azúcar?)</p>
+                </div>
+            </div>
+
+            <!-- 4. Gerundios (Gerunds) -->
+            <div id="gerundios" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">4. Gerundios (Gerunds)</div>
+                    <div class="lesson-subtitle">Usos como sustantivo y combinaciones</div>
+                </div>
+                <div class="explanation-box">
+                    <h3>A. El Gerundio como Sustantivo</h3>
+                    <p>Un gerundio es la forma <em>-ing</em> de un verbo (ejemplos: <em>eating, playing, sleeping</em>).</p>
+                    <p>El gerundio se utiliza con la función más común de un sustantivo.</p>
+                    <h3>B. Usos del Gerundio</h3>
+                    <p>El gerundio o una frase de gerundio (gerundio más las palabras que lo acompañan) puede usarse como:</p>
+                    <ul>
+                        <li><strong>Sujeto de una Oración:</strong></li>
+                        <ul>
+                            <li><strong>Ejemplo:</strong> Driving on wet roads can be dangerous. (Conducir en carreteras mojadas puede ser peligroso.)</li>
+                            <li><strong>Ejemplo:</strong> Learning a second language is fun. (Aprender un segundo idioma es divertido.)</li>
+                        </ul>
+                        <li><strong>Objeto de un Verbo:</strong></li>
+                        <ul>
+                            <li><strong>Ejemplo:</strong> He enjoys teaching English. (Él disfruta enseñar inglés.)</li>
+                            <li><strong>Ejemplo:</strong> We finished working about an hour ago. (Terminamos de trabajar hace aproximadamente una hora.)</li>
+                        </ul>
+                        <li><strong>Objeto de una Preposición:</strong></li>
+                        <ul>
+                            <li><strong>Ejemplo:</strong> You can turn off the radio by pushing this button. (Puedes apagar la radio presionando este botón.)</li>
+                            <li><strong>Ejemplo:</strong> He apologized for being late. (Se disculpó por llegar tarde.)</li>
+                        </ul>
+                    </ul>
+                    <h3>C. Combinaciones Comunes con Gerundios</h3>
+                    <p>El gerundio se usa después de ciertas combinaciones de verbos y adjetivos seguidos de una preposición:</p>
+                    <table class="grammar-table">
+                        <thead>
+                            <tr>
+                                <th>Verbo + Preposición</th>
+                                <th>Traducción</th>
+                                <th>Adjetivo + Preposición</th>
+                                <th>Traducción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>apologize for</td><td>disculparse por</td><td>afraid of</td><td>tener miedo de</td></tr>
+                            <tr><td>believe in</td><td>creer en</td><td>bored with</td><td>estar aburrido de</td></tr>
+                            <tr><td>decide on</td><td>decidir sobre</td><td>excited about</td><td>estar emocionado por</td></tr>
+                            <tr><td>finish with</td><td>terminar con</td><td>fond of</td><td>ser aficionado a</td></tr>
+                            <tr><td>look forward to</td><td>esperar con ansias</td><td>frightened of</td><td>estar asustado de</td></tr>
+                            <tr><td>plan on</td><td>planear</td><td>happy about</td><td>estar feliz por</td></tr>
+                            <tr><td>thank someone for</td><td>agradecer a alguien por</td><td>interested in</td><td>estar interesado en</td></tr>
+                            <tr><td></td><td></td><td>nervous about</td><td>estar nervioso por</td></tr>
+                            <tr><td></td><td></td><td>proud of</td><td>estar orgulloso de</td></tr>
+                            <tr><td></td><td></td><td>scared of</td><td>estar asustado de</td></tr>
+                            <tr><td>talk about</td><td>hablar de</td><td></td><td></td></tr>
+                            <tr><td>think of</td><td>pensar en</td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td>tired of</td><td>estar cansado de</td></tr>
+                            <tr><td></td><td></td><td>worried about</td><td>estar preocupado por</td></tr>
+                        </tbody>
                     </table>
                 </div>
-
-                <div class="practice-area">
-                    <h3>🎯 Practice Time!</h3>
-                    <div class="practice-question">
-                        <p><strong>Complete with Present Perfect:</strong></p>
-                        <p>1. I _______ (never/see) such a beautiful sunset.</p>
-                        <input type="text" class="practice-input" id="pp1" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('pp1', 'have never seen', '¡Correcto! I have never seen (Experiencia de vida)')">Check</button>
-                        <div id="feedback-pp1" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="practice-question">
-                        <p>2. _______ she _______ (finish) her homework?</p>
-                        <input type="text" class="practice-input" id="pp2" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('pp2', 'has finished', '¡Correcto! Has she finished (Pregunta con HAS)')">Check</button>
-                        <div id="feedback-pp2" class="feedback" style="display: none;"></div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Modal Verbs Lesson -->
-            <div id="modal-verbs" class="lesson-content">
+            <!-- 1. Adverbios Irregulares (Irregular Adverbs) -->
+            <div id="adverbios-irregulares" class="lesson-content">
                 <div class="lesson-header">
-                    <div class="lesson-title">Modal Verbs</div>
-                    <div class="lesson-subtitle">Express ability, permission, obligation, possibility</div>
+                    <div class="lesson-title">1. Adverbios Irregulares (Irregular Adverbs) ✏️</div>
+                    <div class="lesson-subtitle">Comparativos y superlativos irregulares</div>
                 </div>
-                
                 <div class="explanation-box">
-                    <h3>¿Qué son los Modal Verbs?</h3>
-                    <p>Los verbos modales expresan actitudes del hablante hacia la acción del verbo principal.</p>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li><strong>CAN/COULD</strong> - Habilidad/Posibilidad</li>
-                        <li><strong>MUST/HAVE TO</strong> - Obligación</li>
-                        <li><strong>SHOULD/OUGHT TO</strong> - Consejo/Recomendación</li>
-                        <li><strong>MAY/MIGHT</strong> - Posibilidad/Permiso</li>
-                        <li><strong>WILL/WOULD</strong> - Futuro/Voluntad</li>
-                    </ul>
-                </div>
-
-                <div class="visual-diagram">
-                    <h3>Structure / Estructura</h3>
-                    <div style="margin: 20px 0;">
-                        <div class="sentence-part subject">Subject</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part verb">Modal</div>
-                        <span style="font-size: 1.5em; margin: 0 10px;">+</span>
-                        <div class="sentence-part object">Base Verb</div>
-                    </div>
-                    <p><strong>Modal + infinitive (without TO)</strong></p>
-                </div>
-
-                <div class="example-box">
-                    <h4>Examples / Ejemplos:</h4>
+                    <h3>Regla</h3>
+                    <p>Algunos adverbios no siguen las reglas estándar de añadir <em>-er</em> o <em>-est</em> para formar sus comparativos y superlativos; tienen formas irregulares.</p>
+                    <h3>Formas Irregulares Clave</h3>
                     <table class="grammar-table">
-                        <tr>
-                            <th>Modal</th>
-                            <th>Example</th>
-                            <th>Spanish</th>
-                            <th>Use</th>
-                        </tr>
-                        <tr>
-                            <td><strong>CAN</strong></td>
-                            <td>I can swim</td>
-                            <td>Puedo nadar</td>
-                            <td>Ability</td>
-                        </tr>
-                        <tr>
-                            <td><strong>MUST</strong></td>
-                            <td>You must study</td>
-                            <td>Debes estudiar</td>
-                            <td>Obligation</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SHOULD</strong></td>
-                            <td>You should rest</td>
-                            <td>Deberías descansar</td>
-                            <td>Advice</td>
-                        </tr>
-                        <tr>
-                            <td><strong>MIGHT</strong></td>
-                            <td>It might rain</td>
-                            <td>Puede que llueva</td>
-                            <td>Possibility</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Adverbio (Adverb)</th>
+                                <th>Comparativo (Comparative)</th>
+                                <th>Superlativo (Superlative)</th>
+                                <th>Traducción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>well (bien)</td><td>better than (mejor que)</td><td>the best (el mejor/mejor)</td><td>Bien / Mejor que / El mejor</td></tr>
+                            <tr><td>badly (mal)</td><td>worse than (peor que)</td><td>the worst (el peor/peor)</td><td>Mal / Peor que / El peor</td></tr>
+                        </tbody>
                     </table>
-                </div>
-
-                <div class="practice-area">
-                    <h3>🎯 Practice Time!</h3>
-                    <div class="practice-question">
-                        <p><strong>Choose the correct modal:</strong></p>
-                        <p>1. You _______ (obligation) wear a seatbelt in the car.</p>
-                        <input type="text" class="practice-input" id="mv1" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('mv1', 'must', '¡Correcto! You must (Obligación legal)')">Check</button>
-                        <div id="feedback-mv1" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="practice-question">
-                        <p>2. _______ you help me? (polite request)</p>
-                        <input type="text" class="practice-input" id="mv2" placeholder="Type your answer...">
-                        <button class="check-btn" onclick="checkAnswer('mv2', 'could', '¡Correcto! Could you (Petición cortés)')">Check</button>
-                        <div id="feedback-mv2" class="feedback" style="display: none;"></div>
-                    </div>
+                    <h3>Uso</h3>
+                    <p>La forma comparativa se usa al referirse a dos personas o cosas.</p>
+                    <p>La forma superlativa se usa al referirse a tres o más personas o cosas.</p>
                 </div>
             </div>
 
-            <!-- Quick reference for other topics -->
-            <div id="future-tenses" class="lesson-content">
+            <!-- 2. Estilo Indirecto (Reported Speech) y Modales -->
+            <div id="estilo-indirecto" class="lesson-content">
                 <div class="lesson-header">
-                    <div class="lesson-title">Future Tenses</div>
-                    <div class="lesson-subtitle">Plans, predictions, and spontaneous decisions</div>
+                    <div class="lesson-title">2. Estilo Indirecto (Reported Speech) y Modales 🗣️</div>
+                    <div class="lesson-subtitle">Cambios de modales en Reported Speech</div>
                 </div>
-                
                 <div class="explanation-box">
-                    <h3>Formas del Futuro en Inglés</h3>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li><strong>WILL + infinitive</strong> - Decisiones espontáneas, predicciones</li>
-                        <li><strong>BE GOING TO + infinitive</strong> - Planes, intenciones, predicciones con evidencia</li>
-                        <li><strong>Present Continuous</strong> - Planes confirmados</li>
-                        <li><strong>Present Simple</strong> - Horarios, programas</li>
-                    </ul>
-                </div>
-
-                <div class="example-box">
-                    <h4>Examples:</h4>
-                    <p><strong>Will:</strong> "I'll help you!" (Decisión espontánea)</p>
-                    <p><strong>Going to:</strong> "I'm going to visit my parents" (Plan)</p>
-                    <p><strong>Present Continuous:</strong> "I'm meeting John tomorrow" (Plan confirmado)</p>
-                    <p><strong>Present Simple:</strong> "The train leaves at 8pm" (Horario)</p>
+                    <h3>Regla</h3>
+                    <p>Cuando se usa un verbo modal en el estilo directo (presente), este se cambia frecuentemente a su forma pasada en el estilo indirecto (Reported Speech).</p>
+                    <table class="grammar-table">
+                        <thead>
+                            <tr>
+                                <th>Estilo Directo (Presente)</th>
+                                <th>Estilo Indirecto (Pasado)</th>
+                                <th>Traducción y Uso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>will</td><td>would</td><td>Futuro → Condicional.</td></tr>
+                            <tr><td>present-BE going to</td><td>past-BE going to</td><td>Futuro (intención) → Pasado de la intención.</td></tr>
+                            <tr><td>must (necesidad)</td><td>had to*</td><td>Obligación (presente) → Obligación (pasado).</td></tr>
+                            <tr><td>have/has to</td><td>had to</td><td>Obligación (presente) → Obligación (pasado).</td></tr>
+                            <tr><td>not have to</td><td>didn't have to</td><td>Falta de necesidad (presente) → Falta de necesidad (pasado).</td></tr>
+                            <tr><td>must not (prohibición)</td><td>must not</td><td>La prohibición no cambia al pasar al estilo indirecto.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>* Importante: Se usa <em>had to</em> en lugar de <em>must</em> al reportar necesidad en tiempo pasado.</em></p>
                 </div>
             </div>
 
-            <div id="conditionals" class="lesson-content">
+            <!-- 3. Modales para Aconsejar: Should y Ought to -->
+            <div id="modales-aconsejar" class="lesson-content">
                 <div class="lesson-header">
-                    <div class="lesson-title">Conditionals</div>
-                    <div class="lesson-subtitle">If clauses and hypothetical situations</div>
-                </div>
-                
-                <div class="explanation-box">
-                    <h3>Tipos de Condicionales</h3>
-                    <ul style="margin: 15px 0 0 20px;">
-                        <li><strong>Zero Conditional:</strong> If + present, present (Hechos generales)</li>
-                        <li><strong>First Conditional:</strong> If + present, will (Posibilidades reales)</li>
-                        <li><strong>Second Conditional:</strong> If + past, would (Situaciones hipotéticas)</li>
-                        <li><strong>Third Conditional:</strong> If + past perfect, would have (Pasado hipotético)</li>
-                    </ul>
-                </div>
-
-                <div class="example-box">
-                    <h4>Examples:</h4>
-                    <p><strong>Zero:</strong> If you heat water, it boils.</p>
-                    <p><strong>First:</strong> If it rains, I will stay home.</p>
-                    <p><strong>Second:</strong> If I were rich, I would travel the world.</p>
-                    <p><strong>Third:</strong> If I had studied, I would have passed.</p>
-                </div>
-            </div>
-
-            <!-- Add placeholder content for remaining topics -->
-            <div id="passive-voice" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Passive Voice</div>
-                    <div class="lesson-subtitle">Focus on action, not the doer</div>
+                    <div class="lesson-title">3. Modales para Aconsejar: Should y Ought to 🩺</div>
+                    <div class="lesson-subtitle">Consejos y recomendaciones</div>
                 </div>
                 <div class="explanation-box">
-                    <p><strong>Structure:</strong> Object + BE + Past Participle + (by + agent)</p>
-                    <p><strong>Example:</strong> The book was written by Shakespeare.</p>
-                </div>
-            </div>
-
-            <div id="reported-speech" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Reported Speech</div>
-                    <div class="lesson-subtitle">Telling what others said</div>
-                </div>
-                <div class="explanation-box">
-                    <p><strong>Direct:</strong> "I am happy," she said.</p>
-                    <p><strong>Reported:</strong> She said (that) she was happy.</p>
-                </div>
-            </div>
-
-            <div id="relative-clauses" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Relative Clauses</div>
-                    <div class="lesson-subtitle">Who, which, that, where</div>
-                </div>
-                <div class="explanation-box">
-                    <p><strong>Who:</strong> People | <strong>Which:</strong> Things | <strong>That:</strong> People/Things</p>
-                    <p><strong>Example:</strong> The man who lives next door is a doctor.</p>
-                </div>
-            </div>
-
-            <div id="phrasal-verbs" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Phrasal Verbs</div>
-                    <div class="lesson-subtitle">Verbs with prepositions</div>
-                </div>
-                <div class="explanation-box">
-                    <p>Verbos + preposiciones que cambian el significado.</p>
-                    <p><strong>Examples:</strong> give up (rendirse), look after (cuidar), turn on (encender)</p>
-                </div>
-            </div>
-
-            <div id="articles" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Articles</div>
-                    <div class="lesson-subtitle">A, an, the usage</div>
-                </div>
-                <div class="explanation-box">
-                    <p><strong>A/AN:</strong> Indefinite (uno/una) | <strong>THE:</strong> Definite (el/la/los/las)</p>
-                    <p><strong>Example:</strong> A dog, an apple, the sun</p>
-                </div>
-            </div>
-
-            <div id="prepositions" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Prepositions</div>
-                    <div class="lesson-subtitle">In, on, at, by, etc.</div>
-                </div>
-                <div class="explanation-box">
-                    <p><strong>Time:</strong> at (hora), on (día), in (mes/año)</p>
-                    <p><strong>Place:</strong> at (punto), on (superficie), in (interior)</p>
-                </div>
-            </div>
-
-            <div id="question-formation" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Question Formation</div>
-                    <div class="lesson-subtitle">How to ask questions</div>
-                </div>
-                <div class="explanation-box">
-                    <p><strong>Yes/No Questions:</strong> Do/Does/Did + subject + verb?</p>
-                    <p><strong>Wh- Questions:</strong> What/Where/When/Why/Who/How + auxiliary + subject + verb?</p>
-                </div>
-            </div>
-
-            <div id="comparative-superlative" class="lesson-content">
-                <div class="lesson-header">
-                    <div class="lesson-title">Comparatives & Superlatives</div>
-                    <div class="lesson-subtitle">Better, best, more, most</div>
-                </div>
-                <div class="explanation-box">
-                    <p><strong>Short adjectives:</strong> tall → taller → tallest</p>
-                    <p><strong>Long adjectives:</strong> beautiful → more beautiful → most beautiful</p>
+                    <h3>Regla</h3>
+                    <p><em>Should</em> y <em>ought to</em> se utilizan indistintamente para dar consejos o hacer recomendaciones (traducido como "deberías").</p>
+                    <h3>Ejemplos</h3>
+                    <p>You don't look good. You should see a doctor. (No tienes buen aspecto. Deberías ver a un médico.)</p>
+                    <p>You don't look good. You ought to see a doctor. (No tienes buen aspecto. Deberías ver a un médico.)</p>
+                    <h3>Forma Negativa</h3>
+                    <p>La contracción negativa de <em>should</em> es <em>shouldn't</em>.</p>
+                    <p><em>Ought to</em> no se usa usualmente en la forma negativa (<em>oughtn't to</em>) o en preguntas.</p>
                 </div>
             </div>
         </div>
@@ -863,10 +740,10 @@
     <script>
         let currentTopicIndex = 0;
         const topics = [
-            'present-simple', 'present-continuous', 'past-simple', 'present-perfect', 
-            'future-tenses', 'modal-verbs', 'conditionals', 'passive-voice', 
-            'reported-speech', 'relative-clauses', 'phrasal-verbs', 'articles', 
-            'prepositions', 'question-formation', 'comparative-superlative'
+            'comparaciones-as-as', 'adverbios-tiempo', 'futuro-progresivo', 'sustantivos-plurales',
+            'pronunciacion-plural', 'clausulas-adjetivas', 'adverbios-grado', 'condicionales-if',
+            'modales-obligacion', 'modales-probabilidad', 'expresion-futuro', 'gerundios',
+            'adverbios-irregulares', 'estilo-indirecto', 'modales-aconsejar'
         ];
 
         function showLesson(topicId) {
