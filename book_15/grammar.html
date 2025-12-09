@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Playground - Book 15</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            color: #333; 
+        }
+        .container { 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.95); 
+            min-height: 100vh; 
+            box-shadow: 0 0 40px rgba(0,0,0,0.1); 
+        }
+        .header { 
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+            color: white; 
+            padding: 30px; 
+            text-align: center; 
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .sidebar { 
+            position: fixed; 
+            left: 0; 
+            top: 120px; 
+            width: 300px; 
+            height: calc(100vh - 120px); 
+            background: #f8f9fa; 
+            border-right: 2px solid #e9ecef; 
+            overflow-y: auto; 
+            padding: 20px; 
+            z-index: 100; 
+        }
+        .main-content { 
+            margin-left: 320px; 
+            padding: 40px; 
+            min-height: calc(100vh - 160px); 
+        }
+        .topic-item { 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: white; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            border-left: 4px solid #4facfe; 
+        }
+        .topic-item:hover { background: #e3f2fd; transform: translateX(5px); }
+        .topic-item.active { background: #4facfe; color: white; }
+        .topic-title { font-weight: 600; margin-bottom: 5px; }
+        .topic-desc { font-size: 0.9em; color: #666; }
+        .topic-item.active .topic-desc { color: rgba(255,255,255,0.8); }
+        .lesson-content { display: none; }
+        .lesson-content.active { display: block; }
+        .lesson-header { 
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+        }
+        .lesson-title { font-size: 2.2em; color: #2c3e50; margin-bottom: 10px; }
+        .lesson-subtitle { font-size: 1.2em; color: #7f8c8d; }
+        .explanation-box { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin: 20px 0; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            border-left: 5px solid #4facfe; 
+        }
+        .example-box { 
+            background: #e8f5e8; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            border-left: 4px solid #28a745; 
+        }
+        .grammar-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: white; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        .grammar-table th { 
+            background: #4facfe; 
+            color: white; 
+            padding: 15px; 
+            text-align: left; 
+        }
+        .grammar-table td { 
+            padding: 15px; 
+            border-bottom: 1px solid #e9ecef; 
+        }
+        .grammar-table tr:hover { background: #f8f9fa; }
+        .back-btn-flotante {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #ff6a88 0%, #ff99ac 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .back-btn-flotante:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-btn-flotante">← Volver a los Quizzes</a>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Grammar Playground - Book 15</h1>
+            <p>Interactive grammar based on the contents of Book 15.</p>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <div class="topic-item active" onclick="showLesson('was-going-to')">
+                <div class="topic-title">"Was/Were Going to"</div>
+                <div class="topic-desc">Intención Pasada no Cumplida</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('pronombres-indefinidos-else')">
+                <div class="topic-title">Pronombres Indefinidos + "Else"</div>
+                <div class="topic-desc">Para referirse a algo/alguien más</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('pronombres-reflexivos')">
+                <div class="topic-title">Pronombres Reflexivos</div>
+                <div class="topic-desc">Acciones que recaen en el sujeto</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('adverbios-frecuencia')">
+                <div class="topic-title">Adverbios de Frecuencia</div>
+                <div class="topic-desc">Posición y uso (seldom, never, etc.)</div>
+            </div>
+            <div class="topic-item" onclick="showLesson('repaso-modales')">
+                <div class="topic-title">Repaso de Verbos Modales</div>
+                <div class="topic-desc">Reported speech y otros usos</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- "Was/Were Going to" -->
+            <div id="was-going-to" class="lesson-content active">
+                <div class="lesson-header">
+                    <div class="lesson-title">"Was/Were Going to" (Intención Pasada)</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Esta estructura se usa para hablar de una acción que alguien tenía la intención de hacer en el pasado, pero que finalmente no se realizó. La estructura se suele completar con la conjunción <strong>but</strong> (pero).</p>
+                    <h3>Estructura</h3>
+                    <p><code>Sujeto + was / were + going to + Verbo base + but...</code></p>
+                </div>
+                <div class="example-box">
+                    <h4>Ejemplos:</h4>
+                    <p><strong>John was going to fly to Paris, but he changed his mind.</strong> (John iba a volar a París, pero cambió de opinión).</p>
+                    <p><strong>We were going to call you, but we lost your number.</strong> (Íbamos a llamarte, pero perdimos tu número).</p>
+                </div>
+            </div>
+
+            <!-- Pronombres Indefinidos + Else -->
+            <div id="pronombres-indefinidos-else" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Pronombres Indefinidos Compuestos + Else</div>
+                </div>
+                <div class="explanation-box">
+                    <p>La palabra <strong>else</strong> es un adverbio que se usa con pronombres compuestos de <em>some-</em>, <em>any-</em>, <em>no-</em> y <em>every-</em>. Se usa para referirse a "otra" persona, cosa o lugar.</p>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <thead>
+                            <tr>
+                                <th>Estructura</th>
+                                <th>Significado</th>
+                                <th>Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Someone else</td>
+                                <td>Alguna otra persona</td>
+                                <td>I need to ask <strong>someone else</strong>.</td>
+                            </tr>
+                            <tr>
+                                <td>Anything else</td>
+                                <td>Alguna otra cosa</td>
+                                <td>Do you need <strong>anything else</strong>?</td>
+                            </tr>
+                             <tr>
+                                <td>Nowhere else</td>
+                                <td>En ningún otro lugar</td>
+                                <td>You will find this price <strong>nowhere else</strong>.</td>
+                            </tr>
+                            <tr>
+                                <td>Everywhere else</td>
+                                <td>En todos los demás lugares</td>
+                                <td>It was closed, so we looked <strong>everywhere else</strong>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pronombres Reflexivos -->
+            <div id="pronombres-reflexivos" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Pronombres Reflexivos</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Un pronombre reflexivo se usa como objeto y se refiere al mismo sujeto de la oración o cláusula. La acción "refleja" de vuelta al sujeto.</p>
+                    <p><strong>Pronombres:</strong> myself, yourself, himself, herself, itself, ourselves, yourselves, themselves.</p>
+                    <h3>Usos Principales:</h3>
+                    <ol>
+                        <li><strong>Acción sobre el sujeto:</strong> She injured <strong>herself</strong> during the game. (Se lesionó a sí misma).</li>
+                        <li><strong>Énfasis:</strong> Betty <strong>herself</strong> cooked dinner. (La propia Betty preparó la cena).</li>
+                        <li><strong>Por cuenta propia / Solo:</strong> Se usa con la preposición <strong>by</strong>. They live <strong>by themselves</strong>. (Viven solos).</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Adverbios de Frecuencia -->
+            <div id="adverbios-frecuencia" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Adverbios de Frecuencia</div>
+                </div>
+                <div class="explanation-box">
+                    <p>Los adverbios de frecuencia (<strong>seldom, never, usually, always</strong>) describen con qué regularidad ocurre una acción.</p>
+                    <h3>Posición en la Oración:</h3>
+                    <ul>
+                        <li><strong>Antes del verbo principal:</strong> She <strong>seldom</strong> comes here. (Ella rara vez viene aquí).</li>
+                        <li><strong>Después del verbo "be":</strong> She is <strong>usually</strong> on time. (Ella suele llegar a tiempo).</li>
+                        <li>También pueden ir al principio o al final de la oración para dar énfasis.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Repaso de Verbos Modales -->
+            <div id="repaso-modales" class="lesson-content">
+                <div class="lesson-header">
+                    <div class="lesson-title">Repaso de Verbos Modales y Estructuras</div>
+                </div>
+                <div class="explanation-box">
+                    <p>La siguiente tabla muestra cómo cambian ciertos verbos modales en el estilo indirecto (reported speech) y otros usos importantes.</p>
+                </div>
+                <div class="example-box">
+                    <table class="grammar-table">
+                        <thead>
+                            <tr>
+                                <th>Estructura</th>
+                                <th>Uso / Significado</th>
+                                <th>Cambio en Reported Speech</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Should / Ought to</td>
+                                <td>Dar consejo (ambos tienen el mismo significado)</td>
+                                <td>No cambian (Should / Ought to)</td>
+                            </tr>
+                            <tr>
+                                <td>Used to</td>
+                                <td>Expresar un hábito pasado que ya no existe</td>
+                                <td>No cambia (Used to)</td>
+                            </tr>
+                            <tr>
+                                <td>Would</td>
+                                <td>Expresar una acción que se repetía en el pasado</td>
+                                <td>No cambia (Would)</td>
+                            </tr>
+                            <tr>
+                                <td>Must</td>
+                                <td>Expresar deducción o probabilidad fuerte</td>
+                                <td>No cambia (Must)</td>
+                            </tr>
+                            <tr>
+                                <td>Will / Would</td>
+                                <td>Expresar lo que se quiere o se quiere hacer</td>
+                                <td><strong>Will</strong> cambia a <strong>Would</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Was/Were going to</td>
+                                <td>Intención pasada</td>
+                                <td>No cambian (Was/Were going to)</td>
+                            </tr>
+                            <tr>
+                                <td>Can</td>
+                                <td>Decir que algo es posible</td>
+                                <td><strong>Can</strong> cambia a <strong>Could</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLesson(topicId) {
+            // Hide all lesson content
+            document.querySelectorAll('.lesson-content').forEach(lesson => {
+                lesson.classList.remove('active');
+            });
+            // Deactivate all sidebar items
+            document.querySelectorAll('.topic-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Show the selected lesson
+            document.getElementById(topicId).classList.add('active');
+            // Activate the selected sidebar item
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
