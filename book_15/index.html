@@ -268,22 +268,48 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+
             .header h1 {
                 font-size: 2.2em;
             }
 
+            .header p {
+                font-size: 1.1em;
+            }
+
             .quiz-selection {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 25px;
                 padding: 30px 20px;
             }
 
             .quiz-option {
                 padding: 30px 20px;
+                min-width: 0;
+                transform: none !important;
+                transition: none;
+            }
+
+            .quiz-option:hover {
+                transform: none !important;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .quiz-option::before {
+                display: none;
             }
 
             .quiz-title {
                 font-size: 1.8em;
+            }
+
+            .quiz-description {
+                font-size: 1em;
             }
 
             .quiz-stats {
@@ -291,8 +317,51 @@
                 gap: 15px;
             }
 
+            .start-btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+                transform: none !important;
+                transition: none;
+            }
+
+            .start-btn:hover {
+                transform: none !important;
+            }
+
             .tips {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .quiz-selection {
+                padding: 20px 15px;
+                gap: 20px;
+            }
+
+            .quiz-option {
+                padding: 25px 15px;
+            }
+
+            .quiz-title {
+                font-size: 1.6em;
+            }
+
+            .start-btn {
+                padding: 12px 25px;
+                font-size: 1em;
             }
         }
 
