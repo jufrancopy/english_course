@@ -415,7 +415,7 @@
         }
 
         .close-btn {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             background: #f44336;
@@ -426,7 +426,7 @@
             cursor: pointer;
             font-size: 1.2em;
             font-weight: bold;
-            z-index: 10;
+            z-index: 2000;
         }
 
         .close-btn:hover {
@@ -2465,6 +2465,10 @@
             document.getElementById('quizBBtn').addEventListener('click', () => startQuiz('quizB'));
             document.getElementById('quizCBtn').addEventListener('click', () => startQuiz('quizC'));
             document.getElementById('vocabularyQuizBtn').addEventListener('click', startVocabularyQuiz);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeQuiz();
         });
     </script>
 </body>
