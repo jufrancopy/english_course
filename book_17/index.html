@@ -415,7 +415,7 @@
         }
 
         .close-btn {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             background: #f44336;
@@ -426,7 +426,7 @@
             cursor: pointer;
             font-size: 1.2em;
             font-weight: bold;
-            z-index: 10;
+            z-index: 2000;
         }
 
         .close-btn:hover {
@@ -699,31 +699,31 @@
     <script>
         // Quiz A Questions (50 questions)
         const quizAQuestions = [
-    { question: "1. Why does Tom always get good grades?", translation: "¿Por qué Tom siempre saca buenas notas?", options: ["generous", "retired", "messy", "clever"], correct: 3 },
-    { question: "2. What generates light?", translation: "¿Qué genera luz?", options: ["The moon.", "The sun.", "A mirror.", "A window."], correct: 1 },
-    { question: "3. Did Mary display her photos?", translation: "¿Mostró Mary sus fotos?", options: ["cut", "buy", "see", "sell"], correct: 2 },
-    { question: "4. Has Tom accepted the offer?", translation: "¿Ha aceptado Tom la oferta?", options: ["leasing", "protecting", "considering", "organizing"], correct: 2 },
-    { question: "5. Can you turn on the lights?", translation: "¿Puedes encender las luces?", options: ["switch them on", "rely on them", "advertise in them", "fill them up"], correct: 0 },
-    { question: "6. How many nations are in Africa?", translation: "¿Cuántas naciones hay en África?", options: ["machines", "countries", "forests", "people"], correct: 1 },
-    { question: "7. I can't connect the fan to the outlet.", translation: "No puedo conectar el ventilador al tomacorriente.", options: ["cord", "court", "announcement", "advertisement"], correct: 0 },
-    { question: "8. What do you think about his arguments?", translation: "¿Qué piensas de sus argumentos?", options: ["crowded", "frightened", "comfortable", "reasonable"], correct: 3 },
-    { question: "9. Is the homework due today?", translation: "¿Vence hoy la tarea?", options: ["busy", "due", "powerful", "classified"], correct: 1 },
-    { question: "10. Are you through with your meal?", translation: "¿Has terminado con tu comida?", options: ["worried", "married", "enlisted", "finished"], correct: 3 },
-    { question: "11. What do they do at that factory?", translation: "¿Qué hacen en esa fábrica?", options: ["make", "buy", "fly", "repair"], correct: 0 },
-    { question: "12. What is Mary's best characteristic?", translation: "¿Cuál es la mejor característica de Mary?", options: ["kind", "lost", "busy", "dull"], correct: 0 },
-    { question: "13. Why did you exclude Tom from the game?", translation: "¿Por qué excluiste a Tom del juego?", options: ["he was the best player", "we needed more players", "he broke too many rules", "everyone wanted him to play"], correct: 2 },
-    { question: "14. Do only U.S. students attend that school?", translation: "¿Solo estudiantes de EE. UU. asisten a esa escuela?", options: ["demanding", "international", "married", "official"], correct: 1 },
-    { question: "15. Does Ms. Smith need help walking up the stairs?", translation: "¿Necesita la Sra. Smith ayuda para subir las escaleras?", options: ["generous", "disciplined", "hardworking", "elderly"], correct: 3 },
-    { question: "16. Describe Tom's appearance.", translation: "Describe la apariencia de Tom.", options: ["smart and relaxed", "funny and quiet", "tall and thin", "calm and interesting"], correct: 2 },
-    { question: "17. Does Mary work for the government?", translation: "¿Trabaja Mary para el gobierno?", options: ["collects taxes", "cleans houses", "sells clothing", "harvests crops"], correct: 0 },
-    { word: "18. Does Mary have a new haircut?", translation: "¿Tiene Mary un nuevo corte de pelo?", options: ["powerful", "friendly", "reliable", "attractive"], correct: 3 },
-    { question: "19. Does that appliance work?", translation: "¿Funciona ese aparato?", options: ["elevator", "screwdriver", "circuit", "lease"], correct: 2 },
-    { question: "20. Is your job demanding?", translation: "¿Es tu trabajo exigente?", options: ["are on vacation", "have a lot of work", "take long breaks", "think it's easy"], correct: 1 },
-    { question: "21. Can everyone use the swimming pool?", translation: "¿Puede todo el mundo usar la piscina?", options: ["available", "public", "private", "convenient"], correct: 1 },
-    { question: "22. Does your building have good security?", translation: "¿Tiene tu edificio buena seguridad?", options: ["scary", "safe", "leaky", "freezing"], correct: 1 },
-    { question: "23. When is retreat performed?", translation: "¿Cuándo se realiza la retirada?", options: ["It always occurs at the end of the duty day.", "Tom is tall, thin, blond, and wears glasses.", "They usually have a guard 12 hours per day.", "We'll move to the new house tomorrow, right?"], correct: 0 },
-    { question: "24. How much is the rent?", translation: "¿Cuánto es el alquiler?", options: ["We honor the flag.", "It's $600 per month.", "She's only 25 years old.", "That's right, it's furnished."], correct: 1 },
-    { question: "25. Who gets a ten percent discount?", translation: "¿Quién recibe un diez por ciento de descuento?", options: ["new cashiers", "store shoppers", "store personnel", "military personnel"], correct: 3 },
+    { question: "1. Why does Tom always get good grades?\nBecause he's ________.", translation: "¿Por qué Tom siempre saca buenas notas?\nPorque él es ________.", options: ["generous", "retired", "messy", "clever"], correct: 3 },
+    { question: "2. What generates light?\n________.", translation: "¿Qué genera luz?\n________.", options: ["The moon.", "The sun.", "A mirror.", "A window."], correct: 1 },
+    { question: "3. Did Mary display her photos?\nNo, she didn't want anyone to ________ them.", translation: "¿Mostró Mary sus fotos?\nNo, no quería que nadie las ________.", options: ["cut", "buy", "see", "sell"], correct: 2 },
+    { question: "4. Has Tom accepted the offer?\nNo, but he's ________ it.", translation: "¿Ha aceptado Tom la oferta?\nNo, pero la está ________.", options: ["leasing", "protecting", "considering", "organizing"], correct: 2 },
+    { question: "5. Can you turn on the lights?\nOkay, I'll ________.", translation: "¿Puedes encender las luces?\nBien, voy a ________.", options: ["switch them on", "rely on them", "advertise in them", "fill them up"], correct: 0 },
+    { question: "6. How many nations are in Africa?\nThere are over 50 ________ there.", translation: "¿Cuántas naciones hay en África?\nHay más de 50 ________ allí.", options: ["machines", "countries", "forests", "people"], correct: 1 },
+    { question: "7. I can't connect the fan to the outlet.\nYou need a longer ________.", translation: "No puedo conectar el ventilador al tomacorriente.\nNecesitas un ________ más largo.", options: ["cord", "court", "announcement", "advertisement"], correct: 0 },
+    { question: "8. What do you think about his arguments?\nI think they're ________.", translation: "¿Qué piensas de sus argumentos?\nCreo que son ________.", options: ["crowded", "frightened", "comfortable", "reasonable"], correct: 3 },
+    { question: "9. Is the homework due today?\nYes, it's ________.", translation: "¿Vence hoy la tarea?\nSí, está ________.", options: ["busy", "due", "powerful", "classified"], correct: 1 },
+    { question: "10. Are you through with your meal?\nYes, I'm ________.", translation: "¿Has terminado con tu comida?\nSí, estoy ________.", options: ["worried", "married", "enlisted", "finished"], correct: 3 },
+    { question: "11. What does your country produce?\nWe ________ airplanes.", translation: "¿Qué produce tu país?\nNosotros ________ aviones.", options: ["make", "buy", "fly", "repair"], correct: 0 },
+    { question: "12. What is Mary's best characteristic?\nShe's ________.", translation: "¿Cuál es la mejor característica de Mary?\nElla es ________.", options: ["kind", "lost", "busy", "dull"], correct: 0 },
+    { question: "13. Why did you exclude Tom from the game?\nBecause ________.", translation: "¿Por qué excluiste a Tom del juego?\nPorque ________.", options: ["he was the best player", "we needed more players", "he broke too many rules", "everyone wanted him to play"], correct: 2 },
+    { question: "14. Do only U.S. students attend that school?\nNo, ________ students do, too.", translation: "¿Solo estudiantes de EE. UU. asisten a esa escuela?\nNo, también lo hacen estudiantes ________.", options: ["demanding", "international", "married", "official"], correct: 1 },
+    { question: "15. Does Ms. Smith need help walking up the stairs?\nYes, she's quite ________.", translation: "¿Necesita la Sra. Smith ayuda para subir las escaleras?\nSí, es bastante ________.", options: ["generous", "disciplined", "hardworking", "elderly"], correct: 3 },
+    { question: "16. Describe Tom's appearance.\nHe's ________.", translation: "Describe la apariencia de Tom.\nÉl es ________.", options: ["smart and relaxed", "funny and quiet", "tall and thin", "calm and interesting"], correct: 2 },
+    { question: "17. Does Mary work for the government?\nYes, she ________.", translation: "¿Trabaja Mary para el gobierno?\nSí, ella ________.", options: ["collects taxes", "cleans houses", "sells clothing", "harvests crops"], correct: 0 },
+    { question: "18. Does Mary have a new haircut?\nYes, it's ________.", translation: "¿Tiene Mary un nuevo corte de pelo?\nSí, es ________.", options: ["powerful", "friendly", "reliable", "attractive"], correct: 3 },
+    { question: "19. Does that appliance work?\nNo, the ________ is broken.", translation: "¿Funciona ese aparato?\nNo, el ________ está roto.", options: ["elevator", "screwdriver", "circuit", "lease"], correct: 2 },
+    { question: "20. Is your job demanding?\nYes, we ________.", translation: "¿Es tu trabajo exigente?\nSí, nosotros ________.", options: ["are on vacation", "have a lot of work", "take long breaks", "think it's easy"], correct: 1 },
+    { question: "21. Can everyone use the swimming pool?\nNo, it's ________.", translation: "¿Puede todo el mundo usar la piscina?\nNo, es ________.", options: ["available", "public", "private", "convenient"], correct: 2 },
+    { question: "22. Does your building have good security?\nYes, it's ________ there.", translation: "¿Tiene tu edificio buena seguridad?\nSí, es ________ allí.", options: ["scary", "safe", "leaky", "freezing"], correct: 1 },
+    { question: "23. When is retreat performed?\n________.", translation: "¿Cuándo se realiza la retirada?\n________.", options: ["It always occurs at the end of the duty day.", "Tom is tall, thin, blond, and wears glasses.", "They usually have a guard 12 hours per day.", "We'll move to the new house tomorrow, right?"], correct: 0 },
+    { question: "24. How much is the rent?\n________.", translation: "¿Cuánto es el alquiler?\n________.", options: ["We honor the flag.", "It's $600 per month.", "She's only 25 years old.", "That's right, it's furnished."], correct: 1 },
+    { question: "25. Who gets a ten percent discount?\n________.", translation: "¿Quién recibe un diez por ciento de descuento?\n________.", options: ["new cashiers", "store shoppers", "store personnel", "military personnel"], correct: 3 },
     { question: "26. You don't like meat, _______ you?", translation: "No te gusta la carne, ¿verdad?", options: ["are", "can", "have", "do"], correct: 3 },
     { question: "27. I can always _______ Mary when I need help.", translation: "Siempre puedo _______ Mary cuando necesito ayuda.", options: ["precede", "govern", "rely on", "argue with"], correct: 2 },
     { question: "28. Mary: Are you going to color your hair? Sarah: Yes, I'm going to _______.", translation: "Mary: ¿Te vas a teñir el pelo? Sarah: Sí, voy a _______.", options: ["color it brown", "it color brown", "it brown color", "color brown it"], correct: 0 },
@@ -807,31 +807,58 @@
 
         // Quiz C Questions (50 questions)
         const quizCQuestions = [
-    { question: "1. We don’t leave until 7:00, _______ we?", translation: "No nos vamos hasta las 7:00, ¿verdad?", options: ["have", "are", "can", "do"], correct: 3 },
-    { question: "2. Rubber is a natural _______ from a plant.", translation: "El caucho es un ________ natural de una planta.", options: ["activity", "energy", "symbol", "product"], correct: 3 },
-    { question: "3. Sue: Why do you like chocolate? Tom: Because it _______.", translation: "Sue: ¿Por qué te gusta el chocolate? Tom: Porque me ________ feliz.", options: ["happy makes me", "makes me happy", "happy me makes", "makes happy me"], correct: 1 },
-    { question: "4. I can’t remember _______ my passport.", translation: "No puedo recordar ________ mi pasaporte.", options: ["did I pack", "if did I pack", "if I packed", "I packed"], correct: 2 },
-    { question: "5. Don’t believe anything Andy says. He’s a _______ person.", translation: "No creas nada de lo que diga Andy. Él es una persona ________.", options: ["dishonest", "friendly", "cautious", "disciplined"], correct: 0 },
-    { question: "6. Mary: Can you tell me how I could find a good job? Tom: Yes, I can tell you how _______ a good job.", translation: "Mary: ¿Puedes decirme cómo podría encontrar un buen trabajo? Tom: Sí, puedo decirte cómo ________ un buen trabajo.", options: ["find", "finds", "to find", "could find"], correct: 2 },
-    { question: "7. The picnic could _______ because of bad weather.", translation: "El picnic podría ________ debido al mal tiempo.", options: ["cancel", "canceled", "be canceling", "be canceled"], correct: 3 },
-    { question: "8. We’ll need a _______ to fasten the mirror to the wall.", translation: "Necesitaremos un ________ para sujetar el espejo a la pared.", options: ["screw", "bracelet", "circuit", "conductor"], correct: 0 },
-    { question: "9. Even though I ate _______, I’m still hungry.", translation: "Aunque comí ________, todavía tengo hambre.", options: ["none of my food", "a very small meal", "nothing today", "a lot for dinner"], correct: 3 },
-    { question: "10. I like all kinds of _______ food.", translation: "Me gustan todo tipo de comida ________.", options: ["furnished", "classified", "international", "professional"], correct: 2 },
-    { question: "11. The Smiths live in a nice _______ of the city.", translation: "Los Smith viven en una buena ________ de la ciudad.", options: ["court", "anthem", "section", "gathering"], correct: 2 },
-    { question: "12. The man will come to the party, and so _______ his wife.", translation: "El hombre vendrá a la fiesta, y también su esposa.", options: ["will", "comes", "does", "is"], correct: 0 },
-    { question: "13. The first American car _______ in 1891.", translation: "El primer coche americano ________ en 1891.", options: ["made", "was made", "had made", "was making"], correct: 1 },
-    { question: "14. Mary: What _______ do you look for in a friend? Sue: I prefer someone who is funny and kind.", translation: "Mary: ¿Qué ________ buscas en un amigo? Sue: Prefiero a alguien que sea divertido y amable.", options: ["position", "appearance", "qualities", "celebrations"], correct: 2 }, // User marked B but note says qualities.
-    { question: "15. The toughest demand of my job is _______.", translation: "La exigencia más dura de mi trabajo es ________.", options: ["taking long breaks", "working many hours", "going on vacation", "getting many awards"], correct: 1 },
-    { question: "16. Could you please tell me why _______?", translation: "¿Podrías decirme por qué ________?", options: ["is closed the office", "is the office closed", "closed is the office", "the office is closed"], correct: 3 },
-    { question: "17. If you don’t want others to see you, don’t go to _______ place.", translation: "Si no quieres que otros te vean, no vayas a un lugar ________.", options: ["a public", "a modern", "an unfurnished", "an attractive"], correct: 0 },
-    { question: "18. Why does she always seem _______ dissatisfied?", translation: "¿Por qué siempre parece ________ insatisfecha?", options: ["be", "to be", "is", "being"], correct: 1 },
-    { question: "19. Does it smell _______ something is burning?", translation: "¿Huele ________ algo se está quemando?", options: ["like it", "like", "liked", "liking"], correct: 1 },
-    { question: "20. The captain reported the ship’s _______ to the admiral.", translation: "El capitán informó la ________ del barco al almirante.", options: ["screens", "heating", "wires", "position"], correct: 3 },
-    { question: "21. The mechanic can _______ the loose lug nut.", translation: "El mecánico puede ________ la tuerca de orejeta suelta.", options: ["tighten", "tightly", "tight", "tighter"], correct: 0 },
-    { question: "22. They’re not doctors, and neither _______ we.", translation: "Ellos no son doctores, y nosotros tampoco.", options: ["do", "are", "can", "have"], correct: 1 },
-    { question: "23. Most houses have a _______ garage.", translation: "La mayoría de las casas tienen un garaje para ________.", options: ["two-cars", "two car", "two cars", "two-car"], correct: 3 },
-    { question: "24. Is it true that many people visit Dallas?", translation: "¿Es verdad que mucha gente visita Dallas?", options: ["Andy is wearing a green shirt.", "The apartment has new carpet.", "You should face the direction of the music.", "That's correct. It's a popular place."], correct: 3 },
-    { question: "25. Circle the judgment.", translation: "Selecciona el juicio.", options: ["They should lower and fold the flag slowly.", "In my opinion, gas prices are very low.", "Is the rent due on the last day of the month?", "Is it correct that all metals conduct electricity?"], correct: 1 }
+    // Part 1 - Listening (1-25)
+    { question: "1. Is the house furnished?", translation: "¿Está la casa amueblada?", options: ["plants", "pots and pans", "tables and chairs", "stairs"], correct: 2 },
+    { question: "2. Someone stole something. What did they do?", translation: "Alguien robó algo. ¿Qué hicieron?", options: ["painted", "insulated", "denied", "adjusted"], correct: 2 },
+    { question: "3. Does a plug reach or is it in the outlet?", translation: "¿Llega el enchufe o está en el tomacorriente?", options: ["kitchen", "insulator", "cord", "screw"], correct: 2 },
+    { question: "4. What did you see on the parade?", translation: "¿Qué viste en el desfile?", options: ["the waiter on the patio", "people who were marching", "fish that were swimming", "a movie at the theater"], correct: 1 },
+    { question: "5. How did you damage your bicycle?", translation: "¿Cómo dañaste tu bicicleta?", options: ["drove over it with my car", "cleaned it with a cloth", "left it in the garage", "paid a lot of money for it"], correct: 0 },
+    { question: "6. Can you rely on your secretary?", translation: "¿Puedes confiar en tu secretaria?", options: ["does a good job", "complains about work", "calls her parents", "forgets about jogging"], correct: 0 },
+    { question: "7. Why did he sign the application?", translation: "¿Por qué firmó la solicitud?", options: ["a messy", "a modern", "an informal", "an official"], correct: 3 },
+    { question: "8. I don't remember exactly, but the answer is ok.", translation: "No recuerdo exactamente, pero la respuesta está bien.", options: ["neat", "friendly", "private", "clear"], correct: 2 },
+    { question: "9. Why did the light go out?", translation: "¿Por qué se fue la luz?", options: ["there was no room", "there was a big storm", "they needed exercise", "I turned them on"], correct: 1 },
+    { question: "10. The audio is difficult to understand, but the answer is correct.", translation: "El audio es difícil de entender, pero la respuesta es correcta.", options: ["precede", "support", "depend on", "apologize to"], correct: 0 },
+    { question: "11. What are the neighbors arguing about?", translation: "¿Sobre qué están discutiendo los vecinos?", options: ["fond of", "angry about", "bored with", "allergic to"], correct: 1 },
+    { question: "12. My sister and I have the same size, so we _______ our clothes.", translation: "Mi hermana y yo tenemos la misma talla, así que _______ nuestra ropa.", options: ["share", "advertise", "display", "iron"], correct: 0 },
+    { question: "13. Is the mall near downtown?", translation: "¿Está el centro comercial cerca del centro?", options: ["is a public place", "has available flights", "has a central location", "is closed for repairs"], correct: 2 },
+    { question: "14. What is Mary's personality like?", translation: "¿Cómo es la personalidad de Mary?", options: ["cold and hungry", "tall and handsome", "funny and kind", "tired and upset"], correct: 2 },
+    { question: "15. Do Mary and her sister look similar?", translation: "¿Se parecen Mary y su hermana físicamente?", options: ["spent a summer abroad", "have beautiful smiles", "need to drink water", "bought new cars"], correct: 1 },
+    { question: "16. Do I have to take the exam?", translation: "¿Tengo que tomar el examen?", options: ["may", "might", "could", "must"], correct: 3 },
+    { question: "17. Is the water flowing?", translation: "¿Está fluyendo el agua?", options: ["increasing", "moving", "boiling", "sticking"], correct: 1 },
+    { question: "18. Can you rely on Mary?", translation: "¿Puedes confiar en Mary?", options: ["reliable", "selfish", "stingy", "careless"], correct: 0 },
+    { question: "19. How many cars does the factory produce?", translation: "¿Cuántos autos produce la fábrica?", options: ["used", "taken", "spent", "made"], correct: 3 },
+    { question: "20. Why did you insulate it?", translation: "¿Por qué lo aislaste?", options: ["clean", "sweet", "still", "hot"], correct: 3 },
+    { question: "21. What can someone do to improve their appearance?", translation: "¿Qué puede hacer alguien para mejorar su apariencia?", options: ["cut his hair", "bought a pen", "talked to me", "walked home"], correct: 0 },
+    { question: "22. Why do military personnel keep their hair short?", translation: "¿Por qué el personal militar mantiene el cabello corto?", options: ["messy", "neat", "clever", "busy"], correct: 1 },
+    { question: "23. When is the rent due?", translation: "¿Cuándo vence el alquiler?", options: ["You must pay it by the 15th.", "It doesn't start until 8:00 p.m.", "You need to salute.", "That's not correct."], correct: 0 },
+    { question: "24. What should civilians do when they see the flag?", translation: "¿Qué deben hacer los civiles cuando ven la bandera?", options: ["That information isn't correct.", "Tom has blue eyes and brown hair.", "They place their hand over their heart.", "Our building doesn't have a night guard."], correct: 2 },
+    { question: "25. What does the bank announcement say airmen can do?", translation: "¿Qué dice el anuncio del banco que los aviadores pueden hacer?", options: ["becoming airmen", "serving their country", "searching the Internet", "buying homes and cars"], correct: 3 },
+    // Part 2 - Reading & Grammar (26-50)
+    { question: "26. We don't leave until 7:00, _______ we?", translation: "No nos vamos hasta las 7:00, ¿verdad?", options: ["have", "are", "can", "do"], correct: 3 },
+    { question: "27. Rubber is a natural _______ from a plant.", translation: "El caucho es un ________ natural de una planta.", options: ["activity", "energy", "symbol", "product"], correct: 3 },
+    { question: "28. Sue: Why do you like chocolate? Tom: Because it _______.", translation: "Sue: ¿Por qué te gusta el chocolate? Tom: Porque ________.", options: ["happy makes me", "makes me happy", "happy me makes", "makes happy me"], correct: 1 },
+    { question: "29. I can't remember _______ my passport.", translation: "No puedo recordar ________ mi pasaporte.", options: ["did I pack", "if did I pack", "if I packed", "I packed"], correct: 2 },
+    { question: "30. Don't believe anything Andy says. He's a _______ person.", translation: "No creas nada de lo que diga Andy. Él es una persona ________.", options: ["dishonest", "friendly", "cautious", "disciplined"], correct: 0 },
+    { question: "31. Mary: Can you tell me how I could find a good job? Tom: Yes, I can tell you how _______ a good job.", translation: "Mary: ¿Puedes decirme cómo podría encontrar un buen trabajo? Tom: Sí, puedo decirte cómo ________ un buen trabajo.", options: ["find", "finds", "to find", "could find"], correct: 2 },
+    { question: "32. The picnic could _______ because of bad weather.", translation: "El picnic podría ________ debido al mal tiempo.", options: ["cancel", "canceled", "be canceling", "be canceled"], correct: 3 },
+    { question: "33. We'll need a _______ to fasten the mirror to the wall.", translation: "Necesitaremos un ________ para sujetar el espejo a la pared.", options: ["screw", "bracelet", "circuit", "conductor"], correct: 0 },
+    { question: "34. Even though I ate _______, I'm still hungry.", translation: "Aunque comí ________, todavía tengo hambre.", options: ["none of my food", "a very small meal", "nothing today", "a lot for dinner"], correct: 3 },
+    { question: "35. I like all kinds of _______ food.", translation: "Me gustan todo tipo de comida ________.", options: ["furnished", "classified", "international", "professional"], correct: 2 },
+    { question: "36. The Smiths live in a nice _______ of the city.", translation: "Los Smith viven en una buena ________ de la ciudad.", options: ["court", "anthem", "section", "gathering"], correct: 2 },
+    { question: "37. The man will come to the party, and so _______ his wife.", translation: "El hombre vendrá a la fiesta, y también su esposa.", options: ["will", "comes", "does", "is"], correct: 0 },
+    { question: "38. The first American car _______ in 1891.", translation: "El primer coche americano ________ en 1891.", options: ["made", "was made", "had made", "was making"], correct: 1 },
+    { question: "39. Mary: What _______ do you look for in a friend? Sue: I prefer someone who is funny and kind.", translation: "Mary: ¿Qué ________ buscas en un amigo? Sue: Prefiero a alguien que sea divertido y amable.", options: ["position", "appearance", "qualities", "celebrations"], correct: 1 },
+    { question: "40. The toughest demand of my job is _______.", translation: "La exigencia más dura de mi trabajo es ________.", options: ["taking long breaks", "working many hours", "going on vacation", "getting many awards"], correct: 1 },
+    { question: "41. Could you please tell me why _______?", translation: "¿Podrías decirme por qué ________?", options: ["is closed the office", "is the office closed", "closed is the office", "the office is closed"], correct: 3 },
+    { question: "42. If you don't want others to see you, don't go to _______ place.", translation: "Si no quieres que otros te vean, no vayas a un lugar ________.", options: ["a public", "a modern", "an unfurnished", "an attractive"], correct: 0 },
+    { question: "43. Why does she always seem _______ dissatisfied?", translation: "¿Por qué siempre parece ________ insatisfecha?", options: ["be", "to be", "is", "being"], correct: 1 },
+    { question: "44. Does it smell _______ something is burning?", translation: "¿Huele ________ algo se está quemando?", options: ["like it", "like", "liked", "liking"], correct: 1 },
+    { question: "45. The captain reported the ship's _______ to the admiral.", translation: "El capitán informó la ________ del barco al almirante.", options: ["screens", "heating", "wires", "position"], correct: 3 },
+    { question: "46. The mechanic can _______ the loose lug nut.", translation: "El mecánico puede ________ la tuerca de orejeta suelta.", options: ["tighten", "tightly", "tight", "tighter"], correct: 0 },
+    { question: "47. They're not doctors, and neither _______ we.", translation: "Ellos no son doctores, y nosotros tampoco.", options: ["do", "are", "can", "have"], correct: 1 },
+    { question: "48. Most houses have a _______ garage.", translation: "La mayoría de las casas tienen un garaje para ________.", options: ["two-cars", "two car", "two cars", "two-car"], correct: 3 },
+    { question: "49. Is it true that many people visit Dallas?", translation: "¿Es verdad que mucha gente visita Dallas?", options: ["Andy is wearing a green shirt.", "The apartment has new carpet.", "You should face the direction of the music.", "That's correct. It's a popular place."], correct: 3 },
+    { question: "50. Circle the judgment.", translation: "Selecciona el juicio.", options: ["They should lower and fold the flag slowly.", "In my opinion, gas prices are very low.", "Is the rent due on the last day of the month?", "Is it correct that all metals conduct electricity?"], correct: 1 }
 ];
 
         // Vocabulary List for Book 17 (All 4 Lessons)
@@ -1691,6 +1718,10 @@
             document.getElementById('quizBBtn').addEventListener('click', () => startQuiz('quizB'));
             document.getElementById('quizCBtn').addEventListener('click', () => startQuiz('quizC'));
             document.getElementById('vocabularyQuizBtn').addEventListener('click', startVocabularyQuiz);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeQuiz();
         });
     </script>
 </body>
