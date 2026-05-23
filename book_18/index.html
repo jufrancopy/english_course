@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Quiz - Book 18</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .quiz-selection {
+            padding: 50px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .quiz-option {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-option:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #4facfe;
+        }
+
+        .quiz-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .quiz-option:hover::before {
+            left: 100%;
+        }
+
+        .quiz-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-title {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-description {
+            font-size: 1.1em;
+            color: #495057;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat { text-align: center; }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .quiz-features {
+            text-align: left;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-features ul { list-style: none; padding: 0; }
+
+        .quiz-features li {
+            padding: 8px 0;
+            font-size: 1em;
+            color: #495057;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .quiz-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .footer p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tip {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .tip-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .tip-text { color: #495057; font-size: 0.95em; }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; align-items: flex-start; padding-top: 20px; }
+            .header h1 { font-size: 2.2em; }
+            .header p { font-size: 1.1em; }
+            .quiz-selection { grid-template-columns: 1fr; gap: 25px; padding: 30px 20px; }
+            .quiz-option { padding: 30px 20px; min-width: 0; transform: none !important; transition: none; }
+            .quiz-option:hover { transform: none !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+            .quiz-option::before { display: none; }
+            .quiz-title { font-size: 1.8em; }
+            .quiz-description { font-size: 1em; }
+            .quiz-stats { flex-direction: column; gap: 15px; }
+            .start-btn { padding: 15px 30px; font-size: 1.1em; transform: none !important; transition: none; }
+            .start-btn:hover { transform: none !important; }
+            .tips { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 5px; }
+            .header { padding: 25px 20px; }
+            .header h1 { font-size: 1.8em; }
+            .quiz-selection { padding: 20px 15px; gap: 20px; }
+            .quiz-option { padding: 25px 15px; }
+            .quiz-title { font-size: 1.6em; }
+            .start-btn { padding: 12px 25px; font-size: 1em; }
+        }
+
+        .loading { display: none; text-align: center; padding: 40px; }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .quiz-window {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .quiz-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 90%;
+            margin: 20px auto;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 2000;
+        }
+
+        .close-btn:hover { background: #d32f2f; }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>🎓 English Learning Quiz - Book 18</h1>
+            <p>Choose your challenge level and start improving your English skills today!</p>
+        </div>
+
+        <div id="selectionScreen">
+            <div class="quiz-selection">
+
+                <!-- Quiz A -->
+                <div id="quizABtn" class="quiz-option" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                    <div class="difficulty-badge" style="background: #f8d7da; color: #721c24;">Intermediate to Advanced</div>
+                    <div class="quiz-icon">🧠</div>
+                    <h2 class="quiz-title">Quiz A</h2>
+                    <p class="quiz-description">Comprehensive quiz with listening and reading sections covering grammar and vocabulary for Book 18.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">50</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">25-35</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">Mixed</div><div class="stat-label">Level</div></div>
+                    </div>
+                    <div class="quiz-features">
+                        <ul>
+                            <li>Part 1: Listening (1-25)</li>
+                            <li>Part 2: Reading &amp; Grammar (26-50)</li>
+                            <li>Multiple choice questions</li>
+                            <li>Spanish translations included</li>
+                        </ul>
+                    </div>
+                    <button class="start-btn">Start Quiz A 🚀</button>
+                </div>
+
+                <!-- Quiz B -->
+                <div id="quizBBtn" class="quiz-option" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                    <div class="difficulty-badge" style="background: #f8d7da; color: #721c24;">Alternative</div>
+                    <div class="quiz-icon">🎯</div>
+                    <h2 class="quiz-title">Quiz B</h2>
+                    <p class="quiz-description">Alternative comprehensive quiz with different questions covering Book 18 concepts.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">50</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">25-35</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">Mixed</div><div class="stat-label">Level</div></div>
+                    </div>
+                    <div class="quiz-features">
+                        <ul>
+                            <li>Alternative question set</li>
+                            <li>Grammar &amp; vocabulary mix</li>
+                            <li>Conversation practice</li>
+                            <li>Spanish translations</li>
+                        </ul>
+                    </div>
+                    <button class="start-btn">Start Quiz B 🎯</button>
+                </div>
+
+                <!-- Quiz C -->
+                <div id="quizCBtn" class="quiz-option" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <div class="difficulty-badge" style="background: #d4edda; color: #155724;">Challenge</div>
+                    <div class="quiz-icon">🎆</div>
+                    <h2 class="quiz-title">Quiz C</h2>
+                    <p class="quiz-description">Challenge yourself with this third comprehensive quiz featuring unique Book 18 questions.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">50</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">25-35</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">Mixed</div><div class="stat-label">Level</div></div>
+                    </div>
+                    <div class="quiz-features">
+                        <ul>
+                            <li>Unique question set</li>
+                            <li>Advanced grammar concepts</li>
+                            <li>Challenging vocabulary</li>
+                            <li>Full Spanish support</li>
+                        </ul>
+                    </div>
+                    <button class="start-btn">Start Quiz C 🎆</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingScreen" class="loading">
+            <div class="spinner"></div>
+            <h3>Loading your quiz...</h3>
+            <p>Preparing questions and setting up your learning experience.</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>💡 Tips for Success</strong></p>
+            <div class="tips">
+                <div class="tip">
+                    <div class="tip-title">📝 Take Notes</div>
+                    <div class="tip-text">Write down new vocabulary and grammar rules you learn during the quiz.</div>
+                </div>
+                <div class="tip">
+                    <div class="tip-title">🔄 Practice Regularly</div>
+                    <div class="tip-text">Take the quiz multiple times to reinforce your learning and track improvement.</div>
+                </div>
+                <div class="tip">
+                    <div class="tip-title">📖 Read Translations</div>
+                    <div class="tip-text">Use the Spanish translations to better understand question context and meaning.</div>
+                </div>
+                <div class="tip">
+                    <div class="tip-title">🎯 Focus on Mistakes</div>
+                    <div class="tip-text">Review questions you got wrong to identify areas that need more practice.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Window -->
+    <div id="quizWindow" class="quiz-window">
+        <div class="quiz-content">
+            <button class="close-btn" onclick="closeQuiz()">×</button>
+            <div id="quizContainer"></div>
+        </div>
+    </div>
+
+    <script src="quiz_a.js"></script>
+    <script src="quiz_b.js"></script>
+    <script src="quiz_c.js"></script>
+    <script>
+        let currentQuestions = [];
+        let currentQuestion = 0;
+        let selectedAnswers = [];
+        let score = 0;
+        let quizType = '';
+
+        function startQuiz(type) {
+            quizType = type;
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('quizWindow').style.display = 'block';
+                if (type === 'quizA') loadQuizShell('A', 'Quiz A', 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)', 'linear-gradient(135deg, #fcb69f, #ffecd2)', quizAQuestions, startQuizA);
+                else if (type === 'quizB') loadQuizShell('B', 'Quiz B', 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', 'linear-gradient(135deg, #ff9a9e, #fecfef)', quizBQuestions, startQuizB);
+                else if (type === 'quizC') loadQuizShell('C', 'Quiz C', 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)', 'linear-gradient(135deg, #a8edea, #fed6e3)', quizCQuestions, startQuizC);
+            }, 1500);
+        }
+
+        function loadQuizShell(letter, title, headerGrad, progressGrad, questions, startFn) {
+            const icons = { A: '🚀', B: '🎯', C: '🎆' };
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = `
+                <div style="background: ${headerGrad}; padding: 30px; text-align: center; color: white;">
+                    <h1 style="font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${icons[letter]} ${title}</h1>
+                    <p style="font-size: 1.2em; opacity: 0.9;">Listening and Reading Comprehension</p>
+                </div>
+                <div id="startScreen" style="text-align: center; padding: 60px 30px;">
+                    <h2 style="font-size: 2.2em; margin-bottom: 20px; color: #2c3e50;">${title} Assessment</h2>
+                    <p style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 40px; line-height: 1.6;">A 50-question quiz covering listening comprehension and reading/grammar skills.</p>
+                    <button class="start-btn" onclick="(${startFn.toString()})()">Start ${title} ${icons[letter]}</button>
+                    <button class="start-btn" onclick="viewAllQuestions('${letter}')" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-top: 15px;">📋 View All Questions</button>
+                </div>
+                <div id="quizScreen" style="display: none;">
+                    <div style="padding: 20px 30px; background: #f8f9fa;">
+                        <div style="width: 100%; height: 10px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
+                            <div style="height: 100%; background: ${progressGrad}; width: 0%; transition: width 0.3s ease; border-radius: 10px;" id="progressFill"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; font-weight: 600; color: #495057;" id="progressText">Question 1 of 50</div>
+                    </div>
+                    <div style="padding: 40px 30px; min-height: 400px;">
+                        <div style="font-size: 1.4em; margin-bottom: 30px; color: #2c3e50; line-height: 1.4; font-weight: 600; white-space: pre-line;" id="questionText"></div>
+                        <div style="font-size: 1.1em; color: #7f8c8d; margin-bottom: 30px; font-style: italic;" id="translationText"></div>
+                        <div style="display: grid; gap: 15px; margin-bottom: 30px;" id="optionsContainer"></div>
+                    </div>
+                    <div style="padding: 30px; background: #f8f9fa; display: flex; justify-content: space-between; align-items: center;">
+                        <button class="start-btn" id="prevBtn" onclick="previousQuestion()" disabled style="opacity: 0.5;">← Previous</button>
+                        <button class="start-btn" id="nextBtn" onclick="nextQuestion()" disabled style="opacity: 0.5;">Next →</button>
+                    </div>
+                </div>
+                <div id="resultsScreen" style="display: none; text-align: center; padding: 40px 30px;">
+                    <h2 style="font-size: 2.5em; margin-bottom: 20px; color: #2c3e50;">🎉 Quiz Complete!</h2>
+                    <div style="font-size: 3em; font-weight: bold; margin: 30px 0; background: ${progressGrad}; -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="finalScore"></div>
+                    <div style="font-size: 1.3em; margin-bottom: 30px; color: #495057;" id="scoreMessage"></div>
+                    <button class="start-btn" onclick="reviewAnswers()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-top: 20px;">📝 Review Answers</button>
+                    <button class="start-btn" onclick="downloadResults()" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-top: 20px;">📥 Download Results</button>
+                    <button class="start-btn" onclick="restartQuiz()" style="margin-left: 15px;">🔄 Try Again</button>
+                </div>
+                <div id="reviewScreen" style="display: none; padding: 40px 30px;">
+                    <h2 style="font-size: 2em; margin-bottom: 30px; color: #2c3e50; text-align: center;">📝 Answer Review</h2>
+                    <div id="reviewContainer"></div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="start-btn" onclick="backToResults()">← Back to Results</button>
+                    </div>
+                </div>
+                <canvas id="downloadCanvas" style="display: none;"></canvas>`;
+        }
+
+        function startQuizA() {
+            currentQuestions = quizAQuestions;
+            currentQuestion = 0; selectedAnswers = []; score = 0;
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function startQuizB() {
+            currentQuestions = quizBQuestions;
+            currentQuestion = 0; selectedAnswers = []; score = 0;
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function startQuizC() {
+            currentQuestions = quizCQuestions;
+            currentQuestion = 0; selectedAnswers = []; score = 0;
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizWindow').style.display = 'none';
+            document.getElementById('selectionScreen').style.display = 'block';
+        }
+
+        function loadQuestion() {
+            const question = currentQuestions[currentQuestion];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('translationText').textContent = question.translation;
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const el = document.createElement('div');
+                el.style.cssText = 'background: #f8f9fa; border: 2px solid #e9ecef; padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-size: 1.1em;';
+                el.textContent = option;
+                el.onclick = () => selectOption(index);
+                el.dataset.index = index;
+                optionsContainer.appendChild(el);
+                el.onmouseover = function() {
+                    if (!this.classList.contains('selected'))
+                        this.style.cssText += 'background: #e3f2fd; border-color: #2196f3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(33,150,243,0.2);';
+                };
+                el.onmouseout = function() {
+                    if (!this.classList.contains('selected'))
+                        this.style.cssText = 'background: #f8f9fa; border: 2px solid #e9ecef; padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-size: 1.1em;';
+                };
+            });
+            if (selectedAnswers[currentQuestion] !== undefined) {
+                const idx = selectedAnswers[currentQuestion];
+                optionsContainer.children[idx].classList.add('selected');
+                optionsContainer.children[idx].style.cssText += 'background: #4facfe; border-color: #4facfe; color: white; font-weight: 600;';
+            }
+            updateProgress();
+            updateButtons();
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('#optionsContainer > div');
+            options.forEach(o => {
+                o.classList.remove('selected');
+                o.style.cssText = 'background: #f8f9fa; border: 2px solid #e9ecef; padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; font-size: 1.1em;';
+            });
+            options[index].classList.add('selected');
+            options[index].style.cssText += 'background: #4facfe; border-color: #4facfe; color: white; font-weight: 600;';
+            selectedAnswers[currentQuestion] = index;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = '1';
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < currentQuestions.length - 1) { currentQuestion++; loadQuestion(); }
+            else showResults();
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) { currentQuestion--; loadQuestion(); }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${currentQuestions.length}`;
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            prevBtn.disabled = currentQuestion === 0;
+            prevBtn.style.opacity = currentQuestion === 0 ? '0.5' : '1';
+            nextBtn.disabled = selectedAnswers[currentQuestion] === undefined;
+            nextBtn.style.opacity = selectedAnswers[currentQuestion] === undefined ? '0.5' : '1';
+            nextBtn.textContent = currentQuestion === currentQuestions.length - 1 ? 'Finish 🎯' : 'Next →';
+        }
+
+        function showResults() {
+            score = 0;
+            selectedAnswers.forEach((answer, index) => {
+                if (answer === currentQuestions[index].correct) score++;
+            });
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+            document.getElementById('finalScore').textContent = `${score}/${currentQuestions.length} (${percentage}%)`;
+            let message = '';
+            if (percentage >= 90) message = '🌟 Excellent! You have mastered English skills!';
+            else if (percentage >= 80) message = '🎉 Great job! You have strong English knowledge!';
+            else if (percentage >= 70) message = '👍 Good work! Keep practicing to improve!';
+            else if (percentage >= 60) message = '📚 Not bad! Focus on areas that need more practice!';
+            else message = '💪 Keep studying! Practice makes perfect!';
+            document.getElementById('scoreMessage').textContent = message;
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            currentQuestion = 0; selectedAnswers = []; score = 0;
+        }
+
+        function reviewAnswers() {
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('reviewScreen').style.display = 'block';
+            const reviewContainer = document.getElementById('reviewContainer');
+            let html = '';
+            currentQuestions.forEach((q, index) => {
+                const userAnswer = selectedAnswers[index];
+                const isCorrect = userAnswer === q.correct;
+                html += `<div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid ${isCorrect ? '#28a745' : '#dc3545'};">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">${isCorrect ? '✅' : '❌'}</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 1.3em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; white-space: pre-line;">${q.question}</div>
+                            <div style="font-size: 1.1em; color: #7f8c8d; font-style: italic;">${q.translation}</div>
+                        </div>
+                    </div>
+                    <div style="display: grid; gap: 10px; margin-top: 15px;">`;
+                q.options.forEach((option, i) => {
+                    let style = 'padding: 12px 20px; border-radius: 8px; ';
+                    if (i === q.correct) style += 'background: #d4edda; border: 2px solid #28a745; font-weight: bold;';
+                    else if (i === userAnswer && !isCorrect) style += 'background: #f8d7da; border: 2px solid #dc3545; font-weight: bold;';
+                    else style += 'background: #fff; border: 2px solid #e9ecef;';
+                    html += `<div style="${style}">${i === q.correct ? '✓ ' : (i === userAnswer && !isCorrect ? '✗ ' : '')}${option}</div>`;
+                });
+                html += `</div></div>`;
+            });
+            reviewContainer.innerHTML = html;
+        }
+
+        function backToResults() {
+            document.getElementById('reviewScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+        }
+
+        function viewAllQuestions(quizLetter) {
+            const questions = quizLetter === 'A' ? quizAQuestions : quizLetter === 'B' ? quizBQuestions : quizCQuestions;
+            const quizContainer = document.getElementById('quizContainer');
+            let html = `<div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px; text-align: center; color: white;">
+                <h1 style="font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">📋 Quiz ${quizLetter} - All Questions</h1>
+                <p style="font-size: 1.2em; opacity: 0.9;">${questions.length} questions with answers</p>
+            </div><div style="padding: 40px 30px;">`;
+            questions.forEach((q) => {
+                html += `<div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid #4facfe;">
+                    <div style="font-size: 1.3em; font-weight: bold; color: #2c3e50; margin-bottom: 10px; white-space: pre-line;">${q.question}</div>
+                    <div style="font-size: 1.1em; color: #7f8c8d; font-style: italic; margin-bottom: 15px;">${q.translation}</div>
+                    <div style="display: grid; gap: 10px;">`;
+                q.options.forEach((option, i) => {
+                    const isCorrect = i === q.correct;
+                    html += `<div style="padding: 12px 20px; border-radius: 8px; ${isCorrect ? 'background: #d4edda; border: 2px solid #28a745; font-weight: bold;' : 'background: #fff; border: 2px solid #e9ecef;'}">${isCorrect ? '✓ ' : ''}${option}</div>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+            quizContainer.innerHTML = html;
+        }
+
+        function downloadResults() {
+            const canvas = document.getElementById('downloadCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 800; canvas.height = 600;
+            const gradient = ctx.createLinearGradient(0, 0, 800, 600);
+            gradient.addColorStop(0, '#667eea'); gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient; ctx.fillRect(0, 0, 800, 600);
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 48px Arial'; ctx.textAlign = 'center';
+            ctx.fillText('English Learning Quiz - Book 18', 400, 100);
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 8; ctx.strokeRect(40, 40, 720, 520);
+            ctx.font = 'bold 36px Arial'; ctx.fillText('RESULTS', 400, 200);
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+            ctx.font = 'bold 64px Arial'; ctx.fillStyle = '#FFD700';
+            ctx.fillText(`${score}/${currentQuestions.length}`, 400, 300);
+            ctx.font = 'bold 48px Arial'; ctx.fillStyle = '#ffffff';
+            ctx.fillText(`${percentage}%`, 400, 360);
+            ctx.font = '24px Arial';
+            let message = percentage >= 90 ? '⭐ EXCELLENT PERFORMANCE! ⭐' : percentage >= 80 ? '🎉 GREAT JOB! 🎉' : percentage >= 70 ? '👍 GOOD WORK! 👍' : percentage >= 60 ? '📚 KEEP PRACTICING! 📚' : '💪 STUDY MORE! 💪';
+            ctx.fillText(message, 400, 430);
+            ctx.font = '18px Arial'; ctx.fillText(`Completed on: ${new Date().toLocaleDateString()}`, 400, 500);
+            const quizName = quizType === 'quizA' ? 'Quiz A' : quizType === 'quizB' ? 'Quiz B' : 'Quiz C';
+            ctx.font = '20px Arial'; ctx.fillText(`${quizName} Results`, 400, 530);
+            const link = document.createElement('a');
+            link.download = `Book18_${quizName.replace(' ', '_')}_Results_${percentage}%.png`;
+            link.href = canvas.toDataURL(); link.click();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('quizABtn').addEventListener('click', () => startQuiz('quizA'));
+            document.getElementById('quizBBtn').addEventListener('click', () => startQuiz('quizB'));
+            document.getElementById('quizCBtn').addEventListener('click', () => startQuiz('quizC'));
+        });
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeQuiz(); });
+    </script>
+</body>
+</html>
