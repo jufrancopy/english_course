@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Quiz - Book 19</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .main-container { background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); max-width: 1000px; width: 100%; overflow: hidden; backdrop-filter: blur(10px); }
+        .header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 40px 30px; text-align: center; color: white; }
+        .header h1 { font-size: 3em; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.3em; opacity: 0.9; line-height: 1.4; }
+        .quiz-selection { padding: 50px 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; align-items: stretch; }
+        .quiz-option { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 20px; padding: 40px 30px; text-align: center; transition: all 0.3s ease; border: 3px solid transparent; cursor: pointer; position: relative; overflow: hidden; }
+        .quiz-option:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: #f093fb; }
+        .quiz-option::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s; }
+        .quiz-option:hover::before { left: 100%; }
+        .quiz-icon { font-size: 4em; margin-bottom: 20px; position: relative; z-index: 1; }
+        .quiz-title { font-size: 2.2em; font-weight: bold; margin-bottom: 15px; color: #2c3e50; position: relative; z-index: 1; }
+        .quiz-description { font-size: 1.1em; color: #495057; margin-bottom: 30px; line-height: 1.6; position: relative; z-index: 1; }
+        .quiz-stats { display: flex; justify-content: space-around; margin: 30px 0; position: relative; z-index: 1; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 1.8em; font-weight: bold; color: #f093fb; }
+        .stat-label { color: #7f8c8d; margin-top: 5px; font-size: 0.9em; }
+        .quiz-features { text-align: left; margin: 20px 0; position: relative; z-index: 1; }
+        .quiz-features ul { list-style: none; padding: 0; }
+        .quiz-features li { padding: 8px 0; font-size: 1em; color: #495057; position: relative; padding-left: 25px; }
+        .quiz-features li::before { content: '✓'; position: absolute; left: 0; top: 8px; color: #28a745; font-weight: bold; font-size: 1.1em; }
+        .start-btn { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 1.2em; cursor: pointer; transition: all 0.3s ease; font-weight: 600; position: relative; z-index: 1; box-shadow: 0 5px 15px rgba(240,147,251,0.3); }
+        .start-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(240,147,251,0.4); }
+        .difficulty-badge { position: absolute; top: 20px; right: 20px; padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; z-index: 2; }
+        .footer { background: #f8f9fa; padding: 30px; text-align: center; color: #6c757d; }
+        .footer p { margin-bottom: 15px; font-size: 1.1em; }
+        .tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .tip { background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #f093fb; }
+        .tip-title { font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
+        .tip-text { color: #495057; font-size: 0.95em; }
+        @media (max-width: 768px) {
+            body { padding: 10px; align-items: flex-start; padding-top: 20px; }
+            .header h1 { font-size: 2.2em; }
+            .quiz-selection { grid-template-columns: 1fr; gap: 25px; padding: 30px 20px; }
+            .quiz-option { padding: 30px 20px; transform: none !important; transition: none; }
+            .quiz-option:hover { transform: none !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+            .quiz-option::before { display: none; }
+            .quiz-title { font-size: 1.8em; }
+            .quiz-stats { flex-direction: column; gap: 15px; }
+            .start-btn { padding: 15px 30px; font-size: 1.1em; transform: none !important; }
+            .start-btn:hover { transform: none !important; }
+            .tips { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 5px; }
+            .header { padding: 25px 20px; }
+            .header h1 { font-size: 1.8em; }
+            .quiz-selection { padding: 20px 15px; gap: 20px; }
+            .quiz-option { padding: 25px 15px; }
+            .start-btn { padding: 12px 25px; font-size: 1em; }
+        }
+        .loading { display: none; text-align: center; padding: 40px; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #f093fb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .quiz-window { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto; }
+        .quiz-content { background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); max-width: 800px; width: 90%; margin: 20px auto; backdrop-filter: blur(10px); position: relative; }
+        .close-btn { position: fixed; top: 20px; right: 20px; background: #f44336; color: white; border: none; padding: 10px 15px; border-radius: 50%; cursor: pointer; font-size: 1.2em; font-weight: bold; z-index: 2000; }
+        .close-btn:hover { background: #d32f2f; }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>🎓 English Learning Quiz - Book 19</h1>
+            <p>Possessives, Past Modals, Third Conditional, Wish &amp; Reported Speech</p>
+        </div>
+
+        <div id="selectionScreen">
+            <div class="quiz-selection">
+                <!-- Quiz A -->
+                <div id="quizABtn" class="quiz-option" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                    <div class="difficulty-badge" style="background: #f8d7da; color: #721c24;">Intermediate to Advanced</div>
+                    <div class="quiz-icon">🧠</div>
+                    <h2 class="quiz-title">Quiz A</h2>
+                    <p class="quiz-description">Comprehensive quiz with listening and reading sections covering grammar and vocabulary for Book 19.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">50</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">25-35</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">Mixed</div><div class="stat-label">Level</div></div>
+                    </div>
+                    <div class="quiz-features"><ul>
+                        <li>Part 1: Listening (1-25)</li>
+                        <li>Part 2: Reading &amp; Grammar (26-50)</li>
+                        <li>Multiple choice questions</li>
+                        <li>Spanish translations included</li>
+                    </ul></div>
+                    <button class="start-btn">Start Quiz A 🚀</button>
+                </div>
+
+                <!-- Quiz B -->
+                <div id="quizBBtn" class="quiz-option" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                    <div class="difficulty-badge" style="background: #f8d7da; color: #721c24;">Alternative</div>
+                    <div class="quiz-icon">🎯</div>
+                    <h2 class="quiz-title">Quiz B</h2>
+                    <p class="quiz-description">Alternative comprehensive quiz with different questions covering Book 19 concepts.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">50</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">25-35</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">Mixed</div><div class="stat-label">Level</div></div>
+                    </div>
+                    <div class="quiz-features"><ul>
+                        <li>Alternative question set</li>
+                        <li>Grammar &amp; vocabulary mix</li>
+                        <li>Conversation practice</li>
+                        <li>Spanish translations</li>
+                    </ul></div>
+                    <button class="start-btn">Start Quiz B 🎯</button>
+                </div>
+
+                <!-- Quiz C -->
+                <div id="quizCBtn" class="quiz-option" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <div class="difficulty-badge" style="background: #d4edda; color: #155724;">Challenge</div>
+                    <div class="quiz-icon">🎆</div>
+                    <h2 class="quiz-title">Quiz C</h2>
+                    <p class="quiz-description">Challenge yourself with this third comprehensive quiz featuring unique Book 19 questions.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">50</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">25-35</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">Mixed</div><div class="stat-label">Level</div></div>
+                    </div>
+                    <div class="quiz-features"><ul>
+                        <li>Unique question set</li>
+                        <li>Advanced grammar concepts</li>
+                        <li>Challenging vocabulary</li>
+                        <li>Full Spanish support</li>
+                    </ul></div>
+                    <button class="start-btn">Start Quiz C 🎆</button>
+                </div>
+
+                <!-- Vocabulary List -->
+                <div class="quiz-option" onclick="showVocabularyList()" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+                    <div class="difficulty-badge" style="background: #fff3cd; color: #856404;">Reference</div>
+                    <div class="quiz-icon">📖</div>
+                    <h2 class="quiz-title">Book 19 Vocabulary</h2>
+                    <p class="quiz-description">Complete vocabulary list for Book 19 with Spanish translations. Organized by lesson.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">60+</div><div class="stat-label">Words</div></div>
+                        <div class="stat"><div class="stat-number">All</div><div class="stat-label">Levels</div></div>
+                        <div class="stat"><div class="stat-number">Study</div><div class="stat-label">Focus</div></div>
+                    </div>
+                    <div class="quiz-features"><ul>
+                        <li>Lessons 1-4 included</li>
+                        <li>Spanish translations</li>
+                        <li>Categories for easy study</li>
+                        <li>Interactive viewing</li>
+                    </ul></div>
+                    <button class="start-btn" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">View Vocabulary 📝</button>
+                </div>
+
+                <!-- Vocabulary Quiz -->
+                <div id="vocabularyQuizBtn" class="quiz-option" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
+                    <div class="difficulty-badge" style="background: #d1ecf1; color: #0c5460;">Practice</div>
+                    <div class="quiz-icon">🧠</div>
+                    <h2 class="quiz-title">Vocabulary Quiz</h2>
+                    <p class="quiz-description">Test your knowledge of English vocabulary with random words from Book 19.</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">20</div><div class="stat-label">Questions</div></div>
+                        <div class="stat"><div class="stat-number">10-20</div><div class="stat-label">Minutes</div></div>
+                        <div class="stat"><div class="stat-number">All</div><div class="stat-label">Levels</div></div>
+                    </div>
+                    <div class="quiz-features"><ul>
+                        <li>Randomized questions</li>
+                        <li>Multiple choice format</li>
+                        <li>Covers all 4 lessons</li>
+                        <li>Instant feedback</li>
+                    </ul></div>
+                    <button class="start-btn">Start Vocabulary Quiz 📚</button>
+                </div>
+
+                <!-- Grammar Reference -->
+                <div class="quiz-option" onclick="showGrammarReference()" style="background: linear-gradient(135deg, #c2e9fb 0%, #a1c4fd 100%);">
+                    <div class="difficulty-badge" style="background: #cce5ff; color: #004085;">Interactive</div>
+                    <div class="quiz-icon">📚</div>
+                    <h2 class="quiz-title">Grammar Reference</h2>
+                    <p class="quiz-description">Book 19 Grammar: Possessives, Past Modals, Third Conditional, Wish &amp; Reported Speech!</p>
+                    <div class="quiz-stats">
+                        <div class="stat"><div class="stat-number">10</div><div class="stat-label">Topics</div></div>
+                        <div class="stat"><div class="stat-number">4</div><div class="stat-label">Lessons</div></div>
+                        <div class="stat"><div class="stat-number">Visual</div><div class="stat-label">Learning</div></div>
+                    </div>
+                    <div class="quiz-features"><ul>
+                        <li>Lessons 1-4 explained</li>
+                        <li>Spanish explanations</li>
+                        <li>Real-world examples</li>
+                        <li>Visual structure diagrams</li>
+                    </ul></div>
+                    <button class="start-btn" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);">Explore Grammar 🎨</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingScreen" class="loading">
+            <div class="spinner"></div>
+            <h3>Loading your quiz...</h3>
+            <p>Preparing questions and setting up your learning experience.</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>💡 Tips for Success</strong></p>
+            <div class="tips">
+                <div class="tip"><div class="tip-title">📝 Take Notes</div><div class="tip-text">Write down new vocabulary and grammar rules you learn during the quiz.</div></div>
+                <div class="tip"><div class="tip-title">🔄 Practice Regularly</div><div class="tip-text">Take the quiz multiple times to reinforce your learning and track improvement.</div></div>
+                <div class="tip"><div class="tip-title">📖 Read Translations</div><div class="tip-text">Use the Spanish translations to better understand question context and meaning.</div></div>
+                <div class="tip"><div class="tip-title">🎯 Focus on Mistakes</div><div class="tip-text">Review questions you got wrong to identify areas that need more practice.</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Window -->
+    <div id="quizWindow" class="quiz-window">
+        <div class="quiz-content">
+            <button class="close-btn" onclick="closeQuiz()">×</button>
+            <div id="quizContainer"></div>
+        </div>
+    </div>
+
+    <script src="quiz_a.js"></script>
+    <script src="quiz_b.js"></script>
+    <script src="quiz_c.js"></script>
+    <script src="vocabulary.js"></script>
+    <script>
+        let currentQuestions = [];
+        let currentQuestion = 0;
+        let selectedAnswers = [];
+        let score = 0;
+        let quizType = '';
+
+        function startQuiz(type) {
+            quizType = type;
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('quizWindow').style.display = 'block';
+                const configs = {
+                    quizA: { letter: 'A', title: 'Quiz A', icon: '🚀', hGrad: 'linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)', pGrad: 'linear-gradient(90deg,#fcb69f,#ffecd2)', questions: quizAQuestions, startFn: startQuizA },
+                    quizB: { letter: 'B', title: 'Quiz B', icon: '🎯', hGrad: 'linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%)', pGrad: 'linear-gradient(90deg,#ff9a9e,#fecfef)', questions: quizBQuestions, startFn: startQuizB },
+                    quizC: { letter: 'C', title: 'Quiz C', icon: '🎆', hGrad: 'linear-gradient(135deg,#a8edea 0%,#fed6e3 100%)', pGrad: 'linear-gradient(90deg,#a8edea,#fed6e3)', questions: quizCQuestions, startFn: startQuizC }
+                };
+                const c = configs[type];
+                loadQuizShell(c.letter, c.title, c.icon, c.hGrad, c.pGrad, c.startFn);
+            }, 1500);
+        }
+
+        function loadQuizShell(letter, title, icon, hGrad, pGrad, startFn) {
+            document.getElementById('quizContainer').innerHTML = `
+                <div style="background:${hGrad};padding:30px;text-align:center;color:white;">
+                    <h1 style="font-size:2.5em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,0.3);">${icon} ${title}</h1>
+                    <p style="font-size:1.2em;opacity:0.9;">Listening and Reading Comprehension - Book 19</p>
+                </div>
+                <div id="startScreen" style="text-align:center;padding:60px 30px;">
+                    <h2 style="font-size:2.2em;margin-bottom:20px;color:#2c3e50;">${title} Assessment</h2>
+                    <p style="font-size:1.2em;color:#7f8c8d;margin-bottom:40px;line-height:1.6;">A 50-question quiz covering listening comprehension and reading/grammar skills.</p>
+                    <button class="start-btn" onclick="${letter === 'A' ? 'startQuizA' : letter === 'B' ? 'startQuizB' : letter === 'C' ? 'startQuizC' : 'startVocabQuiz'}()">Start ${title} ${icon}</button>
+                    <button class="start-btn" onclick="viewAllQuestions('${letter}')" style="background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);margin-top:15px;">📋 View All Questions</button>
+                </div>
+                <div id="quizScreen" style="display:none;">
+                    <div style="padding:20px 30px;background:#f8f9fa;">
+                        <div style="width:100%;height:10px;background:#e9ecef;border-radius:10px;overflow:hidden;">
+                            <div style="height:100%;background:${pGrad};width:0%;transition:width 0.3s ease;border-radius:10px;" id="progressFill"></div>
+                        </div>
+                        <div style="text-align:center;margin-top:10px;font-weight:600;color:#495057;" id="progressText">Question 1 of 50</div>
+                    </div>
+                    <div style="padding:40px 30px;min-height:400px;">
+                        <div style="font-size:1.4em;margin-bottom:30px;color:#2c3e50;line-height:1.4;font-weight:600;white-space:pre-line;" id="questionText"></div>
+                        <div style="font-size:1.1em;color:#7f8c8d;margin-bottom:30px;font-style:italic;" id="translationText"></div>
+                        <div style="display:grid;gap:15px;margin-bottom:30px;" id="optionsContainer"></div>
+                    </div>
+                    <div style="padding:30px;background:#f8f9fa;display:flex;justify-content:space-between;align-items:center;">
+                        <button class="start-btn" id="prevBtn" onclick="previousQuestion()" disabled style="opacity:0.5;">← Previous</button>
+                        <button class="start-btn" id="nextBtn" onclick="nextQuestion()" disabled style="opacity:0.5;">Next →</button>
+                    </div>
+                </div>
+                <div id="resultsScreen" style="display:none;text-align:center;padding:40px 30px;">
+                    <h2 style="font-size:2.5em;margin-bottom:20px;color:#2c3e50;">🎉 Quiz Complete!</h2>
+                    <div style="font-size:3em;font-weight:bold;margin:30px 0;background:${pGrad};-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="finalScore"></div>
+                    <div style="font-size:1.3em;margin-bottom:30px;color:#495057;" id="scoreMessage"></div>
+                    <button class="start-btn" onclick="reviewAnswers()" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);margin-top:20px;">📝 Review Answers</button>
+                    <button class="start-btn" onclick="downloadResults()" style="background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);margin-top:20px;">📥 Download Results</button>
+                    <button class="start-btn" onclick="restartQuiz()" style="margin-left:15px;">🔄 Try Again</button>
+                </div>
+                <div id="reviewScreen" style="display:none;padding:40px 30px;">
+                    <h2 style="font-size:2em;margin-bottom:30px;color:#2c3e50;text-align:center;">📝 Answer Review</h2>
+                    <div id="reviewContainer"></div>
+                    <div style="text-align:center;margin-top:30px;">
+                        <button class="start-btn" onclick="backToResults()">← Back to Results</button>
+                    </div>
+                </div>
+                <canvas id="downloadCanvas" style="display:none;"></canvas>`;
+        }
+
+        function startQuizA() { currentQuestions = quizAQuestions; currentQuestion = 0; selectedAnswers = []; score = 0; document.getElementById('startScreen').style.display = 'none'; document.getElementById('quizScreen').style.display = 'block'; loadQuestion(); }
+        function startQuizB() { currentQuestions = quizBQuestions; currentQuestion = 0; selectedAnswers = []; score = 0; document.getElementById('startScreen').style.display = 'none'; document.getElementById('quizScreen').style.display = 'block'; loadQuestion(); }
+        function startQuizC() { currentQuestions = quizCQuestions; currentQuestion = 0; selectedAnswers = []; score = 0; document.getElementById('startScreen').style.display = 'none'; document.getElementById('quizScreen').style.display = 'block'; loadQuestion(); }
+
+        function closeQuiz() { document.getElementById('quizWindow').style.display = 'none'; document.getElementById('selectionScreen').style.display = 'block'; }
+
+        function loadQuestion() {
+            const q = currentQuestions[currentQuestion];
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('translationText').textContent = q.translation;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            q.options.forEach((option, index) => {
+                const el = document.createElement('div');
+                el.style.cssText = 'background:#f8f9fa;border:2px solid #e9ecef;padding:20px;border-radius:15px;cursor:pointer;transition:all 0.3s ease;font-size:1.1em;';
+                el.textContent = option;
+                el.onclick = () => selectOption(index);
+                el.dataset.index = index;
+                container.appendChild(el);
+                el.onmouseover = function() { if (!this.classList.contains('selected')) this.style.cssText += 'background:#e3f2fd;border-color:#2196f3;transform:translateY(-2px);box-shadow:0 5px 15px rgba(33,150,243,0.2);'; };
+                el.onmouseout = function() { if (!this.classList.contains('selected')) this.style.cssText = 'background:#f8f9fa;border:2px solid #e9ecef;padding:20px;border-radius:15px;cursor:pointer;transition:all 0.3s ease;font-size:1.1em;'; };
+            });
+            if (selectedAnswers[currentQuestion] !== undefined) {
+                const idx = selectedAnswers[currentQuestion];
+                container.children[idx].classList.add('selected');
+                container.children[idx].style.cssText += 'background:#f093fb;border-color:#f093fb;color:white;font-weight:600;';
+            }
+            updateProgress(); updateButtons();
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('#optionsContainer > div');
+            options.forEach(o => { o.classList.remove('selected'); o.style.cssText = 'background:#f8f9fa;border:2px solid #e9ecef;padding:20px;border-radius:15px;cursor:pointer;transition:all 0.3s ease;font-size:1.1em;'; });
+            options[index].classList.add('selected');
+            options[index].style.cssText += 'background:#f093fb;border-color:#f093fb;color:white;font-weight:600;';
+            selectedAnswers[currentQuestion] = index;
+            const nb = document.getElementById('nextBtn'); nb.disabled = false; nb.style.opacity = '1';
+        }
+
+        function nextQuestion() { if (currentQuestion < currentQuestions.length - 1) { currentQuestion++; loadQuestion(); } else showResults(); }
+        function previousQuestion() { if (currentQuestion > 0) { currentQuestion--; loadQuestion(); } }
+
+        function updateProgress() {
+            const pct = ((currentQuestion + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${currentQuestions.length}`;
+        }
+
+        function updateButtons() {
+            const pb = document.getElementById('prevBtn'), nb = document.getElementById('nextBtn');
+            pb.disabled = currentQuestion === 0; pb.style.opacity = currentQuestion === 0 ? '0.5' : '1';
+            nb.disabled = selectedAnswers[currentQuestion] === undefined; nb.style.opacity = nb.disabled ? '0.5' : '1';
+            nb.textContent = currentQuestion === currentQuestions.length - 1 ? 'Finish 🎯' : 'Next →';
+        }
+
+        function showResults() {
+            score = 0;
+            selectedAnswers.forEach((a, i) => { if (a === currentQuestions[i].correct) score++; });
+            const pct = Math.round((score / currentQuestions.length) * 100);
+            document.getElementById('finalScore').textContent = `${score}/${currentQuestions.length} (${pct}%)`;
+            const msgs = ['💪 Keep studying! Practice makes perfect!','📚 Not bad! Focus on areas that need more practice!','👍 Good work! Keep practicing to improve!','🎉 Great job! You have strong English knowledge!','🌟 Excellent! You have mastered English skills!'];
+            document.getElementById('scoreMessage').textContent = msgs[pct >= 90 ? 4 : pct >= 80 ? 3 : pct >= 70 ? 2 : pct >= 60 ? 1 : 0];
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+        }
+
+        function restartQuiz() { document.getElementById('resultsScreen').style.display = 'none'; document.getElementById('startScreen').style.display = 'block'; currentQuestion = 0; selectedAnswers = []; score = 0; }
+
+        function reviewAnswers() {
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('reviewScreen').style.display = 'block';
+            let html = '';
+            currentQuestions.forEach((q, i) => {
+                const ua = selectedAnswers[i], ok = ua === q.correct;
+                html += `<div style="background:#f8f9fa;padding:25px;border-radius:15px;margin-bottom:20px;border-left:5px solid ${ok ? '#28a745' : '#dc3545'};">
+                    <div style="display:flex;align-items:center;margin-bottom:15px;">
+                        <span style="font-size:1.5em;margin-right:10px;">${ok ? '✅' : '❌'}</span>
+                        <div style="flex:1;"><div style="font-size:1.3em;font-weight:bold;color:#2c3e50;margin-bottom:8px;white-space:pre-line;">${q.question}</div>
+                        <div style="font-size:1.1em;color:#7f8c8d;font-style:italic;">${q.translation}</div></div>
+                    </div><div style="display:grid;gap:10px;margin-top:15px;">`;
+                q.options.forEach((opt, j) => {
+                    let s = 'padding:12px 20px;border-radius:8px;';
+                    if (j === q.correct) s += 'background:#d4edda;border:2px solid #28a745;font-weight:bold;';
+                    else if (j === ua && !ok) s += 'background:#f8d7da;border:2px solid #dc3545;font-weight:bold;';
+                    else s += 'background:#fff;border:2px solid #e9ecef;';
+                    html += `<div style="${s}">${j === q.correct ? '✓ ' : (j === ua && !ok ? '✗ ' : '')}${opt}</div>`;
+                });
+                html += `</div></div>`;
+            });
+            document.getElementById('reviewContainer').innerHTML = html;
+        }
+
+        function backToResults() { document.getElementById('reviewScreen').style.display = 'none'; document.getElementById('resultsScreen').style.display = 'block'; }
+
+        function viewAllQuestions(letter) {
+            const qs = letter === 'A' ? quizAQuestions : letter === 'B' ? quizBQuestions : quizCQuestions;
+            let html = `<div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);padding:30px;text-align:center;color:white;">
+                <h1 style="font-size:2.5em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,0.3);">📋 Quiz ${letter} - All Questions</h1>
+                <p style="font-size:1.2em;opacity:0.9;">${qs.length} questions with answers</p></div><div style="padding:40px 30px;">`;
+            qs.forEach(q => {
+                html += `<div style="background:#f8f9fa;padding:25px;border-radius:15px;margin-bottom:20px;border-left:5px solid #f093fb;">
+                    <div style="font-size:1.3em;font-weight:bold;color:#2c3e50;margin-bottom:10px;white-space:pre-line;">${q.question}</div>
+                    <div style="font-size:1.1em;color:#7f8c8d;font-style:italic;margin-bottom:15px;">${q.translation}</div>
+                    <div style="display:grid;gap:10px;">`;
+                q.options.forEach((opt, i) => { const ok = i === q.correct; html += `<div style="padding:12px 20px;border-radius:8px;${ok ? 'background:#d4edda;border:2px solid #28a745;font-weight:bold;' : 'background:#fff;border:2px solid #e9ecef;'}">${ok ? '✓ ' : ''}${opt}</div>`; });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function downloadResults() {
+            const canvas = document.getElementById('downloadCanvas'), ctx = canvas.getContext('2d');
+            canvas.width = 800; canvas.height = 600;
+            const g = ctx.createLinearGradient(0, 0, 800, 600); g.addColorStop(0, '#f093fb'); g.addColorStop(1, '#f5576c');
+            ctx.fillStyle = g; ctx.fillRect(0, 0, 800, 600);
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 8; ctx.strokeRect(40, 40, 720, 520);
+            ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
+            ctx.font = 'bold 40px Arial'; ctx.fillText('English Learning Quiz - Book 19', 400, 100);
+            ctx.font = 'bold 36px Arial'; ctx.fillText('RESULTS', 400, 200);
+            const pct = Math.round((score / currentQuestions.length) * 100);
+            ctx.font = 'bold 64px Arial'; ctx.fillStyle = '#FFD700'; ctx.fillText(`${score}/${currentQuestions.length}`, 400, 300);
+            ctx.font = 'bold 48px Arial'; ctx.fillStyle = '#ffffff'; ctx.fillText(`${pct}%`, 400, 370);
+            ctx.font = '24px Arial'; ctx.fillText(pct >= 90 ? '⭐ EXCELLENT! ⭐' : pct >= 80 ? '🎉 GREAT JOB! 🎉' : pct >= 70 ? '👍 GOOD WORK! 👍' : '💪 KEEP STUDYING! 💪', 400, 440);
+            ctx.font = '18px Arial'; ctx.fillText(`Completed: ${new Date().toLocaleDateString()}`, 400, 500);
+            const name = quizType === 'quizA' ? 'Quiz_A' : quizType === 'quizB' ? 'Quiz_B' : 'Quiz_C';
+            const link = document.createElement('a'); link.download = `Book19_${name}_${pct}%.png`; link.href = canvas.toDataURL(); link.click();
+        }
+
+        function showVocabularyList() {
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('quizWindow').style.display = 'block';
+            const cats = [...new Set(vocabularyList.map(v => v.category))];
+            let html = `<div style="background:linear-gradient(135deg,#f6d365 0%,#fda085 100%);padding:30px;text-align:center;color:white;">
+                <h1 style="font-size:2.5em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,0.3);">📖 Book 19 Vocabulary</h1>
+                <p style="font-size:1.2em;opacity:0.9;">Complete vocabulary list with translations</p></div><div style="padding:40px 30px;">`;
+            cats.forEach(cat => {
+                html += `<h2 style="color:#2c3e50;margin:30px 0 20px;font-size:1.8em;border-bottom:3px solid #f6d365;padding-bottom:10px;">${cat}</h2>
+                    <div style="display:grid;gap:15px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));">`;
+                vocabularyList.filter(v => v.category === cat).forEach(item => {
+                    html += `<div style="background:#f8f9fa;padding:20px;border-radius:10px;border-left:4px solid #fda085;">
+                        <div style="font-size:1.2em;font-weight:bold;color:#2c3e50;margin-bottom:8px;">${item.word}</div>
+                        <div style="font-size:1em;color:#7f8c8d;font-style:italic;">${item.translation}</div></div>`;
+                });
+                html += `</div>`;
+            });
+            html += `</div>`;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function startVocabularyQuiz() {
+            const shuffled = [...vocabularyList].sort(() => Math.random() - 0.5).slice(0, 20);
+            currentQuestions = shuffled.map(item => {
+                const wrong = vocabularyList.filter(v => v.word !== item.word).sort(() => Math.random() - 0.5).slice(0, 3).map(v => v.translation);
+                const opts = [item.translation, ...wrong].sort(() => Math.random() - 0.5);
+                return { question: `What is the Spanish translation of "${item.word}"?`, translation: `¿Cuál es la traducción al español de "${item.word}"?`, options: opts, correct: opts.indexOf(item.translation) };
+            });
+            currentQuestion = 0; selectedAnswers = []; score = 0; quizType = 'vocabulary';
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('quizWindow').style.display = 'block';
+                loadQuizShell('V', 'Vocabulary Quiz', '📚', 'linear-gradient(135deg,#89f7fe 0%,#66a6ff 100%)', 'linear-gradient(90deg,#89f7fe,#66a6ff)', startVocabQuiz);
+            }, 1500);
+        }
+
+        function startVocabQuiz() { document.getElementById('startScreen').style.display = 'none'; document.getElementById('quizScreen').style.display = 'block'; loadQuestion(); }
+
+        function showGrammarReference() {
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('quizWindow').style.display = 'block';
+            document.getElementById('quizContainer').innerHTML = `
+                <div style="background:linear-gradient(135deg,#c2e9fb 0%,#a1c4fd 100%);padding:30px;text-align:center;color:white;">
+                    <h1 style="font-size:2.5em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,0.3);">📚 Grammar Reference - Book 19</h1>
+                    <p style="font-size:1.2em;opacity:0.9;">Lessons 1-4 Complete Guide</p>
+                </div>
+                <div style="padding:40px 30px;max-width:1200px;margin:0 auto;">
+
+                    <h2 style="color:#2c3e50;margin:30px 0 20px;font-size:2em;text-align:center;border-bottom:3px solid #f093fb;padding-bottom:10px;">📘 Lesson 1: Possessives, Pronouns & Phrasal Verbs</h2>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #f093fb;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">1️⃣ Possessive Nouns (Sustantivos Posesivos)</h3>
+                        <p style="color:#495057;line-height:1.8;">Para indicar posesión se añade <strong>'s</strong> a sustantivos singulares y plurales irregulares.</p>
+                        <div style="background:#e3f2fd;padding:15px;border-radius:8px;margin:10px 0;">
+                            <p>✓ Sally's apartment &nbsp;|&nbsp; the men's restroom &nbsp;|&nbsp; the students' books (plural)</p>
+                            <p>📌 Solo apóstrofo (') para plurales regulares terminados en -s.</p>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #ff9a9e;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">2️⃣ Possessive Pronouns (Pronombres Posesivos)</h3>
+                        <p style="color:#495057;line-height:1.8;"><strong>Adjetivos posesivos</strong> (van antes de un sustantivo): my, your, his, her, our, their.</p>
+                        <p style="color:#495057;line-height:1.8;"><strong>Pronombres posesivos</strong> (reemplazan al sustantivo): mine, yours, his, hers, ours, theirs.</p>
+                        <div style="background:#fce4ec;padding:15px;border-radius:8px;margin:10px 0;">
+                            <p>✓ "This is <strong>my</strong> pen." (adjetivo) &nbsp;→&nbsp; "This pen is <strong>mine</strong>." (pronombre)</p>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:40px;border-left:5px solid #a8edea;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">3️⃣ Inseparable Phrasal Verbs (Verbos Frasales Inseparables)</h3>
+                        <div style="display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
+                            <div style="background:#e0f7fa;padding:12px;border-radius:8px;"><strong>run out of</strong> – quedarse sin algo</div>
+                            <div style="background:#e0f7fa;padding:12px;border-radius:8px;"><strong>look forward to</strong> – esperar con entusiasmo</div>
+                            <div style="background:#e0f7fa;padding:12px;border-radius:8px;"><strong>get along with</strong> – llevarse bien con</div>
+                            <div style="background:#e0f7fa;padding:12px;border-radius:8px;"><strong>put up with</strong> – tolerar / aguantar</div>
+                        </div>
+                    </div>
+
+                    <h2 style="color:#2c3e50;margin:50px 0 20px;font-size:2em;text-align:center;border-bottom:3px solid #ff9a9e;padding-bottom:10px;">📗 Lesson 2: Past Modals & Quantifiers</h2>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #667eea;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">4️⃣ Past Modals (Modales Perfectos de Pasado)</h3>
+                        <div style="background:#e8eaf6;padding:15px;border-radius:8px;margin:10px 0;">
+                            <p style="margin:8px 0;"><strong>couldn't have + p.p.</strong> → imposibilidad lógica en el pasado</p>
+                            <p style="margin:8px 0;"><strong>could have + p.p.</strong> → posibilidad no realizada en el pasado</p>
+                            <p style="margin:8px 0;"><strong>should have + p.p.</strong> → reproche / lo correcto era...</p>
+                            <p style="margin:8px 0;"><strong>might/may have + p.p.</strong> → posibilidad incierta en el pasado</p>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:40px;border-left:5px solid #11998e;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">5️⃣ Quantifiers: Few/Little vs. A Few/A Little</h3>
+                        <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:1em;">
+                            <tr style="background:#d4edda;"><th style="padding:10px;border:1px solid #c3e6cb;">Cuantificador</th><th style="padding:10px;border:1px solid #c3e6cb;">Tipo</th><th style="padding:10px;border:1px solid #c3e6cb;">Enfoque</th><th style="padding:10px;border:1px solid #c3e6cb;">Ejemplo</th></tr>
+                            <tr><td style="padding:10px;border:1px solid #dee2e6;">a few</td><td style="padding:10px;border:1px solid #dee2e6;">Contable</td><td style="padding:10px;border:1px solid #dee2e6;">Positivo (suficiente)</td><td style="padding:10px;border:1px solid #dee2e6;">I have a few friends.</td></tr>
+                            <tr style="background:#f8f9fa;"><td style="padding:10px;border:1px solid #dee2e6;">few</td><td style="padding:10px;border:1px solid #dee2e6;">Contable</td><td style="padding:10px;border:1px solid #dee2e6;">Negativo (casi ninguno)</td><td style="padding:10px;border:1px solid #dee2e6;">Few people know this.</td></tr>
+                            <tr><td style="padding:10px;border:1px solid #dee2e6;">a little</td><td style="padding:10px;border:1px solid #dee2e6;">Incontable</td><td style="padding:10px;border:1px solid #dee2e6;">Positivo (suficiente)</td><td style="padding:10px;border:1px solid #dee2e6;">Add a little sugar.</td></tr>
+                            <tr style="background:#f8f9fa;"><td style="padding:10px;border:1px solid #dee2e6;">little</td><td style="padding:10px;border:1px solid #dee2e6;">Incontable</td><td style="padding:10px;border:1px solid #dee2e6;">Negativo (casi nada)</td><td style="padding:10px;border:1px solid #dee2e6;">He knows little about it.</td></tr>
+                        </table></div>
+                    </div>
+
+                    <h2 style="color:#2c3e50;margin:50px 0 20px;font-size:2em;text-align:center;border-bottom:3px solid #f6d365;padding-bottom:10px;">📙 Lesson 3: Third Conditional & Suffixes -able/-ible</h2>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #f6d365;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">6️⃣ Third Conditional (Tercer Condicional)</h3>
+                        <p style="color:#495057;line-height:1.8;">Para situaciones hipotéticas del pasado que no ocurrieron.</p>
+                        <div style="background:#fff8e1;padding:15px;border-radius:8px;margin:10px 0;">
+                            <p><strong>IF + had + p.p. , would/could/might + have + p.p.</strong></p>
+                            <p style="margin-top:10px;">✓ "If we <strong>had left</strong> earlier, we <strong>would have been</strong> on time."</p>
+                            <p>✓ "If you <strong>had had</strong> more money, what <strong>would you have done</strong>?"</p>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:40px;border-left:5px solid #fda085;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">7️⃣ Suffixes -ABLE / -IBLE</h3>
+                        <p style="color:#495057;line-height:1.8;">Se añaden a verbos/sustantivos para crear adjetivos que significan "capaz de" o "que puede ser".</p>
+                        <div style="display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-top:10px;">
+                            <div style="background:#fff3e0;padding:10px;border-radius:8px;">advise → <strong>advisable</strong></div>
+                            <div style="background:#fff3e0;padding:10px;border-radius:8px;">change → <strong>changeable</strong></div>
+                            <div style="background:#fff3e0;padding:10px;border-radius:8px;">rely → <strong>reliable</strong></div>
+                            <div style="background:#fff3e0;padding:10px;border-radius:8px;">response → <strong>responsible</strong></div>
+                        </div>
+                    </div>
+
+                    <h2 style="color:#2c3e50;margin:50px 0 20px;font-size:2em;text-align:center;border-bottom:3px solid #81c784;padding-bottom:10px;">⭐ Lesson 4: Wish, Too/Very & Reported Speech</h2>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #81c784;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">8️⃣ WISH + Past Perfect (Arrepentimiento Pasado)</h3>
+                        <div style="background:#e8f5e9;padding:15px;border-radius:8px;">
+                            <p><strong>Sujeto + wish(es) + (that) + Sujeto + Past Perfect</strong></p>
+                            <p style="margin-top:10px;">✓ "I <strong>wish I had checked</strong> the tires before the trip."</p>
+                            <p>✓ "Amy <strong>wishes she hadn't bought</strong> that dress."</p>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #4db6ac;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">9️⃣ TOO vs. VERY</h3>
+                        <div style="display:grid;gap:15px;grid-template-columns:1fr 1fr;">
+                            <div style="background:#e0f2f1;padding:15px;border-radius:8px;"><strong>VERY</strong> = muy (posible)<br>"This box is <strong>very</strong> heavy, but Ray can pick it up."</div>
+                            <div style="background:#ffebee;padding:15px;border-radius:8px;"><strong>TOO</strong> = demasiado (imposible)<br>"This box is <strong>too</strong> heavy. Ray <u>can't</u> pick it up."</div>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:25px;border-left:5px solid #9575cd;">
+                        <h3 style="color:#2c3e50;margin-bottom:15px;font-size:1.5em;">🔟 Reported Speech: Present Progressive → Past Progressive</h3>
+                        <div style="background:#ede7f6;padding:15px;border-radius:8px;">
+                            <p><strong>Afirmación:</strong> Ann: "I'm going..." → Ann <strong>said that she was going</strong>...</p>
+                            <p style="margin-top:8px;"><strong>Pregunta Sí/No:</strong> Ed: "Are you taking...?" → Ed <strong>asked me if/whether I was taking</strong>...</p>
+                            <p style="margin-top:8px;"><strong>Pregunta Info:</strong> Lee: "When are you planning...?" → Lee <strong>asked when he was planning</strong>...</p>
+                        </div>
+                    </div>
+
+                </div>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('quizABtn').addEventListener('click', () => startQuiz('quizA'));
+            document.getElementById('quizBBtn').addEventListener('click', () => startQuiz('quizB'));
+            document.getElementById('quizCBtn').addEventListener('click', () => startQuiz('quizC'));
+            document.getElementById('vocabularyQuizBtn').addEventListener('click', startVocabularyQuiz);
+        });
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQuiz(); });
+    </script>
+</body>
+</html>
