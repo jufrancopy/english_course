@@ -1043,6 +1043,130 @@
         </div>
     </div>
 
+    <!-- ────────────────────────────────────────────────────────── -->
+    <!-- MODAL: RESULTADOS DETALLADOS DEL SIMULADOR -->
+    <!-- ────────────────────────────────────────────────────────── -->
+    <div id="modal-quiz-results" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 space-y-6 text-center animate-fadeIn relative">
+            <button onclick="closeQuizResultsModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Status Icon & Title -->
+            <div class="space-y-2">
+                <div id="res-status-icon-box" class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-3xl shadow-sm"></div>
+                <h3 id="res-status-title" class="text-xl font-black text-slate-900">¡Examen Calificado!</h3>
+                <p id="res-quiz-name" class="text-xs text-slate-500 font-semibold uppercase tracking-wider"></p>
+            </div>
+
+            <!-- Big Score Box -->
+            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-2xl p-5 shadow-lg flex items-center justify-around border border-slate-700/50">
+                <div>
+                    <div id="res-quiz-percentage" class="text-4xl font-black text-emerald-400">0%</div>
+                    <div class="text-[10px] uppercase font-extrabold tracking-wider text-slate-400 mt-0.5">Calificación</div>
+                </div>
+                <div class="h-10 w-px bg-slate-700"></div>
+                <div>
+                    <div id="res-quiz-score-fraction" class="text-3xl font-black text-white">0 / 50</div>
+                    <div class="text-[10px] uppercase font-extrabold tracking-wider text-slate-400 mt-0.5">Respuestas Correctas</div>
+                </div>
+            </div>
+
+            <!-- Score Breakdown -->
+            <div class="grid grid-cols-2 gap-3 text-left">
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <div class="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-headphones text-rose-500"></i> Parte 1: Listening
+                    </div>
+                    <div id="res-quiz-listening-stat" class="text-lg font-black text-slate-900">0 / 25</div>
+                    <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                        <div id="res-quiz-listening-bar" class="bg-rose-500 h-1.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+                    <div class="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-book-open text-blue-500"></i> Parte 2: Reading
+                    </div>
+                    <div id="res-quiz-reading-stat" class="text-lg font-black text-slate-900">0 / 25</div>
+                    <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                        <div id="res-quiz-reading-bar" class="bg-blue-500 h-1.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Message -->
+            <div id="res-quiz-feedback" class="p-3.5 rounded-xl text-xs text-left leading-relaxed"></div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+                <button onclick="reviewAnswersInQuiz()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Revisar Preguntas en el Test
+                </button>
+                <button onclick="closeQuizResultsModal()" class="sm:flex-initial bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-3 px-4 rounded-xl transition-all">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────────────── -->
+    <!-- MODAL: RESULTADOS DEL MINI-TEST TEMÁTICO -->
+    <!-- ────────────────────────────────────────────────────────── -->
+    <div id="modal-mini-test-results" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 space-y-5 text-center animate-fadeIn relative">
+            <button onclick="closeMiniTestResultsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="space-y-2">
+                <div id="mt-res-icon-box" class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-2xl shadow-sm"></div>
+                <h3 id="mt-res-title" class="text-lg font-black text-slate-900">Mini-Test Calificado</h3>
+                <p id="mt-res-subtitle" class="text-xs text-slate-500 font-semibold"></p>
+            </div>
+
+            <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-md flex items-center justify-around">
+                <div>
+                    <div id="mt-res-percentage" class="text-3xl font-black text-emerald-400">0%</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-400">Efectividad</div>
+                </div>
+                <div class="h-8 w-px bg-slate-700"></div>
+                <div>
+                    <div id="mt-res-fraction" class="text-2xl font-black text-white">0 / 10</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-400">Aciertos</div>
+                </div>
+            </div>
+
+            <div id="mt-res-feedback" class="p-3 rounded-xl text-xs text-left leading-relaxed"></div>
+
+            <button onclick="reviewMiniTestAnswers()" class="w-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-magnifying-glass"></i> Revisar Preguntas y Explicaciones
+            </button>
+        </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────────────── -->
+    <!-- MODAL: CONFIRMACIÓN PERSONALIZADA (REINICIAR TEST) -->
+    <!-- ────────────────────────────────────────────────────────── -->
+    <div id="modal-custom-confirm" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-5 text-center animate-fadeIn">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="space-y-1.5">
+                <h4 id="confirm-title" class="text-base font-black text-slate-900">¿Estás seguro?</h4>
+                <p id="confirm-message" class="text-xs text-slate-500 leading-relaxed">Se reiniciarán tus respuestas en este examen.</p>
+            </div>
+            <div class="flex gap-2.5">
+                <button onclick="handleCustomConfirmNo()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl transition-all">
+                    Cancelar
+                </button>
+                <button onclick="handleCustomConfirmYes()" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm transition-all">
+                    Sí, reiniciar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // ── EMBEDDED DATA ──
@@ -1380,11 +1504,29 @@
         }
 
         function answerVocabQuiz(chosen, correct) {
-            if (chosen === correct) {
+            const isCorrect = (chosen === correct);
+            if (isCorrect) {
                 vocabQuizScore++;
             }
-            vocabQuizCurrentIdx++;
-            renderVocabQuizQuestion();
+            
+            // Visual feedback on clicked buttons
+            const buttons = document.querySelectorAll('#vocab-quiz-body button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                const txt = btn.innerText.trim();
+                if (txt === correct) {
+                    btn.className = "p-3 bg-emerald-500 text-white font-bold text-xs rounded-xl text-left shadow-sm";
+                } else if (txt === chosen && !isCorrect) {
+                    btn.className = "p-3 bg-rose-500 text-white font-bold text-xs rounded-xl text-left shadow-sm";
+                } else {
+                    btn.className = "p-3 bg-slate-100 text-slate-400 font-medium text-xs rounded-xl text-left opacity-50";
+                }
+            });
+
+            setTimeout(() => {
+                vocabQuizCurrentIdx++;
+                renderVocabQuizQuestion();
+            }, 600);
         }
 
         // ── MINI TESTS TEMÁTICOS LOGIC ──
@@ -1400,19 +1542,38 @@
             renderMiniTest(testId);
         }
 
+        function selectMiniTestOption(testId, qIdx, cIdx) {
+            const radio = document.querySelector(`input[name="mt-${testId}-q-${qIdx}"][value="${cIdx}"]`);
+            if (radio) radio.checked = true;
+
+            const test = book21MiniTests.find(t => t.id === testId);
+            if (test && test.questions[qIdx]) {
+                test.questions[qIdx].choices.forEach((_, optI) => {
+                    const lbl = document.getElementById(`mt-${testId}-lbl-${qIdx}-${optI}`);
+                    if (lbl) {
+                        if (optI === cIdx) {
+                            lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-rose-50/70 border-2 border-rose-500 rounded-lg text-xs font-bold text-rose-950 cursor-pointer transition-colors shadow-sm";
+                        } else {
+                            lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 transition-colors";
+                        }
+                    }
+                });
+            }
+        }
+
         function renderMiniTest(testId) {
             const test = book21MiniTests.find(t => t.id === testId);
             const container = document.getElementById('mini-test-container');
             if (!test || !container) return;
 
             let html = `
-                <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
                         <h3 class="text-xl font-black text-slate-900">${test.title}</h3>
                         <p class="text-xs text-slate-500">10 preguntas para verificar tu aprendizaje inmediato.</p>
                     </div>
-                    <button onclick="gradeMiniTest(${testId})" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm transition-all">
-                        Verificar Respuestas
+                    <button onclick="gradeMiniTest(${testId})" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5 active:scale-95">
+                        <i class="fa-solid fa-square-check"></i> Calificar Mini-Test
                     </button>
                 </div>
                 <div class="space-y-4">
@@ -1420,7 +1581,7 @@
 
             test.questions.forEach((q, qIdx) => {
                 html += `
-                    <div id="mt-${testId}-card-${qIdx}" class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2.5">
+                    <div id="mt-${testId}-card-${qIdx}" class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2.5 transition-all">
                         <div class="flex items-start justify-between gap-2">
                             <span class="font-extrabold text-xs text-slate-900">${qIdx + 1}. ${q.q}</span>
                             <span id="mt-${testId}-icon-${qIdx}" class="text-xs"></span>
@@ -1429,16 +1590,19 @@
                 `;
                 q.choices.forEach((choice, cIdx) => {
                     html += `
-                        <label class="flex items-center gap-2 p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium cursor-pointer hover:bg-rose-50/30 transition-colors">
-                            <input type="radio" name="mt-${testId}-q-${qIdx}" value="${cIdx}" class="text-rose-600 focus:ring-rose-500">
-                            <span>${choice}</span>
+                        <label id="mt-${testId}-lbl-${qIdx}-${cIdx}" onclick="selectMiniTestOption(${testId}, ${qIdx}, ${cIdx})" class="flex items-center justify-between gap-2 p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <input type="radio" name="mt-${testId}-q-${qIdx}" value="${cIdx}" class="text-rose-600 focus:ring-rose-500">
+                                <span>${choice}</span>
+                            </div>
+                            <span id="mt-${testId}-badge-${qIdx}-${cIdx}"></span>
                         </label>
                     `;
                 });
                 html += `
                         </div>
-                        <div id="mt-${testId}-exp-${qIdx}" class="hidden text-xs p-2.5 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 font-medium">
-                            💡 ${q.exp}
+                        <div id="mt-${testId}-exp-${qIdx}" class="hidden text-xs p-3 rounded-lg bg-emerald-50 text-emerald-950 border border-emerald-200 font-medium">
+                            💡 <b>Explicación:</b> ${q.exp}
                         </div>
                     </div>
                 `;
@@ -1459,19 +1623,39 @@
                 const icon = document.getElementById(`mt-${testId}-icon-${qIdx}`);
                 const expBox = document.getElementById(`mt-${testId}-exp-${qIdx}`);
 
-                expBox.classList.remove('hidden');
+                if (expBox) expBox.classList.remove('hidden');
 
-                if (selected && parseInt(selected.value) === q.ans) {
+                const chosen = selected ? parseInt(selected.value) : -1;
+                const isCorrect = (chosen === q.ans);
+
+                if (isCorrect) {
                     score++;
-                    card.className = "p-4 rounded-xl border border-emerald-300 bg-emerald-50/40 space-y-2.5";
-                    icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>';
+                    if (card) card.className = "p-4 rounded-xl border-2 border-emerald-400 bg-emerald-50/40 space-y-2.5 shadow-sm";
+                    if (icon) icon.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 font-extrabold text-xs"><i class="fa-solid fa-circle-check"></i> Correcto</span>';
                 } else {
-                    card.className = "p-4 rounded-xl border border-rose-300 bg-rose-50/40 space-y-2.5";
-                    icon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-600 text-sm"></i>';
+                    if (card) card.className = "p-4 rounded-xl border-2 border-rose-400 bg-rose-50/40 space-y-2.5 shadow-sm";
+                    if (icon) icon.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-700 font-extrabold text-xs"><i class="fa-solid fa-circle-xmark"></i> Incorrecto</span>';
                 }
+
+                q.choices.forEach((choice, cIdx) => {
+                    const lbl = document.getElementById(`mt-${testId}-lbl-${qIdx}-${cIdx}`);
+                    const badge = document.getElementById(`mt-${testId}-badge-${qIdx}-${cIdx}`);
+                    if (!lbl) return;
+
+                    if (cIdx === q.ans) {
+                        lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-emerald-50/90 border-2 border-emerald-500 rounded-lg text-xs font-bold text-emerald-950 shadow-sm";
+                        if (badge) badge.innerHTML = '<span class="px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-extrabold">✓ Correcta</span>';
+                    } else if (chosen === cIdx) {
+                        lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-rose-50/90 border-2 border-rose-500 rounded-lg text-xs font-bold text-rose-950 shadow-sm";
+                        if (badge) badge.innerHTML = '<span class="px-1.5 py-0.5 rounded bg-rose-600 text-white text-[10px] font-extrabold">✗ Tu selección</span>';
+                    } else {
+                        lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-white/70 border border-slate-200 rounded-lg text-xs font-medium text-slate-400 opacity-60";
+                        if (badge) badge.innerHTML = '';
+                    }
+                });
             });
 
-            alert(`Puntaje obtenido en Mini-Test Lección ${testId}: ${score} / 10`);
+            showMiniTestResultsModal(test.title, score, test.questions.length);
         }
 
         // ── SIMULADOR DE EXAMEN LOGIC ──
@@ -1495,6 +1679,33 @@
             renderQuizQuestions();
         }
 
+        function selectQuizOption(qIdx, cIdx) {
+            if (!userQuizAnswers[currentQuizKey]) userQuizAnswers[currentQuizKey] = {};
+            userQuizAnswers[currentQuizKey][qIdx] = cIdx;
+
+            const quiz = book21Quizzes[currentQuizKey];
+            if (quiz && quiz.questions[qIdx]) {
+                quiz.questions[qIdx].choices.forEach((_, optI) => {
+                    const lbl = document.getElementById(`quiz-opt-lbl-${qIdx}-${optI}`);
+                    if (lbl) {
+                        const input = lbl.querySelector('input');
+                        if (optI === cIdx) {
+                            lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50/70 text-rose-950 font-bold cursor-pointer transition-all shadow-sm";
+                            if (input) input.checked = true;
+                        } else {
+                            lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium cursor-pointer hover:border-slate-300 transition-all";
+                            if (input) input.checked = false;
+                        }
+                    }
+                });
+            }
+            updateQuizProgress();
+        }
+
+        function saveQuizAnswer(qIdx, cIdx) {
+            selectQuizOption(qIdx, cIdx);
+        }
+
         function renderQuizQuestions() {
             const quiz = book21Quizzes[currentQuizKey];
             const container = document.getElementById('quiz-questions-list');
@@ -1510,7 +1721,7 @@
                 const chosenIdx = userQuizAnswers[currentQuizKey][idx];
 
                 html += `
-                    <div id="qcard-${idx}" class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4">
+                    <div id="qcard-${idx}" class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 transition-all">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                             <div class="flex items-center gap-2.5">
                                 <span class="w-8 h-8 rounded-xl ${isListening ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'} font-extrabold text-xs flex items-center justify-center">
@@ -1523,17 +1734,18 @@
                                     <h4 class="text-base font-bold text-slate-900">${q.text}</h4>
                                 </div>
                             </div>
-                            ${isListening ? `
-                                <div class="flex items-center gap-2">
-                                    <button onclick="playQuestionAudio('${q.audioSrc}', '${q.transcript.replace(/'/g, "\\\\'")}')" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition-all active:scale-95">
+                            <div class="flex items-center gap-2">
+                                <span id="qstatus-${idx}"></span>
+                                ${isListening ? `
+                                    <button onclick="playQuestionAudio('${q.audioSrc}', '${q.transcript.replace(/'/g, "\\'")}')" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition-all active:scale-95">
                                         <i class="fa-solid fa-volume-high"></i> Escuchar Audio
                                     </button>
-                                </div>
-                            ` : ''}
+                                ` : ''}
+                            </div>
                         </div>
 
                         ${isListening ? `
-                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-500 space-y-1">
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-500 space-y-1">
                                 <div class="font-serif italic text-slate-700">"<b>Transcripción Audio:</b> ${q.transcript}"</div>
                                 <div class="text-[11px] text-slate-400 font-sans">🗣️ ${q.translation}</div>
                             </div>
@@ -1546,30 +1758,27 @@
                 q.choices.forEach((choice, cIdx) => {
                     const isChecked = (chosenIdx === cIdx);
                     html += `
-                        <label onclick="saveQuizAnswer(${'{'}idx}, ${'{'}cIdx})" class="flex items-center gap-3 p-3 rounded-xl border ${isChecked ? 'border-rose-500 bg-rose-50/40 text-rose-900 font-bold' : 'border-slate-200 bg-white text-slate-700 font-medium'} cursor-pointer hover:border-slate-300 transition-all">
-                            <input type="radio" name="quiz-q-${idx}" value="${cIdx}" ${isChecked ? 'checked' : ''} class="text-rose-600 focus:ring-rose-500">
-                            <span class="text-xs font-bold text-slate-400">${String.fromCharCode(65 + cIdx)}.</span>
-                            <span class="text-xs">${choice}</span>
+                        <label id="quiz-opt-lbl-${idx}-${cIdx}" onclick="selectQuizOption(${idx}, ${cIdx})" class="flex items-center justify-between gap-3 p-3.5 rounded-xl border ${isChecked ? 'border-2 border-rose-500 bg-rose-50/70 text-rose-950 font-bold shadow-sm' : 'border-slate-200 bg-white text-slate-700 font-medium'} cursor-pointer hover:border-slate-300 transition-all">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="quiz-q-${idx}" value="${cIdx}" ${isChecked ? 'checked' : ''} class="text-rose-600 focus:ring-rose-500">
+                                <span class="text-xs font-bold text-slate-400">${String.fromCharCode(65 + cIdx)}.</span>
+                                <span class="text-xs leading-relaxed">${choice}</span>
+                            </div>
+                            <span id="quiz-opt-badge-${idx}-${cIdx}"></span>
                         </label>
                     `;
                 });
 
                 html += `
                         </div>
-                        <div id="qexp-${idx}" class="hidden p-3.5 rounded-xl text-xs bg-slate-50 border border-slate-200 space-y-1">
-                            ${q.exp}
+                        <div id="qexp-${idx}" class="hidden p-3.5 rounded-xl text-xs bg-slate-50 border border-slate-200 space-y-1 text-slate-800">
+                            💡 <b>Análisis y Regla:</b> ${q.exp}
                         </div>
                     </div>
                 `;
             });
 
             container.innerHTML = html;
-            updateQuizProgress();
-        }
-
-        function saveQuizAnswer(qIdx, cIdx) {
-            if (!userQuizAnswers[currentQuizKey]) userQuizAnswers[currentQuizKey] = {};
-            userQuizAnswers[currentQuizKey][qIdx] = cIdx;
             updateQuizProgress();
         }
 
@@ -1593,12 +1802,39 @@
             });
         }
 
-        function resetCurrentQuiz() {
-            if (confirm("¿Estás seguro de reiniciar las respuestas de este examen?")) {
-                userQuizAnswers[currentQuizKey] = {};
-                renderQuizQuestions();
-                document.querySelectorAll('[id^="qexp-"]').forEach(el => el.classList.add('hidden'));
+        // Custom Confirm Handling
+        let pendingConfirmAction = null;
+
+        function showCustomConfirm(title, message, onConfirm) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            pendingConfirmAction = onConfirm;
+            document.getElementById('modal-custom-confirm').classList.remove('hidden');
+        }
+
+        function handleCustomConfirmYes() {
+            document.getElementById('modal-custom-confirm').classList.add('hidden');
+            if (typeof pendingConfirmAction === 'function') {
+                pendingConfirmAction();
             }
+            pendingConfirmAction = null;
+        }
+
+        function handleCustomConfirmNo() {
+            document.getElementById('modal-custom-confirm').classList.add('hidden');
+            pendingConfirmAction = null;
+        }
+
+        function resetCurrentQuiz() {
+            showCustomConfirm(
+                "¿Reiniciar respuestas?",
+                "Se borrarán tus respuestas seleccionadas y las correcciones de este examen para volver a practicarlo desde cero.",
+                () => {
+                    userQuizAnswers[currentQuizKey] = {};
+                    renderQuizQuestions();
+                    window.scrollTo({ top: document.getElementById('quiz-simulator-section')?.offsetTop || 0, behavior: 'smooth' });
+                }
+            );
         }
 
         function gradeCurrentQuiz() {
@@ -1614,33 +1850,160 @@
                 const userChoice = answers[idx];
                 const card = document.getElementById(`qcard-${idx}`);
                 const expBox = document.getElementById(`qexp-${idx}`);
+                const statusBadge = document.getElementById(`qstatus-${idx}`);
 
-                expBox.classList.remove('hidden');
+                if (expBox) expBox.classList.remove('hidden');
 
-                if (userChoice === q.correct) {
+                const isCorrect = (userChoice === q.correct);
+
+                if (isCorrect) {
                     correctCount++;
                     if (idx < 25) listeningCorrect++; else readingCorrect++;
-                    card.className = "bg-emerald-50/40 rounded-2xl border-2 border-emerald-400 p-5 sm:p-6 shadow-sm space-y-4";
-                    expBox.className = "p-3.5 rounded-xl text-xs bg-emerald-100/70 border border-emerald-300 text-emerald-950 space-y-1";
+                    if (card) card.className = "bg-emerald-50/30 rounded-2xl border-2 border-emerald-400 p-5 sm:p-6 shadow-sm space-y-4";
+                    if (expBox) expBox.className = "p-3.5 rounded-xl text-xs bg-emerald-100/70 border border-emerald-300 text-emerald-950 space-y-1";
+                    if (statusBadge) {
+                        statusBadge.innerHTML = '<span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-700 font-extrabold text-xs flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> Acertada</span>';
+                    }
                 } else {
-                    card.className = "bg-rose-50/40 rounded-2xl border-2 border-rose-400 p-5 sm:p-6 shadow-sm space-y-4";
-                    expBox.className = "p-3.5 rounded-xl text-xs bg-rose-100/70 border border-rose-300 text-rose-950 space-y-1";
+                    if (card) card.className = "bg-rose-50/30 rounded-2xl border-2 border-rose-400 p-5 sm:p-6 shadow-sm space-y-4";
+                    if (expBox) expBox.className = "p-3.5 rounded-xl text-xs bg-rose-100/70 border border-rose-300 text-rose-950 space-y-1";
+                    if (statusBadge) {
+                        const statusText = (userChoice !== undefined) ? 'Incorrecta' : 'Sin responder';
+                        statusBadge.innerHTML = `<span class="px-2.5 py-1 rounded-lg bg-rose-100 text-rose-700 font-extrabold text-xs flex items-center gap-1.5"><i class="fa-solid fa-circle-xmark"></i> ${statusText}</span>`;
+                    }
                 }
+
+                q.choices.forEach((choice, cIdx) => {
+                    const lbl = document.getElementById(`quiz-opt-lbl-${idx}-${cIdx}`);
+                    const badge = document.getElementById(`quiz-opt-badge-${idx}-${cIdx}`);
+                    if (!lbl) return;
+
+                    if (cIdx === q.correct) {
+                        lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 font-bold shadow-sm";
+                        if (badge) {
+                            badge.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[11px] font-extrabold flex items-center gap-1"><i class="fa-solid fa-check"></i> Correcta</span>';
+                        }
+                    } else if (userChoice === cIdx) {
+                        lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50 text-rose-950 font-bold shadow-sm";
+                        if (badge) {
+                            badge.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-rose-600 text-white text-[11px] font-extrabold flex items-center gap-1"><i class="fa-solid fa-xmark"></i> Tu respuesta</span>';
+                        }
+                    } else {
+                        lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white/70 text-slate-400 font-medium opacity-60";
+                        if (badge) badge.innerHTML = '';
+                    }
+                });
             });
 
             const percent = Math.round((correctCount / 50) * 100);
             const passed = percent >= 70;
 
-            alert(`RESULTADOS DEL ${quiz.title}:\n\n` +
-                  `Puntaje Total: ${correctCount} / 50 (${percent}%)\n` +
-                  `Parte 1 (Listening): ${listeningCorrect} / 25\n` +
-                  `Parte 2 (Reading/Grammar): ${readingCorrect} / 25\n\n` +
-                  (passed ? '🎉 ¡EXCELENTE TRABAJO! Has superado el estándar de aprobación.' : '⚠️ Sigue practicando las explicaciones señaladas en rojo. ¡Mañana apruebas!')
-            );
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showQuizResultsModal({
+                title: quiz.title,
+                totalQuestions: 50,
+                correctCount,
+                percent,
+                listeningCorrect,
+                readingCorrect,
+                passed
+            });
         }
 
+        // ── RESULT MODALS CONTROLLERS ──
+        function showQuizResultsModal(data) {
+            document.getElementById('res-quiz-name').innerText = data.title;
+            document.getElementById('res-quiz-percentage').innerText = `${data.percent}%`;
+            document.getElementById('res-quiz-score-fraction').innerText = `${data.correctCount} / ${data.totalQuestions}`;
+            
+            document.getElementById('res-quiz-listening-stat').innerText = `${data.listeningCorrect} / 25`;
+            document.getElementById('res-quiz-listening-bar').style.width = `${Math.round((data.listeningCorrect / 25) * 100)}%`;
+            
+            document.getElementById('res-quiz-reading-stat').innerText = `${data.readingCorrect} / 25`;
+            document.getElementById('res-quiz-reading-bar').style.width = `${Math.round((data.readingCorrect / 25) * 100)}%`;
+
+            const iconBox = document.getElementById('res-status-icon-box');
+            const titleEl = document.getElementById('res-status-title');
+            const feedbackEl = document.getElementById('res-quiz-feedback');
+            const percentEl = document.getElementById('res-quiz-percentage');
+
+            if (data.passed) {
+                iconBox.className = "w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-3xl shadow-sm bg-emerald-100 text-emerald-600 border border-emerald-200";
+                iconBox.innerHTML = '<i class="fa-solid fa-trophy text-amber-500"></i>';
+                titleEl.innerText = "¡FELICITACIONES! EXAMEN APROBADO";
+                percentEl.className = "text-4xl font-black text-emerald-400";
+                feedbackEl.className = "p-4 rounded-xl text-xs text-left leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-950";
+                feedbackEl.innerHTML = `
+                    <div class="font-bold text-sm text-emerald-900 mb-1">🎉 ¡Excelente preparación!</div>
+                    Has alcanzado y superado el estándar de aprobación militar (70%). Revisa las preguntas abajo para consolidar el 100% de cara a tu examen.
+                `;
+            } else {
+                iconBox.className = "w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-3xl shadow-sm bg-rose-100 text-rose-600 border border-rose-200";
+                iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-600"></i>';
+                titleEl.innerText = "POR DEBAJO DEL 70% (REPASO NECESARIO)";
+                percentEl.className = "text-4xl font-black text-rose-400";
+                feedbackEl.className = "p-4 rounded-xl text-xs text-left leading-relaxed bg-rose-50 border border-rose-200 text-rose-950";
+                feedbackEl.innerHTML = `
+                    <div class="font-bold text-sm text-rose-900 mb-1">⚠️ Aún tienes tiempo para tu examen</div>
+                    Revisa detenidamente cada pregunta marcada en rojo en la pantalla. Las explicaciones 💡 te enseñan las palabras trampa y la regla gramatical exacta.
+                `;
+            }
+
+            document.getElementById('modal-quiz-results').classList.remove('hidden');
+        }
+
+        function closeQuizResultsModal() {
+            document.getElementById('modal-quiz-results').classList.add('hidden');
+        }
+
+        function reviewAnswersInQuiz() {
+            closeQuizResultsModal();
+            const container = document.getElementById('quiz-questions-list');
+            if (container) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function showMiniTestResultsModal(title, score, total) {
+            const percent = Math.round((score / total) * 100);
+            const passed = percent >= 70;
+
+            document.getElementById('mt-res-subtitle').innerText = title;
+            document.getElementById('mt-res-percentage').innerText = `${percent}%`;
+            document.getElementById('mt-res-fraction').innerText = `${score} / ${total}`;
+
+            const iconBox = document.getElementById('mt-res-icon-box');
+            const feedbackEl = document.getElementById('mt-res-feedback');
+            const percentEl = document.getElementById('mt-res-percentage');
+
+            if (passed) {
+                iconBox.className = "w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-2xl shadow-sm bg-emerald-100 text-emerald-600 border border-emerald-200";
+                iconBox.innerHTML = '<i class="fa-solid fa-check"></i>';
+                percentEl.className = "text-3xl font-black text-emerald-400";
+                feedbackEl.className = "p-3 rounded-xl text-xs text-left leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-950";
+                feedbackEl.innerHTML = `<b>¡Muy buen dominio!</b> Has contestado correctamente ${score} de ${total} preguntas. Revisa las explicaciones para afianzar detalles.`;
+            } else {
+                iconBox.className = "w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-2xl shadow-sm bg-rose-100 text-rose-600 border border-rose-200";
+                iconBox.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                percentEl.className = "text-3xl font-black text-rose-400";
+                feedbackEl.className = "p-3 rounded-xl text-xs text-left leading-relaxed bg-rose-50 border border-rose-200 text-rose-950";
+                feedbackEl.innerHTML = `<b>Atención:</b> Obtuviste ${score} de ${total}. Te sugerimos leer las explicaciones en verde y repasar la sección gramatical antes del simulador final.`;
+            }
+
+            document.getElementById('modal-mini-test-results').classList.remove('hidden');
+        }
+
+        function closeMiniTestResultsModal() {
+            document.getElementById('modal-mini-test-results').classList.add('hidden');
+        }
+
+        function reviewMiniTestAnswers() {
+            closeMiniTestResultsModal();
+            const container = document.getElementById('mini-test-container');
+            if (container) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
         // ── CONTINUOUS LISTENING PLAYER (1-25) ──
         function openContinuousListeningModal() {
             const quiz = book21Quizzes[currentQuizKey];
