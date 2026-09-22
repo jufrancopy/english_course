@@ -883,7 +883,10 @@
                 <div class="w-full sm:flex-grow max-w-md bg-slate-100 rounded-full h-2.5 overflow-hidden">
                     <div id="quiz-progress-bar" class="bg-gradient-to-r from-rose-600 to-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                    <button id="btn-toggle-answers" onclick="toggleRevealAllAnswers()" class="text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1.5 active:scale-95">
+                        <i class="fa-solid fa-eye"></i> <span id="toggle-answers-btn-text">Ver Respuestas</span>
+                    </button>
                     <button onclick="resetCurrentQuiz()" class="text-xs font-bold text-slate-500 hover:text-rose-600 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
                         <i class="fa-solid fa-arrow-rotate-left"></i> Reiniciar
                     </button>
@@ -899,9 +902,14 @@
             <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm text-center space-y-4">
                 <h3 class="text-lg font-black text-slate-800">¿Terminaste tu examen?</h3>
                 <p class="text-xs text-slate-500 max-w-md mx-auto">Revisa que hayas contestado las 50 preguntas. Al enviar obtendrás tu nota desglosada y el análisis de cada error.</p>
-                <button onclick="gradeCurrentQuiz()" class="bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-extrabold text-base px-8 py-3.5 rounded-xl shadow-xl shadow-rose-900/30 transition-all active:scale-95">
-                    <i class="fa-solid fa-flag-checkered mr-2"></i> Calificar Examen y Ver Resultados
-                </button>
+                <div class="flex items-center justify-center gap-3 flex-wrap">
+                    <button onclick="gradeCurrentQuiz()" class="bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-extrabold text-base px-8 py-3.5 rounded-xl shadow-xl shadow-rose-900/30 transition-all active:scale-95">
+                        <i class="fa-solid fa-flag-checkered mr-2"></i> Calificar Examen y Ver Resultados
+                    </button>
+                    <button onclick="revealAllAnswers(true)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm px-6 py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-key"></i> Revelar Solucionario Completo (1-50)
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -1572,9 +1580,14 @@
                         <h3 class="text-xl font-black text-slate-900">${test.title}</h3>
                         <p class="text-xs text-slate-500">10 preguntas para verificar tu aprendizaje inmediato.</p>
                     </div>
-                    <button onclick="gradeMiniTest(${testId})" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-square-check"></i> Calificar Mini-Test
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button id="btn-toggle-mt-${testId}" onclick="toggleMiniTestAnswers(${testId})" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-key"></i> Ver Solución
+                        </button>
+                        <button onclick="gradeMiniTest(${testId})" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-square-check"></i> Calificar Mini-Test
+                        </button>
+                    </div>
                 </div>
                 <div class="space-y-4">
             `;
@@ -1660,6 +1673,11 @@
 
         // ── SIMULADOR DE EXAMEN LOGIC ──
         function selectSimulatorQuiz(quizKey) {
+            isAnswersRevealed = false;
+            const btnText = document.getElementById('toggle-answers-btn-text');
+            const btn = document.getElementById('btn-toggle-answers');
+            if (btnText) btnText.innerText = "Ver Respuestas";
+            if (btn) btn.className = "text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1.5 active:scale-95";
             currentQuizKey = quizKey;
             document.querySelectorAll('.sim-btn').forEach(btn => {
                 btn.className = "sim-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all";
@@ -1994,6 +2012,143 @@
 
         function closeMiniTestResultsModal() {
             document.getElementById('modal-mini-test-results').classList.add('hidden');
+        }
+
+
+        // ── MODO ESTUDIO: VER TODAS LAS RESPUESTAS (SOLUCIONARIO) ──
+        let isAnswersRevealed = false;
+        let miniTestRevealed = {};
+
+        function toggleRevealAllAnswers() {
+            isAnswersRevealed = !isAnswersRevealed;
+            revealAllAnswers(isAnswersRevealed);
+        }
+
+        function revealAllAnswers(reveal = true) {
+            isAnswersRevealed = reveal;
+            const quiz = book21Quizzes[currentQuizKey];
+            if (!quiz) return;
+
+            const btnText = document.getElementById('toggle-answers-btn-text');
+            const btn = document.getElementById('btn-toggle-answers');
+
+            if (isAnswersRevealed) {
+                if (btnText) btnText.innerText = "Ocultar Respuestas";
+                if (btn) btn.className = "text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white px-3.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1.5 active:scale-95";
+            } else {
+                if (btnText) btnText.innerText = "Ver Respuestas";
+                if (btn) btn.className = "text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1.5 active:scale-95";
+            }
+
+            quiz.questions.forEach((q, idx) => {
+                const expBox = document.getElementById(`qexp-${idx}`);
+                const statusBadge = document.getElementById(`qstatus-${idx}`);
+                const card = document.getElementById(`qcard-${idx}`);
+
+                if (isAnswersRevealed) {
+                    if (expBox) expBox.classList.remove('hidden');
+                    if (statusBadge) {
+                        statusBadge.innerHTML = '<span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-extrabold text-xs flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-key"></i> Clave: ' + String.fromCharCode(65 + q.correct) + '</span>';
+                    }
+                    if (card) {
+                        card.className = "bg-white rounded-2xl border-2 border-emerald-400/80 p-5 sm:p-6 shadow-sm space-y-4 transition-all";
+                    }
+
+                    q.choices.forEach((choice, cIdx) => {
+                        const lbl = document.getElementById(`quiz-opt-lbl-${idx}-${cIdx}`);
+                        const badge = document.getElementById(`quiz-opt-badge-${idx}-${cIdx}`);
+                        if (!lbl) return;
+
+                        if (cIdx === q.correct) {
+                            lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 font-bold shadow-sm";
+                            if (badge) {
+                                badge.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[11px] font-extrabold flex items-center gap-1"><i class="fa-solid fa-check"></i> Respuesta Correcta</span>';
+                            }
+                        } else {
+                            lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white/60 text-slate-400 font-medium opacity-60";
+                            if (badge) badge.innerHTML = '';
+                        }
+                    });
+                } else {
+                    if (expBox) expBox.classList.add('hidden');
+                    if (statusBadge) statusBadge.innerHTML = '';
+                    if (card) card.className = "bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 transition-all";
+
+                    const userChoice = (userQuizAnswers[currentQuizKey] || {})[idx];
+                    q.choices.forEach((choice, cIdx) => {
+                        const lbl = document.getElementById(`quiz-opt-lbl-${idx}-${cIdx}`);
+                        const badge = document.getElementById(`quiz-opt-badge-${idx}-${cIdx}`);
+                        if (!lbl) return;
+                        if (badge) badge.innerHTML = '';
+
+                        const isChecked = (userChoice === cIdx);
+                        if (isChecked) {
+                            lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50/70 text-rose-950 font-bold shadow-sm";
+                        } else {
+                            lbl.className = "flex items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium cursor-pointer hover:border-slate-300 transition-all opacity-100";
+                        }
+                    });
+                }
+            });
+        }
+
+        function toggleMiniTestAnswers(testId) {
+            miniTestRevealed[testId] = !miniTestRevealed[testId];
+            const isRevealed = miniTestRevealed[testId];
+            const test = book21MiniTests.find(t => t.id === testId);
+            if (!test) return;
+
+            const btn = document.getElementById(`btn-toggle-mt-${testId}`);
+            if (btn) {
+                btn.innerHTML = isRevealed ? '<i class="fa-solid fa-eye-slash"></i> Ocultar Solución' : '<i class="fa-solid fa-key"></i> Ver Solución';
+                btn.className = isRevealed ? 'bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95' : 'bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95';
+            }
+
+            test.questions.forEach((q, qIdx) => {
+                const card = document.getElementById(`mt-${testId}-card-${qIdx}`);
+                const icon = document.getElementById(`mt-${testId}-icon-${qIdx}`);
+                const expBox = document.getElementById(`mt-${testId}-exp-${qIdx}`);
+
+                if (isRevealed) {
+                    if (expBox) expBox.classList.remove('hidden');
+                    if (card) card.className = "p-4 rounded-xl border-2 border-emerald-400 bg-emerald-50/25 space-y-2.5 shadow-sm";
+                    if (icon) icon.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-extrabold text-xs">Clave: ' + String.fromCharCode(65 + q.ans) + '</span>';
+
+                    q.choices.forEach((choice, cIdx) => {
+                        const lbl = document.getElementById(`mt-${testId}-lbl-${qIdx}-${cIdx}`);
+                        const badge = document.getElementById(`mt-${testId}-badge-${qIdx}-${cIdx}`);
+                        if (!lbl) return;
+
+                        if (cIdx === q.ans) {
+                            lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-emerald-50/90 border-2 border-emerald-500 rounded-lg text-xs font-bold text-emerald-950 shadow-sm";
+                            if (badge) badge.innerHTML = '<span class="px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-extrabold">✓ Correcta</span>';
+                        } else {
+                            lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-white/70 border border-slate-200 rounded-lg text-xs font-medium text-slate-400 opacity-60";
+                            if (badge) badge.innerHTML = '';
+                        }
+                    });
+                } else {
+                    if (expBox) expBox.classList.add('hidden');
+                    if (card) card.className = "p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2.5";
+                    if (icon) icon.innerHTML = '';
+
+                    const selected = document.querySelector(`input[name="mt-${testId}-q-${qIdx}"]:checked`);
+                    const chosen = selected ? parseInt(selected.value) : -1;
+
+                    q.choices.forEach((choice, cIdx) => {
+                        const lbl = document.getElementById(`mt-${testId}-lbl-${qIdx}-${cIdx}`);
+                        const badge = document.getElementById(`mt-${testId}-badge-${qIdx}-${cIdx}`);
+                        if (!lbl) return;
+                        if (badge) badge.innerHTML = '';
+
+                        if (chosen === cIdx) {
+                            lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-rose-50/70 border-2 border-rose-500 rounded-lg text-xs font-bold text-rose-950 cursor-pointer transition-colors shadow-sm";
+                        } else {
+                            lbl.className = "flex items-center justify-between gap-2 p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 transition-colors";
+                        }
+                    });
+                }
+            });
         }
 
         function reviewMiniTestAnswers() {
