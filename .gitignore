@@ -4,3 +4,6 @@
 *.json
 *.py
 *.swift
+__pycache__/
+*.pyc
+*.ps1
