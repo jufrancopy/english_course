@@ -1373,20 +1373,76 @@
             if (badgeEl) badgeEl.innerText = `${mastered} / ${total}`;
         }
 
+        let preferredSpeechVoice = null;
+
+        function initSpeechVoices() {
+            if (!('speechSynthesis' in window)) return;
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices || voices.length === 0) return;
+
+            const roboticNames = ['albert', 'bad news', 'bahh', 'bells', 'boing', 'cellos', 'fred', 'good news', 'hysterical', 'junior', 'kathy', 'pipe organ', 'trinoids', 'whisper', 'zarvox', 'ralph'];
+
+            const enVoices = voices.filter(v => {
+                const lang = (v.lang || '').toLowerCase();
+                const name = (v.name || '').toLowerCase();
+                const isEnglish = lang.startsWith('en');
+                const isRobotic = roboticNames.some(r => name.includes(r));
+                return isEnglish && !isRobotic;
+            });
+
+            preferredSpeechVoice = enVoices.find(v => {
+                const n = v.name.toLowerCase();
+                return n.includes('natural') || n.includes('samantha') || n.includes('google us english') || n.includes('karen') || n.includes('daniel') || n.includes('ava') || n.includes('allison') || n.includes('premium');
+            })
+            || enVoices.find(v => v.lang === 'en-US' || v.lang === 'en_US')
+            || enVoices[0]
+            || null;
+        }
+
+        if ('speechSynthesis' in window) {
+            initSpeechVoices();
+            window.speechSynthesis.onvoiceschanged = initSpeechVoices;
+        }
+
+        function cleanTextForSpeech(rawText) {
+            if (!rawText) return '';
+            let text = String(rawText);
+            text = text.replace(/\((suffix|suffixes|idiom|verb|noun|adj|adverb)[^)]*\)/gi, '');
+            text = text.replace(/^[-\s]+|[-\s]+$/g, '');
+            text = text.replace(/-\s+/g, ' ');
+            text = text.replace(/\s*\/\s*/g, ', ');
+            text = text.replace(/[()]/g, '');
+            return text.trim();
+        }
+
         function speakCurrentFlashcard() {
             const filtered = getFilteredVocab();
             const item = filtered[currentFlashcardIdx];
-            if (item) speakText(item.word, 0.9);
+            if (item) speakText(item.word, 1.0);
         }
 
         function speakText(text, rate = 1.0) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = rate;
-                window.speechSynthesis.speak(utterance);
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+
+            const cleaned = cleanTextForSpeech(text);
+            if (!cleaned) return;
+
+            const utterance = new SpeechSynthesisUtterance(cleaned);
+            utterance.lang = 'en-US';
+            utterance.rate = (rate && rate >= 0.9 && rate <= 1.05) ? 1.0 : rate;
+            utterance.pitch = 1.0;
+
+            if (preferredSpeechVoice) {
+                utterance.voice = preferredSpeechVoice;
+            } else {
+                initSpeechVoices();
+                if (preferredSpeechVoice) utterance.voice = preferredSpeechVoice;
             }
+
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+            }, 30);
         }
 
         function renderVocabGrid() {

@@ -329,7 +329,12 @@
                                     </p>
                                 </div>
                                 <div class="border-t border-slate-100 pt-3 text-center space-y-0.5">
-                                    <p id="fc-example-front" class="text-xs text-slate-600 italic font-medium">"Call an ambulance at once; the soldier is badly hurt."</p>
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <p id="fc-example-front" class="text-xs text-slate-600 italic font-medium">"Call an ambulance at once; the soldier is badly hurt."</p>
+                                        <button onclick="event.stopPropagation(); speakCurrentExample();" class="text-slate-400 hover:text-emerald-600 text-xs p-1 rounded transition-colors" title="Escuchar ejemplo">
+                                            <i class="fa-solid fa-volume-high text-[11px]"></i>
+                                        </button>
+                                    </div>
                                     <p id="fc-example-es" class="text-[11px] text-slate-400 italic">"Llama a una ambulancia de inmediato..."</p>
                                 </div>
                             </div>
@@ -931,7 +936,13 @@
         function speakCurrentFlashcard() {
             const filtered = getFilteredVocab();
             const item = filtered[currentFlashcardIdx];
-            if (item) speakText(item.word, 0.9);
+            if (item) speakText(item.word, 1.0);
+        }
+
+        function speakCurrentExample() {
+            const filtered = getFilteredVocab();
+            const item = filtered[currentFlashcardIdx];
+            if (item && item.ex) speakText(item.ex, 1.0);
         }
 
         function renderVocabGrid() {
@@ -957,7 +968,7 @@
                         <div class="space-y-2">
                             <div class="flex justify-between items-start">
                                 <span class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-0.5 rounded uppercase">L${item.lesson} • ${item.pos}</span>
-                                <button onclick="speakText('${item.word.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-emerald-600 text-sm p-1" title="Escuchar">
+                                <button onclick="speakText('${item.word.replace(/'/g, "\\'")}', 1.0)" class="text-slate-400 hover:text-emerald-600 text-sm p-1" title="Escuchar palabra">
                                     <i class="fa-solid fa-volume-high"></i>
                                 </button>
                             </div>
@@ -966,9 +977,14 @@
                                 <div class="text-xs text-slate-400 font-mono">${item.phonetic || ''}</div>
                                 <span class="text-xs text-emerald-700 font-bold block mt-1">${item.trans}</span>
                             </div>
-                            <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100 italic">
-                                "${item.ex}"
-                            </p>
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-start justify-between gap-1.5">
+                                <p class="text-xs text-slate-600 italic">
+                                    "${item.ex}"
+                                </p>
+                                <button onclick="speakText('${item.ex.replace(/'/g, "\\'")}', 1.0)" class="text-slate-400 hover:text-emerald-600 text-xs p-0.5 shrink-0" title="Escuchar oración">
+                                    <i class="fa-solid fa-volume-high text-[11px]"></i>
+                                </button>
+                            </div>
                             ${item.mnemonic ? `
                                 <div class="bg-amber-50/80 p-2.5 rounded-xl border border-amber-200/60 text-[11px] text-amber-900 leading-relaxed">
                                     <b class="text-amber-800"><i class="fa-solid fa-lightbulb mr-1"></i> Truco:</b> ${item.mnemonic}
@@ -1587,15 +1603,82 @@
         }
 
         // ──────────────────────────────────────────────────────────
-        // AUDIO & SPEECH SYNTHESIS ENGINE
+        // AUDIO & SPEECH SYNTHESIS ENGINE (HD Natural Voice)
         // ──────────────────────────────────────────────────────────
+        let preferredSpeechVoice = null;
+
+        function initSpeechVoices() {
+            if (!('speechSynthesis' in window)) return;
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices || voices.length === 0) return;
+
+            // List of legacy or distorted robotic voices to avoid on macOS / Windows
+            const roboticNames = ['albert', 'bad news', 'bahh', 'bells', 'boing', 'cellos', 'fred', 'good news', 'hysterical', 'junior', 'kathy', 'pipe organ', 'trinoids', 'whisper', 'zarvox', 'ralph'];
+
+            const enVoices = voices.filter(v => {
+                const lang = (v.lang || '').toLowerCase();
+                const name = (v.name || '').toLowerCase();
+                const isEnglish = lang.startsWith('en');
+                const isRobotic = roboticNames.some(r => name.includes(r));
+                return isEnglish && !isRobotic;
+            });
+
+            // Priority 1: High quality natural / neural / premium voices (Samantha, Daniel, Google US English, Ava, Karen, etc.)
+            preferredSpeechVoice = enVoices.find(v => {
+                const n = v.name.toLowerCase();
+                return n.includes('natural') || n.includes('samantha') || n.includes('google us english') || n.includes('karen') || n.includes('daniel') || n.includes('ava') || n.includes('allison') || n.includes('premium');
+            })
+            // Priority 2: Standard US English
+            || enVoices.find(v => v.lang === 'en-US' || v.lang === 'en_US')
+            // Priority 3: Any clear English voice
+            || enVoices[0]
+            || null;
+        }
+
+        if ('speechSynthesis' in window) {
+            initSpeechVoices();
+            window.speechSynthesis.onvoiceschanged = initSpeechVoices;
+        }
+
+        function cleanTextForSpeech(rawText) {
+            if (!rawText) return '';
+            let text = String(rawText);
+            // Remove suffix markers like "-ness (suffix)", "-ful / -less (suffixes)"
+            text = text.replace(/\((suffix|suffixes|idiom|verb|noun|adj|adverb)[^)]*\)/gi, '');
+            // Remove leading/trailing hyphens
+            text = text.replace(/^[-\s]+|[-\s]+$/g, '');
+            text = text.replace(/-\s+/g, ' ');
+            // Replace "/" with pause for smooth rhythm: "as if / as though" -> "as if, as though"
+            text = text.replace(/\s*\/\s*/g, ', ');
+            // Remove parentheses around prepositions: "adhere (to)" -> "adhere to"
+            text = text.replace(/[()]/g, '');
+            return text.trim();
+        }
+
         function speakText(text, customRate = 1.0) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
+
+            const cleaned = cleanTextForSpeech(text);
+            if (!cleaned) return;
+
+            const utterance = new SpeechSynthesisUtterance(cleaned);
             utterance.lang = 'en-US';
-            utterance.rate = customRate;
-            window.speechSynthesis.speak(utterance);
+            // Use 1.0 by default to avoid Mac/WebKit time-stretching DSP distortion
+            utterance.rate = (customRate && customRate >= 0.9 && customRate <= 1.05) ? 1.0 : customRate;
+            utterance.pitch = 1.0;
+
+            if (preferredSpeechVoice) {
+                utterance.voice = preferredSpeechVoice;
+            } else {
+                initSpeechVoices();
+                if (preferredSpeechVoice) utterance.voice = preferredSpeechVoice;
+            }
+
+            // Small 30ms timeout prevents Chrome/Safari cancel() race condition distortion
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+            }, 30);
         }
 
         function playQuizQuestionAudio(idx) {
